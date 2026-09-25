@@ -124,12 +124,21 @@ const fmtDate = (d) => {
     }
   }
 
+  const newItems = kept.map(({ mtime, ...rest }) => rest);
+
+  // 内容没变时不更新 updatedAt，避免每 30 分钟产生无意义提交
+  const oldItems = old.items || [];
+  const unchanged =
+    old.source === SRC &&
+    oldItems.length === newItems.length &&
+    JSON.stringify(oldItems) === JSON.stringify(newItems);
+
   const payload = {
-    updatedAt: new Date().toISOString(),
+    updatedAt: unchanged && old.updatedAt ? old.updatedAt : new Date().toISOString(),
     source: SRC,
     count: kept.length,
     total: items.length,
-    items: kept.map(({ mtime, ...rest }) => rest),
+    items: newItems,
   };
   fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
   fs.writeFileSync(DATA_FILE, JSON.stringify(payload, null, 2), 'utf8');
