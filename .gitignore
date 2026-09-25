@@ -15,3 +15,5 @@ dist/
 _shots/
 _cdp-*/
 _*.cjs
+
+logs/

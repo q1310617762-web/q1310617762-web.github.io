@@ -8,7 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "fetch:anime": "node scripts/fetch-anime.mjs"
+    "fetch:anime": "node scripts/fetch-anime.mjs",
+    "sync:photos": "node scripts/sync-photos.mjs",
+    "publish:photos": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/auto-publish.ps1"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",

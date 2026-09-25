@@ -1,7 +1,11 @@
 ---
 // 图片墙组件（多相册分组 + 共用灯箱：点击放大、左右切换、Esc 关闭）
 import { albums as albumData } from '@data/site';
-const groups = albumData;
+import { getPhotoAlbum } from '@utils/photos';
+
+// 「随手拍」自动相册排在最前（来自 Saved Pictures，由同步脚本生成）
+const auto = getPhotoAlbum();
+const groups = auto ? [auto, ...albumData] : albumData;
 ---
 <div data-gallery>
   {

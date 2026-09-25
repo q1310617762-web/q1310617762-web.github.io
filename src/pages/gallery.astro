@@ -2,16 +2,26 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import GalleryGrid from '@components/blog/GalleryGrid.astro';
 import { albums } from '@data/site';
+import { getPhotoAlbum, getPhotoUpdatedLabel } from '@utils/photos';
 
-const total = albums.reduce((s, a) => s + a.items.length, 0);
+const auto = getPhotoAlbum();
+const albumCount = albums.length + (auto ? 1 : 0);
+const total = albums.reduce((s, a) => s + a.items.length, 0) + (auto ? auto.items.length : 0);
 ---
-<BaseLayout title="相册" description="我的游戏截图记录：原神、崩坏：星穹铁道与绝区零。" activeNav="/gallery">
+<BaseLayout title="相册" description="我的照片与游戏截图：随手拍、原神、崩坏：星穹铁道与绝区零。" activeNav="/gallery">
   <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
     <header class="mb-10">
       <h1 class="text-3xl font-extrabold text-(--color-text) dark:text-(--color-dark-text)">相册</h1>
       <p class="mt-2 text-(--color-muted) dark:text-(--color-dark-muted)">
-        {albums.length} 个相册 · 共 {total} 张截图 · 点击可放大查看
+        {albumCount} 个相册 · 共 {total} 张 · 点击可放大查看
       </p>
+      {
+        auto && (
+          <p class="mt-1 text-xs text-(--color-muted) dark:text-(--color-dark-muted)">
+            「随手拍」会自动同步本机 Saved Pictures 目录 · 上次同步 {getPhotoUpdatedLabel()}
+          </p>
+        )
+      }
     </header>
 
     <GalleryGrid />
