@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T14:02:01.354Z",
+  "updatedAt": "2026-09-25T14:04:12.063Z",
   "source": "C:/Users/VOS-User/Pictures/Saved Pictures",
   "count": 17,
   "total": 17,
@@ -229,14 +229,29 @@
     ]
   },
   "gated": {
-    "enabled": false,
-    "question": "",
-    "hint": "",
-    "configStamp": "none",
-    "count": 0,
-    "items": [],
+    "enabled": true,
+    "question": "我家住哪个县城",
+    "hint": "仅家人可查看",
+    "configStamp": "2026-09-25T22:10:00.000Z",
+    "count": 1,
+    "items": [
+      {
+        "id": "7b35b93e70c9",
+        "src": "/photos/private/7b35b93e70c9.enc",
+        "salt": "WaPp71s6L2V2wXju8tO5NA==",
+        "iv": "lFKuWScZjnRxrXzN",
+        "title": "爷爷奶奶",
+        "date": "2026-09-17"
+      }
+    ],
     "signatures": {
-      "相片/爷爷奶奶.jpg": null
+      "相片/爷爷奶奶.jpg": [
+        1789623441954.0715,
+        282115,
+        "7b35b93e70c9",
+        "WaPp71s6L2V2wXju8tO5NA==",
+        "lFKuWScZjnRxrXzN"
+      ]
     }
   }
 }
