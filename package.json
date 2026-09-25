@@ -10,7 +10,7 @@
     "astro": "astro",
     "fetch:anime": "node scripts/fetch-anime.mjs",
     "sync:photos": "node scripts/sync-photos.mjs",
-    "publish:photos": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/auto-publish.ps1"
+    "publish:photos": "node scripts/auto-publish.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",
