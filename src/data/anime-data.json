@@ -1,115 +1,17 @@
 {
-  "fetchedAt": "2026-09-25T14:56:38.677Z",
-  "total": 33,
+  "fetchedAt": "2026-09-25T21:00:54.060Z",
+  "total": 34,
   "days": [
-    {
-      "date": "9-25",
-      "dateTs": 1790265600,
-      "weekday": "五",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "5096201",
-          "title": "掌门低调点",
-          "index": "第31话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
-          "seasonId": 272443,
-          "url": "https://www.bilibili.com/bangumi/play/ep5096201",
-          "delay": ""
-        },
-        {
-          "id": "6158890",
-          "title": "苏东坡与杭州的故事",
-          "index": "第31话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
-          "seasonId": 247422,
-          "url": "https://www.bilibili.com/bangumi/play/ep6158890",
-          "delay": ""
-        },
-        {
-          "id": "5091040",
-          "title": "缔灵爱水心缠",
-          "index": "第9话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d8329405b37b06eb365ccdcc4abed7981cf45c5a.jpg",
-          "seasonId": 263198,
-          "url": "https://www.bilibili.com/bangumi/play/ep5091040",
-          "delay": ""
-        },
-        {
-          "id": "6291908",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第1话~第4话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291908",
-          "delay": ""
-        },
-        {
-          "id": "6120728",
-          "title": "罗拉航海日记",
-          "index": "第25话~第26话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c115717c642b865d969d00bb416f4ea44fc3dbf0.png",
-          "seasonId": 302883,
-          "url": "https://www.bilibili.com/bangumi/play/ep6120728",
-          "delay": ""
-        },
-        {
-          "id": "6389162",
-          "title": "雪王来了！",
-          "index": "第15话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
-          "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep6389162",
-          "delay": ""
-        },
-        {
-          "id": "5723180",
-          "title": "请吃红小豆吧！第五季",
-          "index": "第4话",
-          "time": "17:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
-          "seasonId": 291215,
-          "url": "https://www.bilibili.com/bangumi/play/ep5723180",
-          "delay": ""
-        },
-        {
-          "id": "6281866",
-          "title": "开心锤锤世界",
-          "index": "第73话",
-          "time": "18:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
-          "seasonId": 96881,
-          "url": "https://www.bilibili.com/bangumi/play/ep6281866",
-          "delay": ""
-        },
-        {
-          "id": "6158277",
-          "title": "公主驾到，天才厨子已超神！",
-          "index": "即将更新 第11话",
-          "time": "23:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4766bd4a732abb2d2408eb0187a9c648f76d4176.jpg",
-          "seasonId": 284272,
-          "url": "https://www.bilibili.com/bangumi/play/ep6158277",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "9-26",
       "dateTs": 1790352000,
       "weekday": "六",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "6254505",
           "title": "万古至尊：李云霄传",
-          "index": "第22话",
+          "index": "即将更新 第22话",
           "time": "09:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
           "seasonId": 119017,
@@ -164,6 +66,26 @@
           "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
           "seasonId": 34149,
           "url": "https://www.bilibili.com/bangumi/play/ep6353908",
+          "delay": ""
+        },
+        {
+          "id": "6436951",
+          "title": "名侦探柯南",
+          "index": "第1274话",
+          "time": "19:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8d4dad96d5eef87c1ef985c29f42d4189992f84.png",
+          "seasonId": 33378,
+          "url": "https://www.bilibili.com/bangumi/play/ep6436951",
+          "delay": ""
+        },
+        {
+          "id": "6436952",
+          "title": "名侦探柯南（中配）",
+          "index": "第1274话",
+          "time": "19:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d106f458bb63f0dc78c49886ec27b1a137b14e96.png",
+          "seasonId": 33415,
+          "url": "https://www.bilibili.com/bangumi/play/ep6436952",
           "delay": ""
         }
       ]
@@ -384,6 +306,94 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/2cfa7e1dd6dc7d0eeefcd6bdfc137bbff4cc55c4.png",
           "seasonId": 105212,
           "url": "https://www.bilibili.com/bangumi/play/ep5137679",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-2",
+      "dateTs": 1790870400,
+      "weekday": "五",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "5096203",
+          "title": "掌门低调点",
+          "index": "第33话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
+          "seasonId": 272443,
+          "url": "https://www.bilibili.com/bangumi/play/ep5096203",
+          "delay": ""
+        },
+        {
+          "id": "6400574",
+          "title": "苏东坡与杭州的故事",
+          "index": "第33话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6400574",
+          "delay": ""
+        },
+        {
+          "id": "5091041",
+          "title": "缔灵爱水心缠",
+          "index": "第10话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d8329405b37b06eb365ccdcc4abed7981cf45c5a.jpg",
+          "seasonId": 263198,
+          "url": "https://www.bilibili.com/bangumi/play/ep5091041",
+          "delay": ""
+        },
+        {
+          "id": "6291968",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第11话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291968",
+          "delay": ""
+        },
+        {
+          "id": "5137679",
+          "title": "时光代理人 第三季",
+          "index": "第9话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/2cfa7e1dd6dc7d0eeefcd6bdfc137bbff4cc55c4.png",
+          "seasonId": 105212,
+          "url": "https://www.bilibili.com/bangumi/play/ep5137679",
+          "delay": ""
+        },
+        {
+          "id": "5450380",
+          "title": "雪王来了！",
+          "index": "第17话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep5450380",
+          "delay": ""
+        },
+        {
+          "id": "5723181",
+          "title": "请吃红小豆吧！第五季",
+          "index": "第5话",
+          "time": "17:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
+          "seasonId": 291215,
+          "url": "https://www.bilibili.com/bangumi/play/ep5723181",
+          "delay": ""
+        },
+        {
+          "id": "6281867",
+          "title": "开心锤锤世界",
+          "index": "第74话",
+          "time": "18:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
+          "seasonId": 96881,
+          "url": "https://www.bilibili.com/bangumi/play/ep6281867",
           "delay": ""
         }
       ]
