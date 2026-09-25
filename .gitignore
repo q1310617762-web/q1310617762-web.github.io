@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.astro/
+.netlify/
+*.log
+.vscode/
+.idea/
+.DS_Store
+.env
+.env.*
+
+*.zip
+
+# 临时目录（截图/调试产物）
+_shots/
+_cdp-*/
+_*.cjs

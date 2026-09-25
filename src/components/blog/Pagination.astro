@@ -1,0 +1,56 @@
+---
+// 分页组件
+interface Props {
+  page: number;
+  totalPage: number;
+  base: string;
+}
+const { page, totalPage, base } = Astro.props;
+const make = (n: number) => (n <= 1 ? base : `${base}/${n}`);
+;
+const prev = page - 1;
+const next = page + 1;
+const pages = Array.from({ length: totalPage }, (_, i) => i + 1);
+---
+
+{
+  totalPage > 1 && (
+    <nav class="mt-10 flex items-center justify-center gap-2" aria-label="分页">
+      <a
+        href={prev > 0 ? make(prev) : '#'}
+        aria-disabled={prev <= 0}
+        class={`rounded-(--radius-btn) border px-3 py-2 text-sm transition-colors ${
+          prev > 0
+            ? 'border-(--color-border) text-(--color-text) hover:border-(--color-primary) hover:text-(--color-primary) dark:border-(--color-dark-border) dark:text-(--color-dark-text)'
+            : 'pointer-events-none border-(--color-border) text-(--color-border) dark:border-(--color-dark-border) dark:text-(--color-dark-border)'
+        }`}
+      >
+        ←
+      </a>
+      {pages.map((n) => (
+        <a
+          href={make(n)}
+          aria-current={n === page ? 'page' : undefined}
+          class={`rounded-(--radius-btn) px-3 py-2 text-sm transition-colors ${
+            n === page
+              ? 'bg-(--color-primary) text-white'
+              : 'border border-(--color-border) text-(--color-text) hover:border-(--color-primary) hover:text-(--color-primary) dark:border-(--color-dark-border) dark:text-(--color-dark-text)'
+          }`}
+        >
+          {n}
+        </a>
+      ))}
+      <a
+        href={next <= totalPage ? make(next) : '#'}
+        aria-disabled={next > totalPage}
+        class={`rounded-(--radius-btn) border px-3 py-2 text-sm transition-colors ${
+          next <= totalPage
+            ? 'border-(--color-border) text-(--color-text) hover:border-(--color-primary) hover:text-(--color-primary) dark:border-(--color-dark-border) dark:text-(--color-dark-text)'
+            : 'pointer-events-none border-(--color-border) text-(--color-border) dark:border-(--color-dark-border) dark:text-(--color-dark-border)'
+        }`}
+      >
+        →
+      </a>
+    </nav>
+  )
+}

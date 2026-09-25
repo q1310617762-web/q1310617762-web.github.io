@@ -1,0 +1,392 @@
+{
+  "fetchedAt": "2026-09-25T06:52:19.937Z",
+  "total": 33,
+  "days": [
+    {
+      "date": "9-25",
+      "dateTs": 1790265600,
+      "weekday": "五",
+      "isToday": true,
+      "episodes": [
+        {
+          "id": "5096201",
+          "title": "掌门低调点",
+          "index": "第31话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
+          "seasonId": 272443,
+          "url": "https://www.bilibili.com/bangumi/play/ep5096201",
+          "delay": ""
+        },
+        {
+          "id": "6158890",
+          "title": "苏东坡与杭州的故事",
+          "index": "第31话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6158890",
+          "delay": ""
+        },
+        {
+          "id": "5091040",
+          "title": "缔灵爱水心缠",
+          "index": "第9话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d8329405b37b06eb365ccdcc4abed7981cf45c5a.jpg",
+          "seasonId": 263198,
+          "url": "https://www.bilibili.com/bangumi/play/ep5091040",
+          "delay": ""
+        },
+        {
+          "id": "6291908",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第1话~第4话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291908",
+          "delay": ""
+        },
+        {
+          "id": "6120728",
+          "title": "罗拉航海日记",
+          "index": "第25话~第26话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c115717c642b865d969d00bb416f4ea44fc3dbf0.png",
+          "seasonId": 302883,
+          "url": "https://www.bilibili.com/bangumi/play/ep6120728",
+          "delay": ""
+        },
+        {
+          "id": "6389162",
+          "title": "雪王来了！",
+          "index": "第15话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep6389162",
+          "delay": ""
+        },
+        {
+          "id": "5723180",
+          "title": "请吃红小豆吧！第五季",
+          "index": "即将更新 第4话",
+          "time": "17:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
+          "seasonId": 291215,
+          "url": "https://www.bilibili.com/bangumi/play/ep5723180",
+          "delay": ""
+        },
+        {
+          "id": "6281866",
+          "title": "开心锤锤世界",
+          "index": "即将更新 第73话",
+          "time": "18:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
+          "seasonId": 96881,
+          "url": "https://www.bilibili.com/bangumi/play/ep6281866",
+          "delay": ""
+        },
+        {
+          "id": "6158277",
+          "title": "公主驾到，天才厨子已超神！",
+          "index": "第11话",
+          "time": "23:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4766bd4a732abb2d2408eb0187a9c648f76d4176.jpg",
+          "seasonId": 284272,
+          "url": "https://www.bilibili.com/bangumi/play/ep6158277",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "9-26",
+      "dateTs": 1790352000,
+      "weekday": "六",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6254505",
+          "title": "万古至尊：李云霄传",
+          "index": "第22话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
+          "seasonId": 119017,
+          "url": "https://www.bilibili.com/bangumi/play/ep6254505",
+          "delay": ""
+        },
+        {
+          "id": "6158482",
+          "title": "气运世界杯，我能复制所有球星技能",
+          "index": "第15话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f6920c0319f78939fb6e419fe718ea7d9b60b474.jpg",
+          "seasonId": 263605,
+          "url": "https://www.bilibili.com/bangumi/play/ep6158482",
+          "delay": ""
+        },
+        {
+          "id": "6291962",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第5话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291962",
+          "delay": ""
+        },
+        {
+          "id": "3854817",
+          "title": "凡人修仙传",
+          "index": "第193话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
+          "seasonId": 28747,
+          "url": "https://www.bilibili.com/bangumi/play/ep3854817",
+          "delay": ""
+        },
+        {
+          "id": "6158606",
+          "title": "无良系统变向导，我被四个哨兵拿捏了",
+          "index": "第12话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/748726fd8faf7c11a6898a4b37c129c526e09e61.jpg",
+          "seasonId": 285345,
+          "url": "https://www.bilibili.com/bangumi/play/ep6158606",
+          "delay": ""
+        },
+        {
+          "id": "6353908",
+          "title": "我是不白吃",
+          "index": "第1084话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep6353908",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "9-27",
+      "dateTs": 1790438400,
+      "weekday": "日",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "4883710",
+          "title": "财神窦占龙",
+          "index": "第9话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
+          "seasonId": 264970,
+          "url": "https://www.bilibili.com/bangumi/play/ep4883710",
+          "delay": ""
+        },
+        {
+          "id": "6332426",
+          "title": "千金归来：我清算了枕边人",
+          "index": "第13话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/bea37a11f5fa2f3f8e33cd7ad666104b9234f5a9.jpg",
+          "seasonId": 269798,
+          "url": "https://www.bilibili.com/bangumi/play/ep6332426",
+          "delay": ""
+        },
+        {
+          "id": "6332196",
+          "title": "当上神明后，我带着信徒干翻了废土",
+          "index": "第14话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e54803cb8bfb45c8dc968a16d05110dfcd07cc40.jpg",
+          "seasonId": 269837,
+          "url": "https://www.bilibili.com/bangumi/play/ep6332196",
+          "delay": ""
+        },
+        {
+          "id": "6332517",
+          "title": "孟婆辞职，阎王哭着求我回来上班",
+          "index": "第11话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/ea0368a93a78ba6f88b94aa50bacb3224ad1a927.jpg",
+          "seasonId": 283583,
+          "url": "https://www.bilibili.com/bangumi/play/ep6332517",
+          "delay": ""
+        },
+        {
+          "id": "6291963",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第6话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291963",
+          "delay": ""
+        },
+        {
+          "id": "3537948",
+          "title": "牧神记",
+          "index": "第102话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
+          "seasonId": 45969,
+          "url": "https://www.bilibili.com/bangumi/play/ep3537948",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "9-28",
+      "dateTs": 1790524800,
+      "weekday": "一",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6421774",
+          "title": "万古至尊：李云霄传",
+          "index": "第23话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
+          "seasonId": 119017,
+          "url": "https://www.bilibili.com/bangumi/play/ep6421774",
+          "delay": ""
+        },
+        {
+          "id": "4875819",
+          "title": "成也萧河",
+          "index": "第11话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/26bdc9418905c503ff58197c353da702bf211c36.png",
+          "seasonId": 264634,
+          "url": "https://www.bilibili.com/bangumi/play/ep4875819",
+          "delay": ""
+        },
+        {
+          "id": "6291964",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第7话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291964",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "9-29",
+      "dateTs": 1790611200,
+      "weekday": "二",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "5096202",
+          "title": "掌门低调点",
+          "index": "第32话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
+          "seasonId": 272443,
+          "url": "https://www.bilibili.com/bangumi/play/ep5096202",
+          "delay": ""
+        },
+        {
+          "id": "6291965",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第8话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291965",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "9-30",
+      "dateTs": 1790697600,
+      "weekday": "三",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "4809963",
+          "title": "李熊猫",
+          "index": "第12话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4da2f5633d308fd56c218e43ed31b22099191bf9.png",
+          "seasonId": 262397,
+          "url": "https://www.bilibili.com/bangumi/play/ep4809963",
+          "delay": ""
+        },
+        {
+          "id": "4407943",
+          "title": "有兽焉",
+          "index": "第70话",
+          "time": "10:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/bfabba81d51d516da105187495212504a266aa3d.png",
+          "seasonId": 39947,
+          "url": "https://www.bilibili.com/bangumi/play/ep4407943",
+          "delay": ""
+        },
+        {
+          "id": "6400539",
+          "title": "苏东坡与杭州的故事",
+          "index": "第32话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6400539",
+          "delay": ""
+        },
+        {
+          "id": "6291966",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第9话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291966",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-1",
+      "dateTs": 1790784000,
+      "weekday": "四",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6291967",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第10话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291967",
+          "delay": ""
+        },
+        {
+          "id": "5450379",
+          "title": "雪王来了！",
+          "index": "第16话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep5450379",
+          "delay": ""
+        },
+        {
+          "id": "5137679",
+          "title": "时光代理人 第三季",
+          "index": "第9话（超大抢先）",
+          "time": "18:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/2cfa7e1dd6dc7d0eeefcd6bdfc137bbff4cc55c4.png",
+          "seasonId": 105212,
+          "url": "https://www.bilibili.com/bangumi/play/ep5137679",
+          "delay": ""
+        }
+      ]
+    }
+  ]
+}

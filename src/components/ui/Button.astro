@@ -1,0 +1,29 @@
+---
+// 通用按钮组件（模块 B，美化版：渐变主操作 + 按下反馈）
+interface Props extends astroHTML.JSX.HTMLAttributes<'a'> {
+  variant?: 'primary' | 'ghost' | 'outline';
+  href?: string;
+}
+const { variant = 'primary', href = '#', class: userClass, ...rest } = Astro.props;
+
+const base =
+  'inline-flex min-h-10 items-center justify-center gap-2 rounded-(--radius-btn) px-5 py-2 text-sm font-semibold transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary) focus-visible:ring-offset-2 disabled:opacity-50 active:scale-95';
+
+const variants = {
+  primary:
+    'primary-gradient text-white shadow-md',
+  ghost:
+    'text-(--color-muted) hover:bg-(--color-surface-2) hover:text-(--color-text) dark:text-(--color-dark-muted) dark:hover:bg-(--color-dark-surface-2) dark:hover:text-(--color-dark-text)',
+  outline:
+    'border border-(--color-border) bg-(--color-surface)/50 text-(--color-text) hover:border-(--color-primary) hover:text-(--color-primary) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface)/50 dark:text-(--color-dark-text) dark:hover:border-(--color-primary) dark:hover:text-(--color-primary)',
+};
+const cls = ` ${base} ${variants[variant]} ${userClass ?? ''}`;
+---
+
+{
+  href.startsWith('/') || href.startsWith('#') || href.startsWith('mailto:') ? (
+    <a href={href} class={cls} {...rest}><slot /></a>
+  ) : (
+    <a href={href} target="_blank" rel="noopener noreferrer" class={cls} {...rest}><slot /></a>
+  )
+}

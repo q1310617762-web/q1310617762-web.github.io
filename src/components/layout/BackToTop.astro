@@ -1,0 +1,44 @@
+---
+// 返回顶部按钮（模块 F 动效）
+const { class: cls = '' } = Astro.props;
+---
+<div id="back-to-top" class={`fixed bottom-6 right-6 z-40 transition-opacity duration-300 ${cls}`}>
+  <a
+    href="#"
+    class="flex h-11 w-11 items-center justify-center rounded-full bg-(--color-primary) text-white shadow-lg transition-all hover:bg-(--color-primary-strong)"
+    aria-label="返回顶部"
+    title="返回顶部"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+      <path d="m18 15-6-6-6 6" />
+    </svg>
+  </a>
+</div>
+
+<script>
+  function initBackToTop() {
+    const el = document.getElementById('back-to-top');
+    if (!el) return;
+    const link = el.querySelector('a');
+
+    // 先移除上一次绑定的滚动监听，避免客户端路由下重复累积
+    if (window.__bttScroll) window.removeEventListener('scroll', window.__bttScroll);
+    const onScroll = () => {
+      const show = window.scrollY > 400;
+      el.style.opacity = show ? '1' : '0';
+      el.style.pointerEvents = show ? 'auto' : 'none';
+    };
+    window.__bttScroll = onScroll;
+    window.addEventListener('scroll', onScroll);
+
+    link?.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    el.style.opacity = '0';
+    el.style.pointerEvents = 'none';
+  }
+  initBackToTop();
+  document.addEventListener('astro:page-load', initBackToTop);
+</script>

@@ -1,0 +1,40 @@
+﻿---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getArchive, formatDate } from '@utils/posts';
+const archive = await getArchive();
+---
+<BaseLayout title="归档" description="按年份归档的全部文章。" activeNav="/archive">
+  <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+    <header class="mb-10">
+      <h1 class="text-3xl font-extrabold text-(--color-text) dark:text-(--color-dark-text)">归档</h1>
+      <p class="mt-2 text-(--color-muted) dark:text-(--color-dark-muted)">按年份浏览全部文章</p>
+    </header>
+
+    <div class="space-y-12">
+      {
+        archive.map((group) => (
+          <section>
+            <h2 class="mb-4 flex items-center gap-2 text-xl font-bold text-(--color-primary)">
+              {group.year}
+              <span class="text-sm font-normal text-(--color-muted) dark:text-(--color-dark-muted)">({group.posts.length} 篇)</span>
+            </h2>
+            <ul class="space-y-3 border-l border-(--color-border) pl-5 dark:border-(--color-dark-border)">
+              {group.posts.map((post) => (
+                <li>
+                  <a href={`/blog/${post.slug}`} class="group flex items-baseline gap-3">
+                    <time class="shrink-0 text-xs text-(--color-muted) dark:text-(--color-dark-muted)" datetime={post.pubDate.toISOString()}>
+                      {formatDate(post.pubDate)}
+                    </time>
+                    <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-primary) dark:text-(--color-dark-text)">
+                      {post.title}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

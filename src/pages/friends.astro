@@ -1,0 +1,47 @@
+﻿---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { friends, site } from '@data/site';
+---
+<BaseLayout title="友情链接" description="我的好朋友们的链接。" activeNav="/friends">
+  <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+    <header class="mb-10">
+      <h1 class="text-3xl font-extrabold text-(--color-text) dark:text-(--color-dark-text)">友情链接</h1>
+      <p class="mt-2 text-(--color-muted) dark:text-(--color-dark-muted)">每一位朋友都是难得遇见的人，欢迎来看看他们的站点。</p>
+    </header>
+
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      {
+        friends.map((f) => (
+          <a
+            href={f.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-start gap-4 rounded-(--radius-card) border border-(--color-border) bg-(--color-surface) p-5 shadow-(--shadow-card) transition-all duration-300 hover:-translate-y-1.5 hover:border-(--color-primary)/45 hover:shadow-(--shadow-card-hover) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface) dark:hover:border-(--color-primary)/40"
+          >
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-(--color-primary)/12 text-lg font-bold text-(--color-primary) transition-transform duration-200 group-hover:scale-105">
+              {f.name.slice(0, 1)}
+            </div>
+            <div class="min-w-0">
+              <h2 class="flex items-center gap-1.5 text-base font-semibold text-(--color-text) transition-colors group-hover:text-(--color-primary) dark:text-(--color-dark-text)">
+                {f.name}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100"><path d="M7 17 17 7M7 7h10v10" /></svg>
+              </h2>
+              <p class="mt-1 truncate text-sm text-(--color-muted) dark:text-(--color-dark-muted)">{f.desc}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- 申请友链说明 -->
+    <section class="mt-12 rounded-(--radius-card) border border-(--color-border) bg-(--color-surface) p-6 dark:border-(--color-dark-border) dark:bg-(--color-dark-surface)">
+      <h2 class="text-lg font-semibold text-(--color-text) dark:text-(--color-dark-text)">申请友链</h2>
+      <p class="mt-2 text-sm leading-relaxed text-(--color-muted) dark:text-(--color-dark-muted)">
+        欢迎交换友链！请先把我的站点加为好友链接，然后通过邮箱联系我：
+      </p>
+      <a href={`mailto:${site.email}`} class="mt-3 inline-flex items-center gap-2 rounded-(--radius-btn) border border-(--color-primary)/40 px-4 py-2 text-sm font-medium text-(--color-primary) transition-colors hover:bg-(--color-primary)/10">
+        联系博主 →
+      </a>
+    </section>
+  </div>
+</BaseLayout>

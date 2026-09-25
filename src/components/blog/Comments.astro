@@ -1,0 +1,38 @@
+---
+// 评论组件（Giscus，配置驱动 + 优雅兜底）
+// 未配置 repo 时显示「暂未开启」提示；配置后自动加载 Giscus 评论。
+import { giscus } from '@data/site';
+const enabled = typeof giscus.repo === 'string' && giscus.repo.trim() !== '';
+---
+{
+  enabled ? (
+    <section id="comments" class="mt-14">
+      <h2 class="mb-6 text-xl font-bold text-(--color-text) dark:text-(--color-dark-text)">评论</h2>
+      <div id="giscus-comments" class="rounded-(--radius-card) border border-(--color-border) bg-(--color-surface) p-4 dark:border-(--color-dark-border) dark:bg-(--color-dark-surface)"></div>
+      <script is:inline src="https://giscus.app/client.js"
+        data-repo={giscus.repo}
+        data-repo-id={giscus.repoId}
+        data-category={giscus.category}
+        data-category-id={giscus.categoryId}
+        data-mapping={giscus.mapping}
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang={giscus.lang}
+        crossorigin="anonymous"
+        async></script>
+    </section>
+  ) : (
+    <section id="comments" class="mt-14">
+      <h2 class="mb-6 text-xl font-bold text-(--color-text) dark:text-(--color-dark-text)">评论</h2>
+      <div class="rounded-(--radius-card) border border-dashed border-(--color-border) bg-(--color-surface) px-6 py-10 text-center dark:border-(--color-dark-border) dark:bg-(--color-dark-surface)">
+        <p class="text-(--color-muted) dark:text-(--color-dark-muted)">评论区暂未开启</p>
+        <p class="mt-1 text-sm text-(--color-muted)/70 dark:text-(--color-dark-muted)/70">
+          配置 Giscus 后即可启用评论区。
+        </p>
+      </div>
+    </section>
+  )
+}

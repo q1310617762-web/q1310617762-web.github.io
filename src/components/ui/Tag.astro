@@ -1,0 +1,10 @@
+---
+// 标签链接组件（pill chips，hover 提亮）
+const { name } = Astro.props;
+---
+<a
+  href={`/tag/${name}`}
+  class="inline-flex items-center rounded-(--radius-pill) border border-(--color-border) bg-(--color-surface) px-3 py-1 text-xs font-medium text-(--color-muted) transition-all duration-150 hover:-translate-y-0.5 hover:border-(--color-primary) hover:text-(--color-primary) hover:shadow-sm dark:border-(--color-dark-border) dark:bg-(--color-dark-surface) dark:text-(--color-dark-muted) dark:hover:border-(--color-primary) dark:hover:text-(--color-primary)"
+>
+  #{name}
+</a>

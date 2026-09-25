@@ -1,0 +1,296 @@
+---
+// 音乐播放器（侧栏内嵌小组件；保留 transition:persist 使切页不中断）
+import { music } from '@data/site';
+const tracks = music;
+const hasMusic = tracks.length > 0;
+---
+
+{
+  hasMusic && (
+    <div data-music transition:persist class="soft-card p-3">
+      <audio data-music-audio preload="none"></audio>
+
+      <!-- 曲目信息 -->
+      <div class="flex items-center gap-3">
+        <div class="primary-gradient relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-white shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+            <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z" />
+          </svg>
+        </div>
+        <div class="min-w-0 flex-1">
+          <p data-music-title class="truncate text-sm font-semibold text-(--color-text-strong)">
+            {tracks[0]?.title}
+          </p>
+          <p data-music-artist class="truncate text-[11px] text-(--color-muted)">
+            {tracks[0]?.artist}
+          </p>
+        </div>
+      </div>
+
+      <!-- 进度条 -->
+      <div class="mt-2.5 flex items-center gap-2">
+        <span data-music-current class="w-8 text-right text-[10px] tabular-nums text-(--color-muted)">00:00</span>
+        <div data-music-progress class="h-1 flex-1 cursor-pointer overflow-hidden rounded-full bg-(--color-surface-2)">
+          <div data-music-progress-fill class="primary-gradient h-full w-0 rounded-full transition-[width] duration-100"></div>
+        </div>
+        <span data-music-duration class="w-8 text-[10px] tabular-nums text-(--color-muted)">00:00</span>
+      </div>
+
+      <!-- 控制 -->
+      <div class="mt-2 flex items-center justify-center gap-2">
+        <button
+          data-music-prev
+          type="button"
+          aria-label="上一首"
+          class="flex h-7 w-7 items-center justify-center rounded-full text-(--color-muted) transition-colors hover:text-(--color-text)"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-3.5 w-3.5"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" /></svg>
+        </button>
+        <button
+          data-music-play
+          type="button"
+          aria-label="播放/暂停"
+          class="primary-gradient flex h-9 w-9 items-center justify-center rounded-full text-white shadow-sm"
+        >
+          <svg data-icon-play xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><path d="M8 5v14l11-7z" /></svg>
+          <svg data-icon-pause xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-4 w-4"><path d="M6 5h4v14H6zm8 0h4v14h-4z" /></svg>
+        </button>
+        <button
+          data-music-next
+          type="button"
+          aria-label="下一首"
+          class="flex h-7 w-7 items-center justify-center rounded-full text-(--color-muted) transition-colors hover:text-(--color-text)"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-3.5 w-3.5"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z" /></svg>
+        </button>
+        <button
+          data-music-list
+          type="button"
+          aria-label="曲单"
+          class="flex h-7 w-7 items-center justify-center rounded-full text-(--color-muted) transition-colors hover:text-(--color-text)"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-3.5 w-3.5"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
+        </button>
+      </div>
+
+      <!-- 音量 -->
+      <div class="mt-2.5 flex items-center gap-2">
+        <button
+          data-music-mute
+          type="button"
+          aria-label="静音/取消静音"
+          title="静音/取消静音"
+          class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-(--color-muted) transition-colors hover:text-(--color-text)"
+        >
+          <!-- 音量高 -->
+          <svg data-icon-vol-high xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+            <path d="M11 5 6 9H3v6h3l5 4z" /><path d="M16 8.5a5 5 0 0 1 0 7" /><path d="M19 6a9 9 0 0 1 0 12" />
+          </svg>
+          <!-- 音量低 -->
+          <svg data-icon-vol-low xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="hidden h-4 w-4">
+            <path d="M11 5 6 9H3v6h3l5 4z" /><path d="M16 8.5a5 5 0 0 1 0 7" />
+          </svg>
+          <!-- 静音 -->
+          <svg data-icon-vol-mute xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="hidden h-4 w-4">
+            <path d="M11 5 6 9H3v6h3l5 4z" /><path d="m17 9 4 6M21 9l-4 6" />
+          </svg>
+        </button>
+
+        <input
+          data-music-volume
+          type="range"
+          min="0"
+          max="100"
+          step="1"
+          value="80"
+          aria-label="音量"
+          class="music-volume h-1 flex-1 cursor-pointer"
+        />
+
+        <span data-music-volume-label class="w-6 text-right text-[10px] tabular-nums text-(--color-muted)">80</span>
+      </div>
+
+      <!-- 曲单 -->
+      <div data-music-playlist class="mt-2 hidden border-t border-(--color-border) pt-2">
+        <ul class="max-h-40 space-y-0.5 overflow-y-auto">
+          {
+            tracks.map((t, i) => (
+              <li>
+                <button
+                  data-track
+                  data-src={t.src}
+                  data-title={t.title}
+                  data-artist={t.artist}
+                  data-index={i}
+                  type="button"
+                  class="flex w-full items-center gap-2 rounded-(--radius-sm) px-2 py-1.5 text-left transition-colors hover:bg-(--color-surface-2)"
+                >
+                  <span data-track-index class="w-4 text-center text-[10px] tabular-nums text-(--color-muted)">{i + 1}</span>
+                  <span class="min-w-0 flex-1">
+                    <span data-track-title class="block truncate text-[12px] font-medium text-(--color-text)">{t.title}</span>
+                    <span data-track-artist class="block truncate text-[10px] text-(--color-muted)">{t.artist}</span>
+                  </span>
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  function initMusic() {
+    const player = document.querySelector('[data-music]');
+    // 播放器元素通过 transition:persist 跨页面保留，只初始化一次
+    if (player && player.dataset.musicReady !== '1') {
+      player.dataset.musicReady = '1';
+      const audio = player.querySelector('[data-music-audio]');
+      const playBtn = player.querySelector('[data-music-play]');
+      const prevBtn = player.querySelector('[data-music-prev]');
+      const nextBtn = player.querySelector('[data-music-next]');
+      const listBtn = player.querySelector('[data-music-list]');
+      const playlist = player.querySelector('[data-music-playlist]');
+      const titleEl = player.querySelector('[data-music-title]');
+      const artistEl = player.querySelector('[data-music-artist]');
+      const currentEl = player.querySelector('[data-music-current]');
+      const durationEl = player.querySelector('[data-music-duration]');
+      const progress = player.querySelector('[data-music-progress]');
+      const progressFill = player.querySelector('[data-music-progress-fill]');
+      const iconPlay = player.querySelector('[data-icon-play]');
+      const iconPause = player.querySelector('[data-icon-pause]');
+      const volSlider = player.querySelector('[data-music-volume]');
+      const volLabel = player.querySelector('[data-music-volume-label]');
+      const muteBtn = player.querySelector('[data-music-mute]');
+      const iconVolHigh = player.querySelector('[data-icon-vol-high]');
+      const iconVolLow = player.querySelector('[data-icon-vol-low]');
+      const iconVolMute = player.querySelector('[data-icon-vol-mute]');
+      const tracks = [...player.querySelectorAll('[data-track]')];
+      let index = 0;
+
+      // ---------- 音量 ----------
+      const VOL_KEY = 'music-volume';
+      let lastVolume = 0.8;
+
+      const paintVolume = (v) => {
+        const pct = Math.round(v * 100);
+        if (volSlider) {
+          volSlider.value = String(pct);
+          volSlider.style.setProperty('--vol', pct + '%');
+        }
+        if (volLabel) volLabel.textContent = String(pct);
+        if (iconVolHigh) iconVolHigh.classList.toggle('hidden', v === 0 || v < 0.5);
+        if (iconVolLow) iconVolLow.classList.toggle('hidden', v === 0 || v >= 0.5);
+        if (iconVolMute) iconVolMute.classList.toggle('hidden', v !== 0);
+      };
+
+      const setVolume = (v, save = true) => {
+        v = Math.min(1, Math.max(0, v));
+        audio.volume = v;
+        if (v > 0) lastVolume = v;
+        paintVolume(v);
+        if (save) {
+          try {
+            localStorage.setItem(VOL_KEY, String(v));
+          } catch {}
+        }
+      };
+
+      // 初始化音量（读取上次记忆）
+      let initialVol = 0.8;
+      try {
+        const saved = localStorage.getItem(VOL_KEY);
+        if (saved !== null && !isNaN(parseFloat(saved))) initialVol = parseFloat(saved);
+      } catch {}
+      setVolume(initialVol, false);
+
+      if (volSlider) {
+        volSlider.addEventListener('input', () => setVolume(Number(volSlider.value) / 100));
+      }
+      if (muteBtn) {
+        muteBtn.addEventListener('click', () => {
+          setVolume(audio.volume > 0 ? 0 : lastVolume || 0.8);
+        });
+      }
+
+      const fmt = (s) => {
+        if (!isFinite(s)) return '00:00';
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60);
+        return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+      };
+      const markActive = () => tracks.forEach((t, i) => t.classList.toggle('opacity-40', i !== index));
+      const updateMeta = () => {
+        const t = tracks[index];
+        if (!t) return;
+        titleEl.textContent = t.dataset.title;
+        artistEl.textContent = t.dataset.artist;
+      };
+      const setPlaying = (playing) => {
+        iconPlay.classList.toggle('hidden', playing);
+        iconPause.classList.toggle('hidden', !playing);
+      };
+
+      const load = (i, autoplay = true) => {
+        const t = tracks[i];
+        if (!t) return;
+        index = i;
+        updateMeta();
+        markActive();
+        audio.src = t.dataset.src;
+        if (autoplay) audio.play().catch(() => {});
+        else audio.pause();
+        setPlaying(!audio.paused);
+      };
+      const togglePlay = () => {
+        if (!audio.src) {
+          load(index);
+          return;
+        }
+        if (audio.paused) {
+          audio.play();
+          setPlaying(true);
+        } else {
+          audio.pause();
+          setPlaying(false);
+        }
+      };
+
+      playBtn.addEventListener('click', togglePlay);
+      prevBtn.addEventListener('click', () => load((index - 1 + tracks.length) % tracks.length));
+      nextBtn.addEventListener('click', () => load((index + 1) % tracks.length));
+      listBtn.addEventListener('click', () => playlist.classList.toggle('hidden'));
+      tracks.forEach((t, i) =>
+        t.addEventListener('click', () => {
+          playlist.classList.add('hidden');
+          load(i);
+        })
+      );
+
+      audio.addEventListener('timeupdate', () => {
+        if (audio.duration) progressFill.style.width = (audio.currentTime / audio.duration) * 100 + '%';
+        currentEl.textContent = fmt(audio.currentTime);
+      });
+      audio.addEventListener('loadedmetadata', () => {
+        durationEl.textContent = fmt(audio.duration);
+        currentEl.textContent = '00:00';
+        progressFill.style.width = '0%';
+      });
+      audio.addEventListener('play', () => setPlaying(true));
+      audio.addEventListener('pause', () => setPlaying(false));
+      audio.addEventListener('ended', () => load((index + 1) % tracks.length));
+
+      progress.addEventListener('click', (e) => {
+        if (!audio.duration) return;
+        const rect = progress.getBoundingClientRect();
+        audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+      });
+
+      updateMeta();
+      markActive();
+    }
+  }
+  initMusic();
+  document.addEventListener('astro:page-load', initMusic);
+</script>

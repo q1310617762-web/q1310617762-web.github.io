@@ -1,0 +1,153 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Button from '@components/ui/Button.astro';
+import { hero, site, contacts } from '@data/site';
+import { getAllPosts, getAllTags, getAllCategories, postUrl, formatDate } from '@utils/posts';
+import PostList from '@components/blog/PostList.astro';
+import TagCloud from '@components/blog/TagCloud.astro';
+import ImageStrip from '@components/blog/ImageStrip.astro';
+import AnimeUpdates from '@components/blog/AnimeUpdates.astro';
+import WeChat from '@components/ui/WeChat.astro';
+
+const posts = await getAllPosts();
+const tags = await getAllTags();
+const categories = await getAllCategories();
+const latest = posts.slice(0, 9);
+const featured = await getAllPosts({ featured: true });
+
+const greeting =
+  new Date().getHours() < 6
+    ? '夜深了'
+    : new Date().getHours() < 12
+      ? '早上好'
+      : new Date().getHours() < 18
+        ? '下午好'
+        : '晚上好';
+---
+<BaseLayout activeNav="/">
+  <div class="mx-auto max-w-5xl px-6 py-10 sm:px-10 sm:py-14">
+    <!-- Hero：左侧文案 + 右上角新番更新 -->
+    <header class="mb-14 lg:grid lg:grid-cols-[minmax(0,1fr)_330px] lg:items-start lg:gap-10">
+      <div>
+        <p class="mb-3 inline-flex items-center gap-2 rounded-(--radius-pill) border border-(--color-border) bg-(--color-surface) px-3 py-1 text-xs text-(--color-muted) backdrop-blur-sm">
+          <span aria-hidden="true">✦</span>{greeting}，欢迎来坐坐
+        </p>
+        <h1 class="display-title text-[26px] leading-tight sm:text-[34px]">
+          {hero.headline}
+        </h1>
+        <p class="mt-4 text-sm tracking-wide text-(--color-muted)">{hero.sub}</p>
+        <p class="mt-7 text-[15px] text-(--color-text)">{hero.lead}</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          {
+            hero.ctas.map((cta) => (
+              <Button href={cta.href} variant={cta.href === '/blog' ? 'primary' : 'outline'}>
+                {cta.label}
+              </Button>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- 新番更新列表 -->
+      <div class="mt-10 lg:mt-0">
+        <AnimeUpdates />
+      </div>
+    </header>
+
+    <!-- 精选 -->
+    {
+      featured.length > 0 && (
+        <section class="mb-14">
+          <div class="mb-5 flex items-baseline justify-between gap-4">
+            <h2 class="shrink-0 text-[17px] font-bold text-(--color-text-strong)">精选文章</h2>
+            <span class="section-rule mb-1 flex-1" aria-hidden="true" />
+            <a href="/blog" class="shrink-0 text-xs text-(--color-muted) transition-colors hover:text-(--color-primary-strong)">
+              查看全部 →
+            </a>
+          </div>
+          <PostList posts={featured} columns={3} />
+        </section>
+      )
+    }
+
+    <!-- 最新文章 -->
+    <section class="mb-14">
+      <div class="mb-5 flex items-baseline justify-between gap-4">
+        <h2 class="shrink-0 text-[17px] font-bold text-(--color-text-strong)">最新文章</h2>
+        <span class="section-rule mb-1 flex-1" aria-hidden="true" />
+        <a href="/blog" class="shrink-0 text-xs text-(--color-muted) transition-colors hover:text-(--color-primary-strong)">
+          查看全部 →
+        </a>
+      </div>
+      <PostList posts={latest} columns={3} />
+    </section>
+
+    <!-- 分类 -->
+    {
+      categories.length > 0 && (
+        <section class="mb-14">
+          <div class="mb-5 flex items-baseline justify-between gap-4">
+            <h2 class="shrink-0 text-[17px] font-bold text-(--color-text-strong)">分类</h2>
+            <span class="section-rule mb-1 flex-1" aria-hidden="true" />
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {categories.map((c) => (
+              <a href={`/category/${c.name}`} class="pill px-3 py-1 text-xs">
+                {c.name} <span class="ml-1 opacity-60">{c.count}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- 图片栏 -->
+    <ImageStrip />
+
+    <!-- 标签云 -->
+    {
+      tags.length > 0 && (
+        <section class="mt-14">
+          <div class="mb-5 flex items-baseline justify-between gap-4">
+            <h2 class="shrink-0 text-[17px] font-bold text-(--color-text-strong)">标签云</h2>
+            <span class="section-rule mb-1 flex-1" aria-hidden="true" />
+            <a href="/tags" class="shrink-0 text-xs text-(--color-muted) transition-colors hover:text-(--color-primary-strong)">
+              全部标签 →
+            </a>
+          </div>
+          <div class="soft-card p-6">
+            <TagCloud tags={tags} />
+          </div>
+        </section>
+      )
+    }
+
+    <!-- 联系方式 -->
+    {
+      contacts.length > 0 && (
+        <section class="mt-14">
+          <div class="mb-5 flex items-baseline justify-between gap-4">
+            <h2 class="shrink-0 text-[17px] font-bold text-(--color-text-strong)">联系方式</h2>
+            <span class="section-rule mb-1 flex-1" aria-hidden="true" />
+          </div>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {contacts.map((c) => (
+              <a
+                href={c.href}
+                target={c.href.startsWith('http') ? '_blank' : undefined}
+                rel="noopener noreferrer"
+                class="soft-card soft-card-hover flex items-center justify-between px-5 py-4"
+              >
+                <span class="text-xs text-(--color-muted)">{c.label}</span>
+                <span class="truncate text-sm font-medium text-(--color-text-strong)">{c.value}</span>
+              </a>
+            ))}
+          </div>
+          <div class="mt-5">
+            <WeChat />
+          </div>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>

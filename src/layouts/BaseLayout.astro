@@ -1,0 +1,130 @@
+---
+// 全站基础布局：左侧栏 + 主内容区
+import '@styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import SiteSidebar from '@components/layout/SiteSidebar.astro';
+import Footer from '@components/layout/Footer.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import { site } from '@data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  activeNav?: string;
+}
+const {
+  title,
+  description = site.description,
+  image = '/og-image.svg',
+  activeNav = '/',
+} = Astro.props;
+
+const pageTitle = title ? `${title} · ${site.title}` : site.title;
+
+// 子路径前缀（GitHub Pages 项目页会用到）；BASE_URL 形如 "/" 或 "/my-blog/"
+const basePath = import.meta.env.BASE_URL || '/';
+const ogImage = new URL(basePath.replace(/\/$/, '') + image, site.url).href;
+---
+<!doctype html>
+<html lang={site.lang} data-theme="day">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={site.keywords.join(', ')} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- 站点根路径（供客户端脚本拼接站内地址，兼容 GitHub Pages 子路径） -->
+    <script is:inline define:vars={{ basePath }}>
+      window.__BASE__ = basePath;
+    </script>
+
+    <!-- 首屏应用主题，避免闪烁 -->
+    <script is:inline>
+      (function () {
+        try {
+          var kind = localStorage.getItem('theme-kind');
+          if (!kind) {
+            var old = localStorage.getItem('theme');
+            var preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            kind = old === 'dark' || (!old && preferDark) ? 'night' : 'day';
+          }
+          var de = document.documentElement;
+          de.setAttribute('data-theme', kind);
+          if (kind === 'night') de.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+
+    <slot name="head" />
+    <ClientRouter />
+
+    <!-- 切页后重新应用主题（View Transitions 会覆盖 <html> 属性） -->
+    <script>
+      function applyThemeClass() {
+        try {
+          const kind = localStorage.getItem('theme-kind') || 'day';
+          const de = document.documentElement;
+          de.setAttribute('data-theme', kind);
+          de.classList.toggle('dark', kind === 'night');
+        } catch {}
+      }
+      document.addEventListener('astro:after-swap', applyThemeClass);
+      applyThemeClass();
+    </script>
+  </head>
+  <body>
+    <div class="app">
+      <SiteSidebar active={activeNav} />
+      <div class="app-body">
+        <main class="app-content">
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    </div>
+    <BackToTop />
+  </body>
+
+  <script>
+    // 为所有代码块添加复制按钮
+    function initCodeCopy() {
+      document.querySelectorAll('pre').forEach((pre) => {
+        if (pre.closest('.code-block')) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block relative group';
+        pre.parentNode?.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        const btn = document.createElement('button');
+        btn.className =
+          'absolute right-2 top-2 rounded-md bg-white/10 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100';
+        btn.textContent = '复制';
+        wrapper.appendChild(btn);
+        btn.addEventListener('click', () => {
+          const code = pre.querySelector('code')?.textContent ?? '';
+          navigator.clipboard?.writeText(code).then(() => {
+            btn.textContent = '已复制';
+            setTimeout(() => (btn.textContent = '复制'), 1500);
+          });
+        });
+      });
+    }
+    initCodeCopy();
+    document.addEventListener('astro:page-load', initCodeCopy);
+  </script>
+</html>

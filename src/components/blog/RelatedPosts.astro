@@ -1,0 +1,20 @@
+---
+// 相关文章组件
+import type { Post } from '@utils/posts';
+import PostCard from './PostCard.astro';
+
+interface Props {
+  posts: Post[];
+}
+const { posts = [] } = Astro.props;
+---
+{
+  posts.length > 0 && (
+    <section class="mt-12">
+      <h2 class="mb-6 text-xl font-bold text-(--color-text) dark:text-(--color-dark-text)">相关文章</h2>
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {posts.map((post) => <PostCard post={post} />)}
+      </div>
+    </section>
+  )
+}

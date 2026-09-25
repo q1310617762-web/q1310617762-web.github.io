@@ -1,0 +1,13 @@
+---
+// 头像组件（渐变环 + 光晕）
+const { src = '/favicon.svg', size = 64 } = Astro.props;
+---
+<img
+  src={src}
+  alt="头像"
+  width={size}
+  height={size}
+  loading="lazy"
+  onerror="this.onerror=null;this.src='/placeholder.svg'"
+  class="rounded-full ring-2 ring-(--color-primary)/50 shadow-(--shadow-card)"
+/>

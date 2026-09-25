@@ -1,0 +1,33 @@
+---
+// 文章目录（TOC）组件
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+const { headings = [] } = Astro.props;
+---
+{
+  headings.length > 0 && (
+    <nav class="toc hidden lg:block" aria-label="文章目录">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-(--color-muted) dark:text-(--color-dark-muted)">
+        目录
+      </p>
+      <ul class="space-y-1 border-l border-(--color-border) dark:border-(--color-dark-border)">
+        {
+          headings.map((h, i) => (
+            <li>
+              <a
+                href={`#${h.slug}`}
+                class={`block px-3 py-1 text-sm leading-relaxed text-(--color-muted) transition-colors hover:text-(--color-primary) dark:text-(--color-dark-muted) dark:hover:text-(--color-primary) toc-link ${
+                  h.depth === 3 ? 'pl-6' : ''
+                }`}
+                data-index={i}
+              >
+                {h.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  )
+}

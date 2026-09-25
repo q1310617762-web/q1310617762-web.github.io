@@ -1,0 +1,47 @@
+---
+// 微信卡片：二维码 + 微信号（图片不存在时优雅兜底）
+import { wechat } from '@data/site';
+const hasId = typeof wechat.id === 'string' && wechat.id.trim() !== '';
+---
+
+{
+  wechat.enabled && (
+    <div class="flex flex-col items-center gap-5 rounded-(--radius-card) border border-(--color-border) bg-(--color-surface) p-6 shadow-(--shadow-card) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface) sm:flex-row">
+      <div class="relative h-40 w-40 shrink-0 overflow-hidden rounded-(--radius-btn) border border-dashed border-(--color-border) bg-(--color-surface-2) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface-2)">
+        <img data-wx-qr src={wechat.qr} alt="微信二维码" class="h-full w-full object-contain" />
+        <div data-wx-fallback class="absolute inset-0 hidden flex-col items-center justify-center gap-1 p-3 text-center">
+          <span class="text-2xl">💬</span>
+          <span class="text-xs text-(--color-muted) dark:text-(--color-dark-muted)">二维码待添加</span>
+          <span class="text-[10px] text-(--color-muted) dark:text-(--color-dark-muted)">放入 public/wechat.png</span>
+        </div>
+      </div>
+      <div class="text-center sm:text-left">
+        <p class="text-lg font-semibold text-(--color-text) dark:text-(--color-dark-text)">微信</p>
+        <p class="mt-2 text-sm text-(--color-muted) dark:text-(--color-dark-muted)">
+          微信号：<span data-wx-id class="font-medium text-(--color-text) dark:text-(--color-dark-text)">{hasId ? wechat.id : '待填写'}</span>
+        </p>
+        <p class="mt-1 text-xs text-(--color-muted) dark:text-(--color-dark-muted)">{wechat.note}</p>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  function initWeChatQr() {
+  const img = document.querySelector('[data-wx-qr]');
+  const fallback = document.querySelector('[data-wx-fallback]');
+  const showFallback = () => {
+    if (!img || !fallback) return;
+    img.style.display = 'none';
+    fallback.classList.remove('hidden');
+    fallback.classList.add('flex');
+  };
+  if (img) {
+    img.addEventListener('error', showFallback);
+    // 图片可能在脚本绑定前就已失败
+    if (img.complete && img.naturalWidth === 0) showFallback();
+  }
+  }
+  initWeChatQr();
+  document.addEventListener('astro:page-load', initWeChatQr);
+</script>

@@ -1,0 +1,256 @@
+﻿---
+// 站内搜索组件（命令面板式：键盘选择 + Enter 打开 + 标签快捷入口 + 空态引导）
+// 索引来自 /search.json（构建时生成），无外部依赖。
+const { class: cls = '' } = Astro.props;
+---
+
+<div data-search-root class="relative">
+  <button
+    type="button"
+    data-search-open
+    aria-label="搜索"
+    title="搜索 ( / )"
+    class={`inline-flex h-9 w-9 items-center justify-center rounded-(--radius-btn) text-(--color-muted) transition-colors hover:bg-(--color-surface-2) hover:text-(--color-text) dark:text-(--color-dark-muted) dark:hover:bg-(--color-dark-surface-2) dark:hover:text-(--color-dark-text) ${cls}`}
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.35-4.35" />
+    </svg>
+  </button>
+
+  <!-- 搜索浮层 -->
+  <div
+    data-search-modal
+    class="fixed inset-0 z-50 hidden bg-(--color-text)/40 backdrop-blur-sm dark:bg-black/60"
+    role="dialog"
+    aria-modal="true"
+    aria-label="站内搜索"
+  >
+    <div class="flex h-full items-start justify-center px-4 pt-14 sm:pt-24">
+      <div
+        class="w-full max-w-lg overflow-hidden rounded-(--radius-card) border border-(--color-border) bg-(--color-surface) shadow-(--shadow-lg) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface)"
+      >
+        <!-- 输入区 -->
+        <div class="flex items-center gap-3 border-b border-(--color-border) px-4 dark:border-(--color-dark-border)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 shrink-0 text-(--color-muted) dark:text-(--color-dark-muted)">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <input
+            data-search-input
+            type="text"
+            placeholder="搜索标题、标签、分类或正文…"
+            autocomplete="off"
+            spellcheck="false"
+            class="h-14 w-full bg-transparent text-sm text-(--color-text) placeholder:text-(--color-muted) focus:outline-none dark:text-(--color-dark-text) dark:placeholder:text-(--color-dark-muted)"
+          />
+          <button data-search-close type="button" aria-label="关闭" class="shrink-0 text-(--color-muted) transition-colors hover:text-(--color-text) dark:text-(--color-dark-muted) dark:hover:text-(--color-dark-text)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M18 6 6 18M6 6l12 12" /></svg>
+          </button>
+        </div>
+
+        <!-- 结果区 -->
+        <div class="max-h-[62vh] overflow-y-auto p-2">
+          <!-- 初始/无输入引导 -->
+          <div data-search-hint class="hidden px-3 py-6">
+            <p class="mb-3 text-center text-xs text-(--color-muted) dark:text-(--color-dark-muted)">输入关键词开始搜索，或直接浏览标签：</p>
+            <div data-search-tags class="flex flex-wrap justify-center gap-2"></div>
+          </div>
+
+          <!-- 结果列表 -->
+          <ul data-search-results class="space-y-1"></ul>
+
+          <!-- 无结果 -->
+          <div data-search-empty class="hidden px-4 py-10 text-center text-sm text-(--color-muted) dark:text-(--color-dark-muted)">
+            没有找到匹配的文章，换个关键词试试
+          </div>
+        </div>
+
+        <!-- 底部快捷键提示 -->
+        <div class="flex items-center gap-4 border-t border-(--color-border) px-4 py-2.5 text-xs text-(--color-muted) dark:border-(--color-dark-border) dark:text-(--color-dark-muted)">
+          <span><kbd class="rounded border border-(--color-border) px-1.5 py-0.5 dark:border-(--color-dark-border)">↑↓</kbd> 选择</span>
+          <span><kbd class="rounded border border-(--color-border) px-1.5 py-0.5 dark:border-(--color-dark-border)">Enter</kbd> 打开</span>
+          <span class="ml-auto"><kbd class="rounded border border-(--color-border) px-1.5 py-0.5 dark:border-(--color-dark-border)">Esc</kbd> 关闭</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initSearch() {
+  const B = (typeof window !== 'undefined' && window.__BASE__) || '/';
+  const root = document.querySelector('[data-search-root]');
+  if (root) {
+    // 客户端路由下会重新执行，先清理上一次的全局监听，避免累积
+    if (window.__searchKeys) document.removeEventListener('keydown', window.__searchKeys);
+    const openBtn = root.querySelector('[data-search-open]');
+    const modal = root.querySelector('[data-search-modal]');
+    const input = root.querySelector('[data-search-input]');
+    const results = root.querySelector('[data-search-results]');
+    const empty = root.querySelector('[data-search-empty]');
+    const hint = root.querySelector('[data-search-hint]');
+    const tagsBox = root.querySelector('[data-search-tags]');
+    let index = null;
+    let selected = -1;
+    let timer = null;
+
+    const load = async () => {
+      if (!index) {
+        try {
+          const res = await fetch(B + 'search.json');
+          index = res.ok ? await res.json() : [];
+        } catch {
+          index = [];
+        }
+      }
+      return index;
+    };
+
+    const showTags = (posts) => {
+      const set = new Set();
+      posts.forEach((p) => p.tags.forEach((t) => set.add(t)));
+      const list = [...set].slice(0, 8);
+      tagsBox.innerHTML = '';
+      list.forEach((t) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'search-tag';
+        b.textContent = '#' + t;
+        b.addEventListener('click', () => {
+          input.value = t;
+          doSearch();
+          input.focus();
+        });
+        tagsBox.appendChild(b);
+      });
+    };
+
+    const open = async () => {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      const posts = await load();
+      showTags(posts);
+      requestAnimationFrame(() => input.focus());
+    };
+    const close = () => {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      input.value = '';
+      selected = -1;
+      results.innerHTML = '';
+      empty.classList.add('hidden');
+      hint.classList.add('hidden');
+    };
+
+    const esc = (s) =>
+      String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    const highlight = (text, needle) => {
+      const t = esc(text);
+      if (!needle) return t;
+      const n = esc(needle);
+      const i = t.toLowerCase().indexOf(n.toLowerCase());
+      if (i === -1) return t;
+      return t.slice(0, i) + '<mark class="search-mark">' + t.slice(i, i + n.length) + '</mark>' + t.slice(i + n.length);
+    };
+
+    const setActive = () => {
+      const items = results.querySelectorAll('.search-link');
+      items.forEach((el, i) => el.classList.toggle('is-active', i === selected));
+      if (selected >= 0) items[selected]?.scrollIntoView({ block: 'nearest' });
+    };
+
+    const render = (items, needle) => {
+      results.innerHTML = '';
+      empty.classList.add('hidden');
+      if (!needle) {
+        hint.classList.remove('hidden');
+        selected = -1;
+        return;
+      }
+      hint.classList.add('hidden');
+      if (items.length === 0) {
+        empty.classList.remove('hidden');
+        selected = -1;
+        return;
+      }
+      items.forEach((it) => {
+        const a = document.createElement('a');
+        a.className = 'search-link';
+        a.href = B + `blog/${it.slug}`;
+        a.innerHTML =
+          '<p class="search-result-title">' + highlight(it.title, needle) + '</p>' +
+          '<p class="search-result-desc">' + highlight(it.description, needle) + '</p>' +
+          '<p class="search-result-meta">' + esc(it.category) + ' · ' + esc(it.date) + '</p>';
+        a.addEventListener('mousemove', () => {
+          selected = [...results.children].indexOf(a);
+          setActive();
+        });
+        results.appendChild(a);
+      });
+      selected = 0;
+      setActive();
+    };
+
+    const doSearch = async () => {
+      const needle = input.value.trim();
+      if (!needle) {
+        render([], '');
+        return;
+      }
+      const posts = await load();
+      const n = needle.toLowerCase();
+      const res = posts.filter(
+        (it) =>
+          it.title.toLowerCase().includes(n) ||
+          it.description.toLowerCase().includes(n) ||
+          it.category.toLowerCase().includes(n) ||
+          it.tags.some((t) => t.toLowerCase().includes(n)) ||
+          it.text.toLowerCase().includes(n)
+      );
+      render(res, needle);
+    };
+
+    openBtn.addEventListener('click', open);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) close();
+    });
+    modal.querySelector('[data-search-close]').addEventListener('click', close);
+    input.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(doSearch, 150);
+    });
+    input.addEventListener('keydown', (e) => {
+      const items = results.querySelectorAll('.search-link');
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (items.length) {
+          selected = (selected + 1) % items.length;
+          setActive();
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (items.length) {
+          selected = (selected - 1 + items.length) % items.length;
+          setActive();
+        }
+      } else if (e.key === 'Enter' && selected >= 0 && items[selected]) {
+        e.preventDefault();
+        window.location.href = items[selected].href;
+      }
+    });
+    const onKey = (e) => {
+      if (e.key === 'Escape') close();
+      if (e.key === '/' && modal.classList.contains('hidden') && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        e.preventDefault();
+        open();
+      }
+    };
+    window.__searchKeys = onKey;
+    document.addEventListener('keydown', onKey);
+  }
+  }
+  initSearch();
+  document.addEventListener('astro:page-load', initSearch);
+</script>

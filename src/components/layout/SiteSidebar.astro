@@ -1,0 +1,97 @@
+---
+// 左侧栏：头像 + 站名 + 搜索 + 导航 + 音乐播放器 + 底部链接 + 主题切换
+import { site, nav, social } from '@data/site';
+import Search from './Search.astro';
+import MusicPlayer from './MusicPlayer.astro';
+import ThemeSwitcher from './ThemeSwitcher.astro';
+
+const { active = '/' } = Astro.props;
+const isActive = (href: string) => (href === '/' ? active === '/' : active.startsWith(href));
+
+// 按 href 匹配图标
+const icons: Record<string, string> = {
+  '/': 'M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z',
+  '/blog': 'M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6',
+  '/gallery': 'M4 5h16v14H4zM4 15l4-4 3 3 3-4 6 7',
+  '/archive': 'M4 7h16v13H4zM3 4h18v3H3zM9 12h6',
+  '/friends': 'M9 15 15 9M10 6.5 12 4.5a4 4 0 0 1 5.5 5.5L15.5 12M8.5 12 6.5 14A4 4 0 0 0 12 19.5l2-2',
+  '/about': 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M4 21c0-4 3.6-6 8-6s8 2 8 6',
+};
+---
+
+<aside class="app-aside">
+  <!-- 头像 + 站名 -->
+  <div class="flex flex-col items-center text-center">
+    <div class="relative">
+      <img
+        src={site.avatar}
+        alt={site.author}
+        class="h-20 w-20 rounded-full shadow-(--shadow-card) ring-2 ring-(--color-primary)"
+      />
+      <span
+        class="primary-gradient absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full text-[11px] text-white shadow-sm"
+        aria-hidden="true">✦</span
+      >
+    </div>
+    <p class="display-title mt-3 text-xl leading-tight">{site.author}</p>
+    <p class="mt-1 text-xs text-(--color-muted)">{site.tagline}</p>
+  </div>
+
+  <!-- 搜索 -->
+  <div class="mt-5 flex justify-center">
+    <Search />
+  </div>
+
+  <!-- 导航 -->
+  <nav class="mt-5 space-y-1" aria-label="主导航">
+    {
+      nav.map((item) => (
+        <a href={item.href} class={`nav-item ${isActive(item.href) ? 'is-active' : ''}`}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-4 w-4 shrink-0"
+          >
+            <path d={icons[item.href] ?? icons['/']} />
+          </svg>
+          <span>{item.label}</span>
+        </a>
+      ))
+    }
+  </nav>
+
+  <!-- 音乐播放器 -->
+  <div class="mt-6">
+    <MusicPlayer />
+  </div>
+
+  <!-- 主题切换 -->
+  <div class="mt-5 flex justify-center">
+    <ThemeSwitcher />
+  </div>
+
+  <!-- 底部链接 -->
+  <div class="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-(--color-border) pt-4">
+    {
+      social.map((s) => (
+        <a
+          href={s.href}
+          target={s.href.startsWith('http') ? '_blank' : undefined}
+          rel="noopener noreferrer"
+          class="text-xs text-(--color-muted) transition-colors hover:text-(--color-primary-strong)"
+        >
+          {s.label}
+        </a>
+      ))
+    }
+  </div>
+
+  <p class="mt-4 text-center text-[11px] leading-relaxed text-(--color-muted)">
+    © {new Date().getFullYear()} {site.author}
+  </p>
+</aside>

@@ -1,0 +1,26 @@
+---
+import { site, social } from '@data/site';
+const year = new Date().getFullYear();
+---
+<footer class="border-t border-(--color-border) py-8 dark:border-(--color-dark-border)">
+  <div class="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 text-center sm:px-6">
+    <div class="flex items-center gap-4">
+      {
+        social.map((s) => (
+          <a
+            href={s.href}
+            target={s.href.startsWith('http') ? '_blank' : undefined}
+            rel="noopener noreferrer"
+            class="text-(--color-muted) transition-colors hover:text-(--color-primary) dark:text-(--color-dark-muted) dark:hover:text-(--color-primary)"
+            aria-label={s.label}
+          >
+            {s.label}
+          </a>
+        ))
+      }
+    </div>
+    <p class="text-sm text-(--color-muted) dark:text-(--color-dark-muted)">
+      © {year} {site.author} · 用 <a href="https://astro.build" class="hover:text-(--color-primary)">Astro</a> 驱动
+    </p>
+  </div>
+</footer>

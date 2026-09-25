@@ -1,0 +1,102 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Toc from '@components/blog/Toc.astro';
+import RelatedPosts from '@components/blog/RelatedPosts.astro';
+import Comments from '@components/blog/Comments.astro';
+import TagList from '@components/ui/TagList.astro';
+import { formatDate, readingTime, postUrl } from '@utils/posts';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const post = entry.data;
+const slug = entry.id;
+
+// 上一篇 / 下一篇（按时间顺序）
+const all = await getCollection('posts', ({ data }) => !data.draft)
+  .then((p) => p.sort((a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime()));
+const idx = all.findIndex((e) => e.id === slug);
+const prev = idx > 0 ? all[idx - 1] : null; // 更早的一篇
+const next = idx < all.length - 1 ? all[idx + 1] : null; // 更晚的一篇
+
+// 相关文章：同分类或共享标签，最多 2 篇
+const related = all
+  .filter((e) => e.id !== slug)
+  .filter((e) => e.data.category === post.category || e.data.tags.some((t) => post.tags.includes(t)))
+  .slice(0, 2)
+  .map((e) => ({ ...e.data, slug: e.id }));
+
+const headings2 = headings.map((h) => ({ depth: h.depth, slug: h.slug, text: h.text }));
+---
+<BaseLayout title={post.title} description={post.description} image={post.cover ?? '/og-image.svg'} activeNav="/blog">
+  <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+    <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-10">
+      <article class="max-w-3xl">
+        <header class="mb-10">
+      <div class="mb-4 flex flex-wrap items-center gap-2 text-xs text-(--color-muted) dark:text-(--color-dark-muted)">
+        <span class="rounded-full bg-(--color-primary)/10 px-3 py-1 font-medium text-(--color-primary)">{post.category}</span>
+        <time datetime={post.pubDate.toISOString()}>{formatDate(post.pubDate)}</time>
+        <span>·</span>
+        <span>{readingTime(post.body)}</span>
+        {post.featured && <span class="rounded-full bg-(--color-accent)/15 px-3 py-1 font-medium text-(--color-accent)">精选</span>}
+      </div>
+      <h1 class="text-3xl font-extrabold leading-tight text-(--color-text) md:text-4xl dark:text-(--color-dark-text)">
+        {post.title}
+      </h1>
+      <p class="mt-4 text-lg text-(--color-muted) dark:text-(--color-dark-muted)">{post.description}</p>
+      <div class="mt-6">
+        <TagList tags={post.tags} />
+      </div>
+    </header>
+
+    {
+      post.cover && (
+        <img src={post.cover} alt={post.title} class="mb-10 w-full rounded-(--radius-card)" loading="eager" />
+      )
+    }
+
+    <div class="relative">
+      <div class="prose max-w-none text-(--color-text) dark:text-(--color-dark-text)">
+        <Content />
+      </div>
+    </div>
+
+    <!-- 上一篇 / 下一篇 -->
+    <nav class="mt-16 grid gap-4 border-t border-(--color-border) pt-8 sm:grid-cols-2 dark:border-(--color-dark-border)">
+      <div>
+        {next && (
+          <a href={postUrl(next.id)} class="group block">
+            <p class="text-xs text-(--color-muted) dark:text-(--color-dark-muted)">← 下一篇</p>
+            <p class="mt-1 font-medium text-(--color-text) group-hover:text-(--color-primary) dark:text-(--color-dark-text)">{next.data.title}</p>
+          </a>
+        )}
+      </div>
+      <div class="sm:text-right">
+        {prev && (
+          <a href={postUrl(prev.id)} class="group block">
+            <p class="text-xs text-(--color-muted) dark:text-(--color-dark-muted)">上一篇 →</p>
+            <p class="mt-1 font-medium text-(--color-text) group-hover:text-(--color-primary) dark:text-(--color-dark-text)">{prev.data.title}</p>
+          </a>
+        )}
+      </div>
+    </nav>
+
+    <RelatedPosts posts={related} />
+      <Comments />
+      </article>
+      <aside class="hidden lg:block">
+        <div class="sticky top-24">
+          <Toc headings={headings2} />
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

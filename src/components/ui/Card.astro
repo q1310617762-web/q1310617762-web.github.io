@@ -1,0 +1,12 @@
+---
+// 卡片组件（美化版：hover 上浮 + 边框提亮）
+interface Props {
+  class?: string;
+}
+const { class: cls = '' } = Astro.props;
+---
+<div
+  class={`rounded-(--radius-card) border border-(--color-border) bg-(--color-surface) p-6 shadow-(--shadow-card) transition-all duration-300 hover:-translate-y-1.5 hover:border-(--color-primary)/45 hover:shadow-(--shadow-card-hover) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface) dark:hover:border-(--color-primary)/40 ${cls}`}
+>
+  <slot />
+</div>

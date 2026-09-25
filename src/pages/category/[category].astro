@@ -1,0 +1,22 @@
+﻿---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getAllPosts, getAllCategories } from '@utils/posts';
+import PostList from '@components/blog/PostList.astro';
+
+export async function getStaticPaths() {
+  const categories = await getAllCategories();
+  return categories.map((c) => ({ params: { category: c.name }, props: { categoryName: c.name } }));
+}
+
+const { categoryName } = Astro.props;
+const posts = (await getAllPosts({ category: categoryName }));
+---
+<BaseLayout title={`分类：${categoryName}`} description={`分类「${categoryName}」下的文章。`} activeNav="/blog">
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <header class="mb-10">
+      <h1 class="text-3xl font-extrabold text-(--color-text) dark:text-(--color-dark-text)">{categoryName}</h1>
+      <p class="mt-2 text-(--color-muted) dark:text-(--color-dark-muted)">共 {posts.length} 篇文章</p>
+    </header>
+    <PostList posts={posts} columns={3} />
+  </div>
+</BaseLayout>

@@ -1,0 +1,31 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getAllPosts } from '@utils/posts';
+import PostList from '@components/blog/PostList.astro';
+import Pagination from '@components/blog/Pagination.astro';
+
+export const PAGE_SIZE = 6;
+
+export async function getStaticPaths() {
+  const allPosts = await getAllPosts();
+  const totalPage = Math.max(1, Math.ceil(allPosts.length / PAGE_SIZE));
+  return Array.from({ length: totalPage }, (_, i) => ({
+    params: { page: String(i + 1) },
+    props: { page: i + 1, totalPage },
+  }));
+}
+
+const { page, totalPage } = Astro.props;
+const allPosts = await getAllPosts();
+const pagePosts = allPosts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+---
+<BaseLayout title={`博客 · 第 ${page} 页`} description={`博客第 ${page} 页。`} activeNav="/blog">
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <header class="mb-10">
+      <h1 class="text-3xl font-extrabold text-(--color-text) dark:text-(--color-dark-text)">博客</h1>
+      <p class="mt-2 text-(--color-muted) dark:text-(--color-dark-muted)">第 {page} / {totalPage} 页 · 共 {allPosts.length} 篇</p>
+    </header>
+    <PostList posts={pagePosts} columns={3} />
+    <Pagination page={page} totalPage={totalPage} base="/blog/page" />
+  </div>
+</BaseLayout>

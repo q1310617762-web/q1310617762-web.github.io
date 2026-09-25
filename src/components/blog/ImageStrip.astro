@@ -1,0 +1,39 @@
+---
+// 首页「图片栏」：横向滚动的图片条，点击进入相册页
+import { gallery } from '@data/site';
+const items = gallery.slice(0, 6);
+---
+{
+  items.length > 0 && (
+    <section class="mt-16">
+      <div class="mb-5 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-(--color-text) dark:text-(--color-dark-text)">图片</h2>
+        <a href="/gallery" class="text-sm font-medium text-(--color-primary) hover:underline">进入相册 →</a>
+      </div>
+
+      <div class="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
+        {
+          items.map((it) => (
+            <a
+              href="/gallery"
+              class="group relative aspect-[4/3] w-56 shrink-0 snap-start overflow-hidden rounded-(--radius-card) border border-(--color-border) shadow-(--shadow-card) transition-all duration-300 hover:-translate-y-1.5 hover:border-(--color-primary)/45 hover:shadow-(--shadow-card-hover) dark:border-(--color-dark-border)"
+            >
+              <img
+                src={it.src}
+                alt={it.title}
+                loading="lazy"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <span
+                class="absolute inset-x-0 bottom-0 p-3 text-left"
+                style="background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,0));"
+              >
+                <span class="block text-sm font-semibold text-white">{it.title}</span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  )
+}

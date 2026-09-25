@@ -1,0 +1,63 @@
+name: 部署到 GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 安装依赖
+        run: npm ci || npm install
+
+      - name: 计算站点地址与子路径
+        run: |
+          OWNER="${{ github.repository_owner }}"
+          REPO="${{ github.event.repository.name }}"
+          # 若在仓库 Variables 里设置了 SITE_URL（例如自定义域名），优先使用
+          if [ -n "${{ vars.SITE_URL }}" ]; then
+            echo "SITE_URL=${{ vars.SITE_URL }}" >> $GITHUB_ENV
+            echo "BASE_PATH=/" >> $GITHUB_ENV
+          elif [ "$REPO" = "$OWNER.github.io" ]; then
+            echo "SITE_URL=https://$OWNER.github.io" >> $GITHUB_ENV
+            echo "BASE_PATH=/" >> $GITHUB_ENV
+          else
+            echo "SITE_URL=https://$OWNER.github.io" >> $GITHUB_ENV
+            echo "BASE_PATH=/$REPO" >> $GITHUB_ENV
+          fi
+          echo "已确定站点配置："
+          cat $GITHUB_ENV | tail -2
+
+      - name: 构建
+        run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

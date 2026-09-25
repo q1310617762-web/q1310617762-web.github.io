@@ -1,0 +1,52 @@
+---
+// 主题切换器：日签 / 星夜 / 樱
+const themes = [
+  { id: 'day', label: '日签' },
+  { id: 'night', label: '星夜' },
+  { id: 'sakura', label: '樱' },
+];
+---
+<div
+  data-theme-switch
+  class="inline-flex items-center gap-1 rounded-(--radius-pill) border border-(--color-border) bg-(--color-surface) p-1 backdrop-blur-sm"
+>
+  {
+    themes.map((t) => (
+      <button type="button" data-theme-set={t.id} class="theme-pill">
+        {t.label}
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  function initThemeSwitch() {
+    const root = document.documentElement;
+    const btns = [...document.querySelectorAll('[data-theme-set]')];
+    if (!btns.length) return;
+
+    const paint = (theme) => btns.forEach((b) => b.classList.toggle('is-active', b.dataset.themeSet === theme));
+
+    btns.forEach((b) => {
+      if (b.dataset.bound === '1') return;
+      b.dataset.bound = '1';
+      b.addEventListener('click', () => {
+        const t = b.dataset.themeSet || 'day';
+        root.setAttribute('data-theme', t);
+        root.classList.toggle('dark', t === 'night');
+        try {
+          localStorage.setItem('theme-kind', t);
+          localStorage.setItem('theme', t === 'night' ? 'dark' : 'light');
+        } catch {}
+        paint(t);
+      });
+    });
+
+    // 同步当前状态（含客户端路由切页后）
+    const current = root.getAttribute('data-theme') || 'day';
+    paint(current);
+    document.addEventListener('astro:after-swap', () => paint(document.documentElement.getAttribute('data-theme') || 'day'));
+  }
+  initThemeSwitch();
+  document.addEventListener('astro:page-load', initThemeSwitch);
+</script>

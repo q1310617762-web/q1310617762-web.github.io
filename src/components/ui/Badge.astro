@@ -1,0 +1,13 @@
+---
+// 徽章组件（pill + 色底 + 半透明底色）
+const { color = 'primary' } = Astro.props;
+
+const colors = {
+  primary: 'border-(--color-primary)/30 bg-(--color-primary)/12 text-(--color-primary-strong) dark:text-(--color-primary)',
+  accent: 'border-(--color-accent)/40 bg-(--color-accent)/15 text-(--color-accent-2) dark:text-(--color-accent-2)',
+  muted: 'border-(--color-border) bg-(--color-surface-2) text-(--color-muted) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface-2) dark:text-(--color-dark-muted)',
+};
+---
+<span class={`inline-flex items-center rounded-(--radius-pill) border px-2.5 py-0.5 text-xs font-medium ${colors[color]}`}>
+  <slot />
+</span>

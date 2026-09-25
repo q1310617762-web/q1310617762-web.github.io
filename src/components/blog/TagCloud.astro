@@ -1,0 +1,31 @@
+---
+// 标签云组件：按文章数量分级展示字号 / 字重 / 颜色浓度
+interface Props {
+  tags: { name: string; count: number }[];
+  class?: string;
+}
+const { tags = [], class: cls = '' } = Astro.props;
+
+const counts = tags.map((t) => t.count);
+const max = counts.length ? Math.max(...counts) : 1;
+const min = counts.length ? Math.min(...counts) : 1;
+
+// 依据热度计算样式令牌（字号、字重、颜色浓度）
+const styleOf = (count: number) => {
+  const ratio = max === min ? 1 : (count - min) / (max - min);
+  const size = (0.85 + ratio * 0.6).toFixed(2); // 0.85rem ~ 1.45rem
+  const weight = 500 + Math.round(ratio * 200); // 500 ~ 700
+  const pct = Math.round((0.45 + ratio * 0.55) * 100); // 45% ~ 100%
+  return `font-size:${size}rem;font-weight:${weight};--tc:${pct}%;`;
+};
+---
+<div class={`flex flex-wrap items-center gap-x-5 gap-y-3 ${cls}`}>
+  {
+    tags.map((t) => (
+      <a href={`/tag/${t.name}`} class="tag-cloud-item" style={styleOf(t.count)}>
+        #{t.name}
+        <sup>{t.count}</sup>
+      </a>
+    ))
+  }
+</div>

@@ -1,0 +1,22 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getAllPosts } from '@utils/posts';
+import PostList from '@components/blog/PostList.astro';
+import Pagination from '@components/blog/Pagination.astro';
+
+export const PAGE_SIZE = 6;
+
+const allPosts = await getAllPosts();
+const totalPage = Math.max(1, Math.ceil(allPosts.length / PAGE_SIZE));
+const pagePosts = allPosts.slice(0, PAGE_SIZE);
+---
+<BaseLayout title="博客" description="全部文章列表。" activeNav="/blog">
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <header class="mb-10">
+      <h1 class="text-3xl font-extrabold text-(--color-text) dark:text-(--color-dark-text)">博客</h1>
+      <p class="mt-2 text-(--color-muted) dark:text-(--color-dark-muted)">共 {allPosts.length} 篇文章</p>
+    </header>
+    <PostList posts={pagePosts} columns={3} />
+    <Pagination page={1} totalPage={totalPage} base="/blog/page" />
+  </div>
+</BaseLayout>

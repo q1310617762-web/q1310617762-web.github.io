@@ -1,0 +1,37 @@
+﻿---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import TagCloud from '@components/blog/TagCloud.astro';
+import { getAllTags, getAllCategories } from '@utils/posts';
+
+const tags = await getAllTags();
+const categories = await getAllCategories();
+---
+<BaseLayout title="全部标签" description="按热度浏览全部标签。" activeNav="/blog">
+  <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+    <header class="mb-10">
+      <h1 class="text-3xl font-extrabold text-(--color-text) dark:text-(--color-dark-text)">全部标签</h1>
+      <p class="mt-2 text-(--color-muted) dark:text-(--color-dark-muted)">共 {tags.length} 个标签 · 字号越大表示文章越多</p>
+    </header>
+
+    <section class="rounded-(--radius-card) border border-(--color-border) bg-(--color-surface) p-7 shadow-(--shadow-card) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface)">
+      <TagCloud tags={tags} class="justify-center" />
+    </section>
+
+    <section class="mt-12">
+      <h2 class="mb-5 text-lg font-semibold text-(--color-text) dark:text-(--color-dark-text)">按分类浏览</h2>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {
+          categories.map((c) => (
+            <a
+              href={`/category/${c.name}`}
+              class="group flex items-center justify-between rounded-(--radius-card) border border-(--color-border) bg-(--color-surface) px-5 py-4 transition-all duration-300 hover:-translate-y-1 hover:border-(--color-primary)/45 hover:shadow-(--shadow-card-hover) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface)"
+            >
+              <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-primary) dark:text-(--color-dark-text)">{c.name}</span>
+              <span class="rounded-(--radius-pill) border border-(--color-primary)/30 bg-(--color-primary)/12 px-2.5 py-0.5 text-xs font-medium text-(--color-primary-strong) dark:text-(--color-primary)">{c.count} 篇</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+// 文章列表组件
+import type { Post } from '@utils/posts';
+import PostCard from './PostCard.astro';
+
+interface Props {
+  posts: Post[];
+  columns?: 1 | 2 | 3;
+}
+const { posts = [], columns = 3 } = Astro.props;
+
+const gridClass = columns === 3 ? 'sm:grid-cols-2 lg:grid-cols-3' : columns === 1 ? 'grid-cols-1' : 'sm:grid-cols-2';
+---
+{
+  posts.length > 0 ? (
+    <div class={`grid grid-cols-1 gap-5 ${gridClass}`}>
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  ) : (
+    <div class="soft-card p-10 text-center text-(--color-muted)">这里暂时没有文章～</div>
+  )
+}
