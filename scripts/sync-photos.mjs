@@ -1,6 +1,7 @@
 // 同步「Saved Pictures」里的图片到博客相册
 // 用法：npm run sync:photos
-// 逻辑：扫描源目录 → 按内容哈希去重 → 压缩为网页尺寸 → 生成 src/data/photos.json
+// 优化：记录每个文件的「修改时间+大小」签名，未变动的文件直接跳过读取
+//       （这样每 30 分钟一次的检查非常轻量，不影响游戏等前台程序）
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -13,13 +14,17 @@ const DATA_FILE = path.join(ROOT, 'src', 'data', 'photos.json');
 const MAX_PHOTOS = Number(process.env.PHOTO_MAX || 60);
 const MAX_WIDTH = 1600;
 
-// 不参与同步的子目录
 const IGNORE_DIRS = new Set(['博客壁纸', 'node_modules', '.git']);
-
 const IMG_RE = /\.(jpg|jpeg|png|webp|bmp|gif|avif)$/i;
 
 function walk(dir, out = []) {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+  let entries;
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return out;
+  }
+  for (const e of entries) {
     if (e.name.startsWith('.')) continue;
     const p = path.join(dir, e.name);
     if (e.isDirectory()) {
@@ -51,65 +56,76 @@ const fmtDate = (d) => {
   }
   fs.mkdirSync(OUT_DIR, { recursive: true });
 
-  const files = walk(SRC);
-  console.log(`扫描到 ${files.length} 张图片（源：${SRC}）`);
-
-  // 读旧数据，保留已导入的哈希（避免重复压缩）
-  let old = { items: [] };
+  // 旧数据（含文件签名表，用于跳过未变动文件）
+  let old = { items: [], signatures: {} };
   if (fs.existsSync(DATA_FILE)) {
     try {
-      old = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+      old = { signatures: {}, ...JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')) };
     } catch {}
   }
-  const known = new Map((old.items || []).map((i) => [i.hash, i]));
 
+  const files = walk(SRC);
   const items = [];
   let converted = 0;
   let reused = 0;
+  let skippedRead = 0;
+  const signatures = {};
 
   for (const f of files) {
-    let buf;
+    let stat;
     try {
-      buf = fs.readFileSync(f);
+      stat = fs.statSync(f);
     } catch {
       continue;
     }
-    const hash = crypto.createHash('sha1').update(buf).digest('hex').slice(0, 12);
-    const outName = `${hash}.jpg`;
-    const outPath = path.join(OUT_DIR, outName);
+    const rel = path.relative(SRC, f).replace(/\\/g, '/');
+    const sig = old.signatures[rel];
+    const sameFile = Array.isArray(sig) && sig[0] === stat.mtimeMs && sig[1] === stat.size;
 
-    const base = path.basename(f).replace(IMG_RE, '');
-    const stat = fs.statSync(f);
-    const date = fmtDate(stat.mtime);
-    const title = looksLikeHash(base) ? date : base.slice(0, 40);
-
-    if (!fs.existsSync(outPath)) {
+    let hash;
+    if (sameFile) {
+      hash = sig[2]; // 未修改 → 不读取文件内容
+      skippedRead++;
+    } else {
+      let buf;
       try {
-        await sharp(buf)
-          .resize({ width: MAX_WIDTH, withoutEnlargement: true })
-          .jpeg({ quality: 80, mozjpeg: true })
-          .toFile(outPath);
-        converted++;
-      } catch (e) {
-        console.log('  跳过（无法解析）: ' + path.basename(f) + ' — ' + e.message);
+        buf = fs.readFileSync(f);
+      } catch {
         continue;
       }
-    } else {
-      reused++;
+      hash = crypto.createHash('sha1').update(buf).digest('hex').slice(0, 12);
+      const outName = `${hash}.jpg`;
+      if (!fs.existsSync(path.join(OUT_DIR, outName))) {
+        try {
+          await sharp(buf)
+            .resize({ width: MAX_WIDTH, withoutEnlargement: true })
+            .jpeg({ quality: 80, mozjpeg: true })
+            .toFile(path.join(OUT_DIR, outName));
+          converted++;
+        } catch (e) {
+          console.log('  跳过（无法解析）: ' + path.basename(f) + ' — ' + e.message);
+          continue;
+        }
+      } else {
+        reused++;
+      }
     }
 
+    signatures[rel] = [stat.mtimeMs, stat.size, hash];
+
+    const base = path.basename(f).replace(IMG_RE, '');
+    const date = fmtDate(stat.mtime);
     items.push({
       hash,
-      src: `/photos/${outName}`,
-      title,
+      src: `/photos/${hash}.jpg`,
+      title: looksLikeHash(base) ? date : base.slice(0, 40),
       date,
       desc: date,
-      source: path.relative(SRC, f).replace(/\\/g, '/'),
+      source: rel,
       mtime: stat.mtimeMs,
     });
   }
 
-  // 按修改时间倒序（新的在前），并限制数量
   items.sort((a, b) => b.mtime - a.mtime);
   const kept = items.slice(0, MAX_PHOTOS);
   const keptHashes = new Set(kept.map((i) => i.hash));
@@ -125,8 +141,6 @@ const fmtDate = (d) => {
   }
 
   const newItems = kept.map(({ mtime, ...rest }) => rest);
-
-  // 内容没变时不更新 updatedAt，避免每 30 分钟产生无意义提交
   const oldItems = old.items || [];
   const unchanged =
     old.source === SRC &&
@@ -139,16 +153,18 @@ const fmtDate = (d) => {
     count: kept.length,
     total: items.length,
     items: newItems,
+    signatures,
   };
-  fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
   fs.writeFileSync(DATA_FILE, JSON.stringify(payload, null, 2), 'utf8');
 
-  const size = fs
-    .readdirSync(OUT_DIR)
-    .reduce((s, f) => s + fs.statSync(path.join(OUT_DIR, f)).size, 0);
+  const size = fs.readdirSync(OUT_DIR).reduce((s, f) => s + fs.statSync(path.join(OUT_DIR, f)).size, 0);
 
-  console.log(`完成：相册共 ${kept.length} 张（源共 ${items.length} 张，超出上限的旧图不展示）`);
-  console.log(`  新转换 ${converted} 张，复用 ${reused} 张，清理 ${removed} 张`);
-  console.log(`  图片目录占用：${(size / 1024 / 1024).toFixed(1)} MB`);
-  console.log(`  数据文件：src/data/photos.json`);
+  if (converted || removed || !unchanged) {
+    console.log(
+      `同步完成：相册 ${kept.length} 张（源 ${items.length} 张）| 新转换 ${converted}，复用 ${reused}，清理 ${removed}`
+    );
+    console.log(`  跳过读取（未变动）${skippedRead} 个文件 | 图片目录 ${(size / 1024 / 1024).toFixed(1)} MB`);
+  } else {
+    console.log(`无变化：相册 ${kept.length} 张 | 跳过读取 ${skippedRead} 个文件（轻量检查）`);
+  }
 })();
