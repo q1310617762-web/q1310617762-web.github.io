@@ -11,7 +11,8 @@
     "fetch:anime": "node scripts/fetch-anime.mjs",
     "sync:photos": "node scripts/sync-photos.mjs",
     "publish:photos": "node scripts/auto-publish.mjs",
-    "set:gate": "node scripts/set-photo-gate.mjs"
+    "set:gate": "node scripts/set-photo-gate.mjs",
+    "set:wechat": "node scripts/set-wechat.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",
