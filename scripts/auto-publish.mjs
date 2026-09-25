@@ -77,24 +77,34 @@ async function resolveGit() {
     return;
   }
 
+  // 1.5) 微信二维码：投递文件夹里有新图就自动转成 public/wechat.png
+  //      退出码 2 = 没有二维码可处理，属于正常跳过
+  const wx = await run(NODE, [path.join(ROOT, 'scripts', 'set-wechat.mjs')]);
+  let wxLine = '';
+  if (wx.code === 0) {
+    wxLine = (wx.out || '').split('\n').filter(Boolean).pop() || '二维码已处理';
+  } else if (wx.code !== 2) {
+    wxLine = `二维码处理异常: ${(wx.err || wx.out || '').split('\n').filter(Boolean).pop() || wx.code}`;
+  }
+
   // 2) 有没有变化？没有就立刻退出（不做任何多余工作）
   await run(git, ['add', '-A']);
   const diff = await run(git, ['diff', '--cached', '--name-only']);
   const changed = diff.out ? diff.out.split('\n').filter(Boolean).length : 0;
 
   if (changed === 0) {
-    log(`无变化 | ${syncLine} | ${Date.now() - started}ms`);
+    log(`无变化 | ${syncLine}${wxLine ? ' | ' + wxLine : ''} | ${Date.now() - started}ms`);
     return;
   }
 
   // 3) 提交并推送（GitHub Actions 会自动构建部署）
-  log(`检测到 ${changed} 个文件变化 | ${syncLine}`);
+  log(`检测到 ${changed} 个文件变化 | ${syncLine}${wxLine ? ' | ' + wxLine : ''}`);
 
   const commit = await run(git, [
     '-c', 'user.name=东芽果DYG',
     '-c', 'user.email=q1310617762@gmail.com',
     'commit', '-q',
-    '-m', `chore(photos): 自动同步相册 ${new Date().toISOString().slice(0, 16).replace('T', ' ')}`,
+    '-m', `chore(auto): 自动更新相册/二维码 ${new Date().toISOString().slice(0, 16).replace('T', ' ')}`,
   ]);
   if (commit.code !== 0) {
     log(`❌ 提交失败: ${(commit.err || commit.out).slice(0, 200)}`);
