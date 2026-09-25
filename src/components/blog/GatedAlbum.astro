@@ -1,0 +1,188 @@
+---
+// 受保护相册（家人照片等）：图片在服务器上是 AES-256-GCM 密文，
+// 必须输入正确口令才能在浏览器里解密显示。口令不出现在代码/仓库中。
+import { getGatedAlbum } from '@utils/photos';
+
+const album = getGatedAlbum();
+---
+
+{
+  album && (
+    <section
+      class="mb-12"
+      data-gated
+      data-question={album.question}
+      data-hint={album.hint}
+    >
+      <div class="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+        <h2 class="flex items-center gap-2 text-xl font-bold text-(--color-text-strong)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+            <rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
+          </svg>
+          家人相册
+        </h2>
+        <span class="text-xs text-(--color-muted) dark:text-(--color-dark-muted)">
+          {album.count} 张 · 已加密，需口令
+        </span>
+      </div>
+
+      <!-- 解锁面板 -->
+      <div data-gate-panel class="soft-card p-6">
+        <p class="text-sm font-medium text-(--color-text-strong)">{album.question}</p>
+        {album.hint && <p class="mt-1 text-xs text-(--color-muted)">{album.hint}</p>}
+        <form data-gate-form class="mt-4 flex flex-wrap items-center gap-3">
+          <input
+            type="password"
+            data-gate-input
+            autocomplete="off"
+            placeholder="输入口令"
+            class="min-w-[12rem] flex-1 rounded-(--radius-btn) border border-(--color-border) bg-(--color-surface-solid)/70 px-3 py-2 text-sm text-(--color-text) outline-none transition-colors focus:border-(--color-primary) dark:border-(--color-dark-border)"
+          />
+          <button
+            type="submit"
+            class="primary-gradient rounded-(--radius-btn) px-4 py-2 text-sm font-medium text-white"
+          >
+            解锁
+          </button>
+        </form>
+        <p data-gate-msg class="mt-3 hidden text-xs"></p>
+      </div>
+
+      <!-- 解密后的图片网格（未解锁时隐藏） -->
+      <div data-gate-grid class="hidden grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        {
+          album.items.map((it) => (
+            <button
+              data-gate-item
+              data-src={it.src}
+              data-salt={it.salt}
+              data-iv={it.iv}
+              data-title={it.title}
+              data-desc={it.date}
+              type="button"
+              class="relative aspect-[4/3] overflow-hidden rounded-(--radius-card) border border-(--color-border) bg-(--color-surface-2) transition-all duration-300 hover:-translate-y-1.5 hover:border-(--color-primary)/45 dark:border-(--color-dark-border)"
+              title={`${it.title}（解锁后显示）`}
+            >
+              <span class="flex h-full w-full flex-col items-center justify-center gap-2 text-(--color-muted)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
+                  <rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                </svg>
+                <span class="text-[11px]">{it.title}</span>
+              </span>
+            </button>
+          ))
+        }
+      </div>
+    </section>
+  )
+}
+
+<script>
+  // 解密：口令 → PBKDF2(SHA-256, 210k) → AES-256-GCM 密钥 → 解密 .enc
+  const SESSION_KEY = 'photo-gate-pass';
+  const ITER = 210000;
+
+  const b64ToBytes = (b64) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+
+  async function deriveKey(pass, saltB64) {
+    const enc = new TextEncoder();
+    const baseKey = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt: b64ToBytes(saltB64), iterations: ITER, hash: 'SHA-256' },
+      baseKey,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['decrypt']
+    );
+  }
+
+  function initGate() {
+    const root = document.querySelector('[data-gated]');
+    if (!root || root.dataset.gateReady === '1') return;
+    root.dataset.gateReady = '1';
+
+    const panel = root.querySelector('[data-gate-panel]');
+    const grid = root.querySelector('[data-gate-grid]');
+    const form = root.querySelector('[data-gate-form]');
+    const input = root.querySelector('[data-gate-input]');
+    const msg = root.querySelector('[data-gate-msg]');
+    const items = [...root.querySelectorAll('[data-gate-item]')];
+
+    const say = (text, ok = false) => {
+      msg.textContent = text;
+      msg.classList.remove('hidden');
+      msg.style.color = ok ? 'var(--color-primary-strong)' : 'var(--color-accent)';
+    };
+
+    /** 用口令解密全部图片；返回是否全部成功 */
+    async function unlock(pass, remember = true) {
+      let ok = 0;
+      let failed = 0;
+
+      for (const btn of items) {
+        try {
+          const key = await deriveKey(pass, btn.dataset.salt);
+          const res = await fetch(btn.dataset.src, { cache: 'force-cache' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const cipher = await res.arrayBuffer();
+          const plain = await crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv: b64ToBytes(btn.dataset.iv) },
+            key,
+            cipher
+          );
+          const url = URL.createObjectURL(new Blob([plain], { type: 'image/jpeg' }));
+
+          // 替换为可点击查看的图片（复用相册的灯箱，事件委托会自动识别）
+          btn.replaceChildren();
+          const img = document.createElement('img');
+          img.src = url;
+          img.alt = btn.dataset.title;
+          img.loading = 'lazy';
+          img.className = 'h-full w-full object-cover';
+          btn.appendChild(img);
+          btn.setAttribute('data-gallery-item', '');
+          btn.setAttribute('data-title', btn.dataset.title);
+          btn.setAttribute('data-desc', btn.dataset.desc + ' · 家人相册');
+          btn.dataset.unlocked = '1';
+          ok++;
+        } catch {
+          failed++;
+        }
+      }
+
+      if (ok === 0) {
+        say('口令不正确，请再试一次');
+        return false;
+      }
+
+      if (remember) {
+        try {
+          sessionStorage.setItem(SESSION_KEY, pass);
+        } catch {}
+      }
+      panel.classList.add('hidden');
+      grid.classList.remove('hidden');
+      grid.classList.add('grid');
+      say(`已解锁 ${ok} 张${failed ? `（${failed} 张解密失败）` : ''}`, true);
+      return true;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pass = input.value;
+      if (!pass) return;
+      say('正在解密…', true);
+      await unlock(pass);
+      input.value = '';
+    });
+
+    // 本次浏览器会话内自动解锁
+    try {
+      const saved = sessionStorage.getItem(SESSION_KEY);
+      if (saved) unlock(saved, false);
+    } catch {}
+  }
+
+  initGate();
+  document.addEventListener('astro:page-load', initGate);
+</script>

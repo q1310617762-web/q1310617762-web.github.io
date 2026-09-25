@@ -10,7 +10,8 @@
     "astro": "astro",
     "fetch:anime": "node scripts/fetch-anime.mjs",
     "sync:photos": "node scripts/sync-photos.mjs",
-    "publish:photos": "node scripts/auto-publish.mjs"
+    "publish:photos": "node scripts/auto-publish.mjs",
+    "set:gate": "node scripts/set-photo-gate.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",

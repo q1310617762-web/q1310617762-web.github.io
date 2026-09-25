@@ -1,17 +1,9 @@
 {
-  "updatedAt": "2026-09-25T10:58:19.097Z",
+  "updatedAt": "2026-09-25T14:02:01.354Z",
   "source": "C:/Users/VOS-User/Pictures/Saved Pictures",
-  "count": 18,
-  "total": 18,
+  "count": 17,
+  "total": 17,
   "items": [
-    {
-      "hash": "7b35b93e70c9",
-      "src": "/photos/7b35b93e70c9.jpg",
-      "title": "爷爷奶奶",
-      "date": "2026-09-17",
-      "desc": "2026-09-17",
-      "source": "相片/爷爷奶奶.jpg"
-    },
     {
       "hash": "3362bb7bf084",
       "src": "/photos/3362bb7bf084.jpg",
@@ -234,11 +226,17 @@
       1759381560000,
       4136734,
       "b857f3d880ee"
-    ],
-    "相片/爷爷奶奶.jpg": [
-      1789623441954.0715,
-      282115,
-      "7b35b93e70c9"
     ]
+  },
+  "gated": {
+    "enabled": false,
+    "question": "",
+    "hint": "",
+    "configStamp": "none",
+    "count": 0,
+    "items": [],
+    "signatures": {
+      "相片/爷爷奶奶.jpg": null
+    }
   }
 }

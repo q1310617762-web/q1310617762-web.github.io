@@ -17,3 +17,6 @@ _cdp-*/
 _*.cjs
 
 logs/
+
+# 受保护相册的口令配置（绝不提交）
+photo-gate.config.json

@@ -2,13 +2,15 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import GalleryGrid from '@components/blog/GalleryGrid.astro';
 import { albums } from '@data/site';
-import { getPhotoAlbum, getPhotoUpdatedLabel } from '@utils/photos';
+import { getPhotoAlbum, getGatedAlbum, getPhotoUpdatedLabel } from '@utils/photos';
 
 const auto = getPhotoAlbum();
-const albumCount = albums.length + (auto ? 1 : 0);
-const total = albums.reduce((s, a) => s + a.items.length, 0) + (auto ? auto.items.length : 0);
+const gated = getGatedAlbum();
+const albumCount = albums.length + (auto ? 1 : 0) + (gated ? 1 : 0);
+const total =
+  albums.reduce((s, a) => s + a.items.length, 0) + (auto ? auto.items.length : 0) + (gated ? gated.count : 0);
 ---
-<BaseLayout title="相册" description="我的照片与游戏截图：随手拍、原神、崩坏：星穹铁道与绝区零。" activeNav="/gallery">
+<BaseLayout title="相册" description="我的照片与游戏截图：随手拍、家人相册、原神、崩坏：星穹铁道与绝区零。" activeNav="/gallery">
   <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
     <header class="mb-10">
       <h1 class="text-3xl font-extrabold text-(--color-text) dark:text-(--color-dark-text)">相册</h1>
@@ -18,7 +20,14 @@ const total = albums.reduce((s, a) => s + a.items.length, 0) + (auto ? auto.item
       {
         auto && (
           <p class="mt-1 text-xs text-(--color-muted) dark:text-(--color-dark-muted)">
-            「随手拍」会自动同步本机 Saved Pictures 目录 · 上次同步 {getPhotoUpdatedLabel()}
+            「随手拍」自动同步本机 Saved Pictures 目录 · 上次同步 {getPhotoUpdatedLabel()}
+          </p>
+        )
+      }
+      {
+        gated && (
+          <p class="mt-1 text-xs text-(--color-muted) dark:text-(--color-dark-muted)">
+            「家人相册」已加密（AES-256），需输入口令才能查看
           </p>
         )
       }
