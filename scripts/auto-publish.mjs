@@ -10,6 +10,13 @@ const LOG = path.join(LOG_DIR, 'auto-publish.log');
 
 fs.mkdirSync(LOG_DIR, { recursive: true });
 
+/** 本地时间戳 yyyy-MM-dd HH:mm（与日志文件保持一致，不用 UTC）*/
+function stamp() {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
 function log(msg) {
   const d = new Date();
   const p = (n) => String(n).padStart(2, '0');
@@ -104,7 +111,7 @@ async function resolveGit() {
     '-c', 'user.name=东芽果DYG',
     '-c', 'user.email=q1310617762@gmail.com',
     'commit', '-q',
-    '-m', `chore(auto): 自动更新相册/二维码 ${new Date().toISOString().slice(0, 16).replace('T', ' ')}`,
+    '-m', `chore(auto): 自动更新相册/二维码 ${stamp()}`,
   ]);
   if (commit.code !== 0) {
     log(`❌ 提交失败: ${(commit.err || commit.out).slice(0, 200)}`);
