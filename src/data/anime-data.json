@@ -1,100 +1,12 @@
 {
-  "fetchedAt": "2026-09-26T14:00:40.472Z",
-  "total": 34,
+  "fetchedAt": "2026-09-26T20:34:09.897Z",
+  "total": 29,
   "days": [
-    {
-      "date": "9-26",
-      "dateTs": 1790352000,
-      "weekday": "六",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6254505",
-          "title": "万古至尊：李云霄传",
-          "index": "第22话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
-          "seasonId": 119017,
-          "url": "https://www.bilibili.com/bangumi/play/ep6254505",
-          "delay": ""
-        },
-        {
-          "id": "6158482",
-          "title": "气运世界杯，我能复制所有球星技能",
-          "index": "第15话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f6920c0319f78939fb6e419fe718ea7d9b60b474.jpg",
-          "seasonId": 263605,
-          "url": "https://www.bilibili.com/bangumi/play/ep6158482",
-          "delay": ""
-        },
-        {
-          "id": "6291962",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第5话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291962",
-          "delay": ""
-        },
-        {
-          "id": "3854817",
-          "title": "凡人修仙传",
-          "index": "第193话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
-          "seasonId": 28747,
-          "url": "https://www.bilibili.com/bangumi/play/ep3854817",
-          "delay": ""
-        },
-        {
-          "id": "6158606",
-          "title": "无良系统变向导，我被四个哨兵拿捏了",
-          "index": "第12话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/748726fd8faf7c11a6898a4b37c129c526e09e61.jpg",
-          "seasonId": 285345,
-          "url": "https://www.bilibili.com/bangumi/play/ep6158606",
-          "delay": ""
-        },
-        {
-          "id": "6353908",
-          "title": "我是不白吃",
-          "index": "第1084话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep6353908",
-          "delay": ""
-        },
-        {
-          "id": "6436951",
-          "title": "名侦探柯南",
-          "index": "第1274话",
-          "time": "19:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8d4dad96d5eef87c1ef985c29f42d4189992f84.png",
-          "seasonId": 33378,
-          "url": "https://www.bilibili.com/bangumi/play/ep6436951",
-          "delay": ""
-        },
-        {
-          "id": "6436952",
-          "title": "名侦探柯南（中配）",
-          "index": "第1274话",
-          "time": "19:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d106f458bb63f0dc78c49886ec27b1a137b14e96.png",
-          "seasonId": 33415,
-          "url": "https://www.bilibili.com/bangumi/play/ep6436952",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "9-27",
       "dateTs": 1790438400,
       "weekday": "日",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "4883710",
@@ -394,6 +306,44 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
           "seasonId": 96881,
           "url": "https://www.bilibili.com/bangumi/play/ep6281867",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-3",
+      "dateTs": 1790956800,
+      "weekday": "六",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6427821",
+          "title": "万古至尊：李云霄传",
+          "index": "第24话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
+          "seasonId": 119017,
+          "url": "https://www.bilibili.com/bangumi/play/ep6427821",
+          "delay": ""
+        },
+        {
+          "id": "6291969",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第12话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291969",
+          "delay": ""
+        },
+        {
+          "id": "3854818",
+          "title": "凡人修仙传",
+          "index": "第194话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
+          "seasonId": 28747,
+          "url": "https://www.bilibili.com/bangumi/play/ep3854818",
           "delay": ""
         }
       ]
