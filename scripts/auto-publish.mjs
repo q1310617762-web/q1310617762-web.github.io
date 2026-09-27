@@ -118,10 +118,42 @@ async function resolveGit() {
     return;
   }
 
-  const push = await run(git, ['push', 'origin', 'main']);
-  if (push.code === 0) {
+  // 推送。注意：新番工作流会直接往 main 推提交，本地很容易落后，
+  // 一落后 push 就会被拒（fetch first / non-fast-forward）。这里自动
+  // 「fetch → 变基 → 重试」，最多 3 轮，避免定时任务静默卡死。
+  let pushed = false;
+  let lastErr = '';
+  for (let attempt = 1; attempt <= 3 && !pushed; attempt++) {
+    const push = await run(git, ['push', 'origin', 'main']);
+    if (push.code === 0) {
+      pushed = true;
+      break;
+    }
+    lastErr = (push.err || push.out || '').trim();
+
+    const behind = /fetch first|non-fast-forward|\[rejected\]/i.test(lastErr);
+    if (behind) {
+      const fetch = await run(git, ['fetch', 'origin']);
+      if (fetch.code !== 0) {
+        lastErr = `${lastErr} | fetch 失败: ${(fetch.err || fetch.out || '').trim()}`;
+        break;
+      }
+      const rebase = await run(git, ['rebase', 'origin/main']);
+      if (rebase.code !== 0) {
+        await run(git, ['rebase', '--abort']); // 别把仓库留在变基中间态
+        lastErr = `${lastErr} | 变基失败: ${(rebase.err || rebase.out || '').trim()}`;
+        break;
+      }
+      log(`远程有新提交，已变基（第 ${attempt} 次重试）`);
+    } else {
+      // 网络抖动：稍等再试
+      await new Promise((r) => setTimeout(r, 3000));
+    }
+  }
+
+  if (pushed) {
     log(`✅ 已推送，GitHub Actions 将自动构建部署 | ${Date.now() - started}ms`);
   } else {
-    log(`❌ 推送失败（凭据可能已失效）: ${(push.err || push.out).slice(0, 200)}`);
+    log(`❌ 推送失败: ${lastErr.slice(0, 200)}`);
   }
 })();
