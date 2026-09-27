@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-09-27T07:29:53.652Z",
-  "total": 29,
+  "fetchedAt": "2026-09-27T14:57:26.289Z",
+  "total": 30,
   "days": [
     {
       "date": "9-27",
@@ -66,6 +66,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
           "seasonId": 45969,
           "url": "https://www.bilibili.com/bangumi/play/ep3537948",
+          "delay": ""
+        },
+        {
+          "id": "6450005",
+          "title": "王者？别闹！",
+          "index": "番外",
+          "time": "17:30",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/8b05f173c5036150fac299f4f48233100a8b81d5.jpg",
+          "seasonId": 26015,
+          "url": "https://www.bilibili.com/bangumi/play/ep6450005",
           "delay": ""
         }
       ]
