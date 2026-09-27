@@ -5,6 +5,7 @@ import { ClientRouter } from 'astro:transitions';
 import SiteSidebar from '@components/layout/SiteSidebar.astro';
 import Footer from '@components/layout/Footer.astro';
 import BackToTop from '@components/layout/BackToTop.astro';
+import MusicPlaylistPopup from '@components/layout/MusicPlaylistPopup.astro';
 import { site } from '@data/site';
 
 interface Props {
@@ -99,6 +100,8 @@ const ogImage = new URL(basePath.replace(/\/$/, '') + image, site.url).href;
       </div>
     </div>
     <BackToTop />
+    <!-- 曲单浮层：必须放在 .app 之外，否则会被侧栏的 overflow 裁剪 -->
+    <MusicPlaylistPopup />
   </body>
 
   <script>

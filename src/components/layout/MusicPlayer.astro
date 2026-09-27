@@ -1,5 +1,6 @@
 ---
 // 音乐播放器（侧栏内嵌小组件；保留 transition:persist 使切页不中断）
+// 曲单不再内嵌展开，而是由 MusicPlaylistPopup（挂在 <body> 下的浮层小窗）呈现
 import { music } from '@data/site';
 const tracks = music;
 const hasMusic = tracks.length > 0;
@@ -67,6 +68,9 @@ const hasMusic = tracks.length > 0;
           data-music-list
           type="button"
           aria-label="曲单"
+          aria-haspopup="dialog"
+          aria-controls="music-popup"
+          aria-expanded="false"
           class="flex h-7 w-7 items-center justify-center rounded-full text-(--color-muted) transition-colors hover:text-(--color-text)"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-3.5 w-3.5"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
@@ -109,33 +113,6 @@ const hasMusic = tracks.length > 0;
 
         <span data-music-volume-label class="w-6 text-right text-[10px] tabular-nums text-(--color-muted)">80</span>
       </div>
-
-      <!-- 曲单 -->
-      <div data-music-playlist class="mt-2 hidden border-t border-(--color-border) pt-2">
-        <ul class="max-h-40 space-y-0.5 overflow-y-auto">
-          {
-            tracks.map((t, i) => (
-              <li>
-                <button
-                  data-track
-                  data-src={t.src}
-                  data-title={t.title}
-                  data-artist={t.artist}
-                  data-index={i}
-                  type="button"
-                  class="flex w-full items-center gap-2 rounded-(--radius-sm) px-2 py-1.5 text-left transition-colors hover:bg-(--color-surface-2)"
-                >
-                  <span data-track-index class="w-4 text-center text-[10px] tabular-nums text-(--color-muted)">{i + 1}</span>
-                  <span class="min-w-0 flex-1">
-                    <span data-track-title class="block truncate text-[12px] font-medium text-(--color-text)">{t.title}</span>
-                    <span data-track-artist class="block truncate text-[10px] text-(--color-muted)">{t.artist}</span>
-                  </span>
-                </button>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
     </div>
   )
 }
@@ -143,15 +120,17 @@ const hasMusic = tracks.length > 0;
 <script>
   function initMusic() {
     const player = document.querySelector('[data-music]');
-    // 播放器元素通过 transition:persist 跨页面保留，只初始化一次
-    if (player && player.dataset.musicReady !== '1') {
+    if (!player) return;
+
+    // ---------- 一次性初始化（播放器跨页保留，只做一次） ----------
+    if (player.dataset.musicReady !== '1') {
       player.dataset.musicReady = '1';
+
       const audio = player.querySelector('[data-music-audio]');
       const playBtn = player.querySelector('[data-music-play]');
       const prevBtn = player.querySelector('[data-music-prev]');
       const nextBtn = player.querySelector('[data-music-next]');
       const listBtn = player.querySelector('[data-music-list]');
-      const playlist = player.querySelector('[data-music-playlist]');
       const titleEl = player.querySelector('[data-music-title]');
       const artistEl = player.querySelector('[data-music-artist]');
       const currentEl = player.querySelector('[data-music-current]');
@@ -166,8 +145,16 @@ const hasMusic = tracks.length > 0;
       const iconVolHigh = player.querySelector('[data-icon-vol-high]');
       const iconVolLow = player.querySelector('[data-icon-vol-low]');
       const iconVolMute = player.querySelector('[data-icon-vol-mute]');
-      const tracks = [...player.querySelectorAll('[data-track]')];
+
+      // 曲单小窗挂在 <body> 下、每次切页都是新节点，所以：
+      //   · 播放状态留在这个闭包里（播放器元素跨页保留，闭包不会重建）
+      //   · 小窗上的监听在 bindPopup 里重新绑定
+      let popup = null;
+      let popupOpen = false;
       let index = 0;
+
+      /** 实时查询曲目按钮（小窗会随切页换节点，不能缓存） */
+      const getTracks = () => (popup ? [...popup.querySelectorAll('[data-track]')] : []);
 
       // ---------- 音量 ----------
       const VOL_KEY = 'music-volume';
@@ -220,9 +207,12 @@ const hasMusic = tracks.length > 0;
         const sec = Math.floor(s % 60);
         return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
       };
-      const markActive = () => tracks.forEach((t, i) => t.classList.toggle('opacity-40', i !== index));
+
+      const markActive = () => {
+        getTracks().forEach((t, i) => t.classList.toggle('is-active', i === index));
+      };
       const updateMeta = () => {
-        const t = tracks[index];
+        const t = getTracks()[index];
         if (!t) return;
         titleEl.textContent = t.dataset.title;
         artistEl.textContent = t.dataset.artist;
@@ -230,12 +220,14 @@ const hasMusic = tracks.length > 0;
       const setPlaying = (playing) => {
         iconPlay.classList.toggle('hidden', playing);
         iconPause.classList.toggle('hidden', !playing);
+        popup?.classList.toggle('is-playing', playing);
       };
 
       const load = (i, autoplay = true) => {
-        const t = tracks[i];
-        if (!t) return;
-        index = i;
+        const list = getTracks();
+        if (!list.length) return;
+        index = ((i % list.length) + list.length) % list.length;
+        const t = list[index];
         updateMeta();
         markActive();
         audio.src = t.dataset.src;
@@ -258,15 +250,8 @@ const hasMusic = tracks.length > 0;
       };
 
       playBtn.addEventListener('click', togglePlay);
-      prevBtn.addEventListener('click', () => load((index - 1 + tracks.length) % tracks.length));
-      nextBtn.addEventListener('click', () => load((index + 1) % tracks.length));
-      listBtn.addEventListener('click', () => playlist.classList.toggle('hidden'));
-      tracks.forEach((t, i) =>
-        t.addEventListener('click', () => {
-          playlist.classList.add('hidden');
-          load(i);
-        })
-      );
+      prevBtn.addEventListener('click', () => load(index - 1));
+      nextBtn.addEventListener('click', () => load(index + 1));
 
       audio.addEventListener('timeupdate', () => {
         if (audio.duration) progressFill.style.width = (audio.currentTime / audio.duration) * 100 + '%';
@@ -279,7 +264,7 @@ const hasMusic = tracks.length > 0;
       });
       audio.addEventListener('play', () => setPlaying(true));
       audio.addEventListener('pause', () => setPlaying(false));
-      audio.addEventListener('ended', () => load((index + 1) % tracks.length));
+      audio.addEventListener('ended', () => load(index + 1));
 
       progress.addEventListener('click', (e) => {
         if (!audio.duration) return;
@@ -287,9 +272,107 @@ const hasMusic = tracks.length > 0;
         audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
       });
 
-      updateMeta();
-      markActive();
+      // ---------- 曲单小窗：定位与开关 ----------
+      const positionPopup = () => {
+        if (!popup) return;
+        const r = listBtn.getBoundingClientRect();
+        const pw = popup.offsetWidth;
+        const ph = popup.offsetHeight;
+        const gap = 10;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+
+        // 横向：优先放在按钮右侧，右侧放不下就放左侧，都不行则贴着视口边
+        // 侧栏在左侧时（宽度不足视口一半）让浮层整体弹到侧栏外面，不压住侧栏
+        const aside = player.closest('.app-aside');
+        let anchorRight = r.right;
+        if (aside) {
+          const ar = aside.getBoundingClientRect();
+          if (ar.right < vw * 0.5) anchorRight = Math.max(anchorRight, ar.right);
+        }
+        let left = anchorRight + gap;
+        if (left + pw > vw - 8) left = r.left - pw - gap;
+        if (left < 8) left = Math.min(Math.max(8, r.left), Math.max(8, vw - pw - 8));
+
+        // 纵向：与按钮顶部对齐；下方空间不足时改为向上展开并贴住按钮底部
+        let top = r.top;
+        if (top + ph > vh - 8) top = r.bottom - ph;
+        if (top < 8) top = 8;
+        if (top + ph > vh - 8) top = Math.max(8, vh - ph - 8);
+
+        popup.style.left = `${Math.round(left)}px`;
+        popup.style.top = `${Math.round(top)}px`;
+        popup.style.transformOrigin = left < r.left ? 'top right' : 'top left';
+      };
+
+      const openPopup = () => {
+        if (!popup) return;
+        positionPopup(); // 此时还是 visibility:hidden，先量好尺寸再显示，避免闪一下
+        popupOpen = true;
+        popup.classList.add('is-open');
+        listBtn.setAttribute('aria-expanded', 'true');
+      };
+      const closePopup = () => {
+        if (!popup) return;
+        popupOpen = false;
+        popup.classList.remove('is-open');
+        listBtn.setAttribute('aria-expanded', 'false');
+      };
+      const togglePopup = () => (popupOpen ? closePopup() : openPopup());
+
+      listBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // 别让下面的「点外部关闭」立刻又把它关掉
+        togglePopup();
+      });
+
+      // 点空白处 / 按 Esc 关闭
+      document.addEventListener('click', (e) => {
+        if (!popupOpen || !popup) return;
+        if (popup.contains(e.target) || listBtn.contains(e.target)) return;
+        closePopup();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && popupOpen) closePopup();
+      });
+
+      // 侧栏滚动 / 窗口缩放时让小窗跟着按钮走（capture 才能收到侧栏自身的滚动）
+      const followBtn = () => {
+        if (popupOpen) positionPopup();
+      };
+      document.addEventListener('scroll', followBtn, { capture: true, passive: true });
+      window.addEventListener('resize', followBtn);
+
+      /**
+       * 绑定当前页面上的小窗。
+       * 用「节点是否变化」做幂等判断：同一节点重复调用不会重复挂监听，
+       * 切页后节点变了才会重新绑定。
+       */
+      player.__musicBindPopup = () => {
+        const next = document.querySelector('[data-music-popup]');
+        if (next !== popup) {
+          popup = next;
+          popupOpen = false;
+          if (popup) {
+            popup.querySelector('[data-music-popup-close]')?.addEventListener('click', closePopup);
+            getTracks().forEach((t) => {
+              t.addEventListener('click', () => {
+                load(Number(t.dataset.index));
+                closePopup();
+              });
+            });
+          }
+        }
+        if (!popup) return;
+        markActive();
+        updateMeta();
+        popup.classList.toggle('is-playing', !audio.paused);
+        listBtn.setAttribute('aria-expanded', popupOpen ? 'true' : 'false');
+      };
     }
+
+    // 每次页面加载（含客户端路由切页）都重新绑定小窗
+    player.__musicBindPopup?.();
   }
   initMusic();
   document.addEventListener('astro:page-load', initMusic);

@@ -177,6 +177,14 @@ body::before {
   border-right: 1px solid var(--color-border);
   background: color-mix(in srgb, var(--color-surface-solid) 62%, transparent);
   backdrop-filter: blur(14px);
+  /* 内容超高时仍可滚动，但不显示滚动条 */
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* 旧版 Edge */
+}
+.app-aside::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .app-body {
@@ -515,6 +523,164 @@ pre {
 .music-volume:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 3px;
+}
+
+/* ================= 曲单弹出小窗 ================= */
+/* 独立浮层：渲染在 <body> 下、.app 之外。
+   若放在侧栏内部，会被 .app-aside 的 overflow-y 裁剪、并被其 backdrop-filter
+   当作 fixed 定位的包含块，所以必须挂在外面。 */
+.music-popup {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 45; /* 低于搜索浮层(50)与相册灯箱(60)，弹窗打开时让位给它们 */
+  width: 272px;
+  max-width: calc(100vw - 20px);
+  padding: 8px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-solid);
+  box-shadow: var(--shadow-lg);
+  /* 关闭态：保留布局（便于开窗前测量尺寸），但不显示、不可点、不进 Tab 顺序 */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+}
+.music-popup.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.music-popup-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 4px 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+.music-popup-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-strong);
+}
+.music-popup-count {
+  font-size: 10px;
+  color: var(--color-muted);
+}
+.music-popup-close {
+  margin-left: auto;
+  display: flex;
+  height: 20px;
+  width: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  color: var(--color-muted);
+  transition: color 0.16s ease, background-color 0.16s ease;
+}
+.music-popup-close:hover {
+  color: var(--color-text-strong);
+  background: var(--color-surface-2);
+}
+
+/* 曲目列表：内容超出时可以滚，但永远不显示滚动条 */
+.music-popup-list {
+  margin-top: 6px;
+  max-height: min(272px, 42vh);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* 旧版 Edge */
+}
+.music-popup-list::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.music-track {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  text-align: left;
+  color: var(--color-text);
+  transition: background-color 0.16s ease;
+}
+.music-track:hover {
+  background: var(--color-surface-2);
+}
+.music-track.is-active {
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+.music-track-index {
+  width: 16px;
+  flex: none;
+  text-align: center;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+}
+.music-track.is-active .music-track-index {
+  color: var(--color-primary-strong);
+}
+.music-track-meta {
+  min-width: 0;
+  flex: 1;
+}
+.music-track-title {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 500;
+}
+.music-track.is-active .music-track-title {
+  color: var(--color-primary-strong);
+  font-weight: 600;
+}
+.music-track-artist {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  color: var(--color-muted);
+}
+
+/* 正在播放的小音条（暂停时停住动画） */
+.music-track-bars {
+  display: none;
+  flex: none;
+  align-items: flex-end;
+  gap: 2px;
+  height: 11px;
+}
+.music-track.is-active .music-track-bars {
+  display: flex;
+}
+.music-track-bars i {
+  display: block;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--color-primary-strong);
+  animation: music-bar 0.9s ease-in-out infinite;
+}
+.music-track-bars i:nth-child(1) { height: 5px; animation-delay: 0s; }
+.music-track-bars i:nth-child(2) { height: 11px; animation-delay: 0.18s; }
+.music-track-bars i:nth-child(3) { height: 7px; animation-delay: 0.36s; }
+.music-popup:not(.is-playing) .music-track-bars i {
+  animation-play-state: paused;
+}
+@keyframes music-bar {
+  0%, 100% { transform: scaleY(0.45); }
+  50% { transform: scaleY(1); }
 }
 
 /* 滚动条美化 */
