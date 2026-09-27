@@ -1,151 +1,455 @@
 ---
-// 首页开屏：经典街机吃豆人吃豆子，最后一口吃下博客头像，总长4秒，自适应PC和手机。
+// 首页开屏：经典街机吃豆人（Canvas 重制版）
+// 结构：单 canvas 覆盖层 + 顶部记分 + SKIP 按钮。
+// 时间轴（总 4.2s）：迷宫绘制 → 吃豆前进 → 吃下头像（爆裂）→ 头像吸入侧栏头像 → 全幕淡出。
+// 播放频率：同一天只播一次（localStorage 记录日期）；URL 带 ?intro=1 或 localStorage 标记 __pacIntroForce 可强制播放。
 import { site } from '@data/site';
 ---
 
-<div class="pac-intro" data-home-intro aria-label="开屏动画：吃豆人进入博客">
-  <!-- 顶部街机记分面板 -->
-  <div class="pac-header" aria-hidden="true">
-    <div class="pac-score-box">
-      <span class="pac-label">1UP</span>
-      <span class="pac-score" data-pac-score>0000</span>
+<div id="pac-intro" data-pac-intro hidden aria-label="开屏动画：吃豆人进入博客">
+  <canvas id="pac-canvas" aria-hidden="true"></canvas>
+  <div class="pac-hud" aria-hidden="true">
+    <div class="pac-hud-item">
+      <span class="pac-hud-label">1UP</span>
+      <span class="pac-hud-score" id="pac-score">0000</span>
     </div>
-    <div class="pac-score-box">
-      <span class="pac-label">HIGH SCORE</span>
-      <span class="pac-score">19800</span>
+    <div class="pac-hud-item">
+      <span class="pac-hud-label">HIGH SCORE</span>
+      <span class="pac-hud-score">19800</span>
     </div>
-    <button type="button" class="pac-skip-btn" data-home-intro-skip>
-      SKIP <span>ESC</span>
+    <button type="button" id="pac-skip" class="pac-skip-btn">
+      SKIP<span class="pac-skip-key">ESC</span>
     </button>
-  </div>
-
-  <!-- 中间主舞台：吃豆轨道 -->
-  <div class="pac-stage" aria-hidden="true">
-    <!-- 霓虹街机迷宫轨道边框 -->
-    <div class="pac-track-border pac-track-top"></div>
-    <div class="pac-track-border pac-track-bottom"></div>
-
-    <div class="pac-track">
-      <!-- 吃豆人实体 -->
-      <div class="pac-hero">
-        <div class="pac-mouth-top"></div>
-        <div class="pac-mouth-bottom"></div>
-        <div class="pac-eye"></div>
-      </div>
-
-      <!-- 7颗发光能量豆 -->
-      <div class="pac-dots">
-        <span class="pac-dot dot-1"></span>
-        <span class="pac-dot dot-2"></span>
-        <span class="pac-dot dot-3"></span>
-        <span class="pac-dot dot-4"></span>
-        <span class="pac-dot dot-5"></span>
-        <span class="pac-dot dot-6"></span>
-        <span class="pac-dot dot-7"></span>
-      </div>
-
-      <!-- 终点：博客头像（大能量果实） -->
-      <div class="pac-target">
-        <div class="pac-avatar-glow"></div>
-        <img
-          src={site.avatar}
-          alt={site.title}
-          class="pac-avatar-img"
-          loading="eager"
-          decoding="sync"
-        />
-        <div class="pac-target-ring"></div>
-        <!-- 吃到瞬间的爆裂光效 -->
-        <div class="pac-burst"></div>
-      </div>
-      <!-- 吃到头像后，头像飞向主页侧栏中的真实头像位置 -->
-      <img src={site.avatar} alt="" class="pac-flight-avatar" aria-hidden="true" />
-    </div>
-  </div>
-
-  <!-- 底部像素文字与进度 -->
-  <div class="pac-footer" aria-hidden="true">
-    <div class="pac-title-bar">
-      <span class="pac-status-text">INSERT COIN TO ENTER DYG'S BLOG...</span>
-    </div>
-    <div class="pac-ready-text">READY!</div>
   </div>
 </div>
 
 <script>
-  function initPacIntro() {
-    const intro = document.querySelector('[data-home-intro]');
-    if (!(intro instanceof HTMLElement) || intro.dataset.bound === '1') return;
-    intro.dataset.bound = '1';
+(function () {
+  const root = document.getElementById('pac-intro');
+  if (!root) return;
 
-    const scoreEl = intro.querySelector('[data-pac-score]');
-    let score = 0;
+  // ---- 播放频率：当天已播则跳过（?intro=1 强制播放） ----
+  const DAY_KEY = 'pac-intro-last-day';
+  const today = new Date().toDateString();
+  const force =
+    new URLSearchParams(location.search).get('intro') === '1' ||
+    localStorage.getItem('pac-intro-force') === '1';
+  if (!force && localStorage.getItem(DAY_KEY) === today) {
+    // 已播过：把 HUD 也藏掉，什么都不渲染
+    root.style.display = 'none';
+    return;
+  }
+  localStorage.setItem(DAY_KEY, today);
 
-    // 随着吃豆进程增加街机分数 (0 -> 100 -> 200 ... -> 1600)
-    const scoreTimer = window.setInterval(() => {
-      if (score < 1600) {
-        score += 200;
-        if (scoreEl) scoreEl.textContent = String(score).padStart(4, '0');
-      }
-    }, 380);
+  const canvas = document.getElementById('pac-canvas');
+  const ctx = canvas.getContext('2d');
+  const scoreEl = document.getElementById('pac-score');
+  const skipBtn = document.getElementById('pac-skip');
 
-    const finish = () => {
-      if (intro.dataset.finished === '1') return;
-      intro.dataset.finished = '1';
-      window.clearInterval(scoreTimer);
-      intro.classList.add('is-leaving');
-      document.documentElement.classList.remove('home-intro-active');
-      window.setTimeout(() => intro.remove(), 700);
-    };
+  // ---- 头像预加载（canvas 绘制用） ----
+  const avatarImg = new Image();
+  avatarImg.src = site.avatar || '/avatar.jpg';
 
-    const finishWithAvatarFlight = () => {
-      if (intro.dataset.finished === '1') return;
-      intro.dataset.finished = '1';
-      window.clearInterval(scoreTimer);
+  // ---- 画布尺寸（跟随视口，支持 devicePixelRatio） ----
+  let W = 0, H = 0, DPR = 1;
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.round(W * DPR);
+    canvas.height = Math.round(H * DPR);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
-      const source = intro.querySelector('.pac-target');
-      const destination = document.querySelector('.app-aside img');
-      const flight = intro.querySelector('.pac-flight-avatar');
-      if (source instanceof HTMLElement && destination instanceof HTMLImageElement && flight instanceof HTMLElement) {
-        const from = source.getBoundingClientRect();
-        const to = destination.getBoundingClientRect();
-        const fromX = from.left + from.width / 2;
-        const fromY = from.top + from.height / 2;
-        const toX = to.left + to.width / 2;
-        const toY = to.top + to.height / 2;
-        intro.style.setProperty('--absorb-x', `${toX}px`);
-        intro.style.setProperty('--absorb-y', `${toY}px`);
-        flight.style.left = `${fromX}px`;
-        flight.style.top = `${fromY}px`;
-        flight.style.setProperty('--flight-dx', `${toX - fromX}px`);
-        flight.style.setProperty('--flight-dy', `${toY - fromY}px`);
-        flight.style.setProperty('--flight-scale', String(Math.max(0.28, to.width / Math.max(from.width, 1))));
-      }
-
-      intro.classList.add('is-avatar-flying');
-      document.documentElement.classList.remove('home-intro-active');
-      window.setTimeout(() => intro.remove(), 620);
-    };
-
-    // 不受系统 prefers-reduced-motion 或无头环境干扰，确保动画完整播放
-    document.documentElement.classList.add('home-intro-active');
-
-    const skip = intro.querySelector('[data-home-intro-skip]');
-    skip?.addEventListener('click', finish, { once: true });
-
-    // 支持 ESC 快速跳过
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        window.removeEventListener('keydown', onKey);
-        finish();
-      }
-    };
-    window.addEventListener('keydown', onKey);
-
-    // 3.5 秒吃到头像；头像飞向主页真实头像，同时黑色背景被吸入目标点。
-    window.setTimeout(finishWithAvatarFlight, 3500);
+  // ---- 侧栏头像位置（飞行终点，动态测量） ----
+  function sidebarTarget() {
+    const img = document.querySelector('.app-aside img');
+    if (img) {
+      const r = img.getBoundingClientRect();
+      if (r.width > 0) return { x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width, h: r.height };
+    }
+    return { x: 30, y: 30, w: 0, h: 0 };
   }
 
-  initPacIntro();
-  document.addEventListener('astro:page-load', initPacIntro);
+  // ---- 几何：街机走廊 + 头像终点 ----
+  // 走廊：水平一条，宽度自适应，居中
+  function layout() {
+    const isMobile = W < 640;
+    const trackW = Math.min(W * 0.92, isMobile ? W - 24 : 720);
+    const trackH = isMobile ? 90 : 120;
+    const trackX = (W - trackW) / 2;
+    const trackY = H / 2 - trackH / 2;
+    const size = isMobile ? 56 : 72; // 吃豆人/头像直径
+    // 头像（终点）在走廊最右
+    const avatarX = trackX + trackW - size / 2 - 4;
+    const avatarY = trackY + trackH / 2;
+    // 吃豆人起点
+    const start = { x: trackX + size / 2, y: trackY + trackH / 2 };
+    // 豆子：走廊内均匀分布 6 颗（起点后 1/7 ~ 头像前）
+    const dots = [];
+    const usableStart = trackX + size * 1.2;
+    const usableEnd = avatarX - size * 1.1;
+    const n = 6;
+    for (let i = 0; i < n; i++) {
+      dots.push({
+        x: usableStart + ((usableEnd - usableStart) / (n - 1)) * i,
+        y: trackY + trackH / 2,
+        eaten: false,
+        big: i === 3, // 第 4 颗是能量豆（大圆点）
+      });
+    }
+    // 幽灵：从起点后方游走（装饰）
+    return { trackW, trackH, trackX, trackY, size, avatarX, avatarY, start, dots };
+  }
+
+  // ---- 时间轴（ms） ----
+  const T = {
+    ready: 600,       // READY! 闪烁
+    moveStart: 700,  // 吃豆人开始移动
+    moveEnd: 2900,   // 到达头像
+    eatAvatar: 3000, // 吃下头像（爆裂）
+    absorb: 3350,    // 头像吸入侧栏
+    end: 4200,       // 全幕淡出结束
+  };
+  const lerp = (a, b, p) => a + (b - a) * p;
+  const easeOut = (p) => 1 - Math.pow(1 - p, 3);
+  const clamp01 = (p) => Math.max(0, Math.min(1, p));
+
+  let score = 0;
+  let scoreShown = 0;
+  const dotsPer = 100; // 每颗豆 100 分
+
+  function drawMaze(t, L) {
+    // 走廊霓虹边框（渐显 0~400ms）
+    const fade = clamp01(t / 400);
+    ctx.save();
+    ctx.globalAlpha = fade;
+    ctx.strokeStyle = '#1932ff';
+    ctx.lineWidth = 3;
+    ctx.shadowColor = '#1932ff';
+    ctx.shadowBlur = 12;
+    ctx.beginPath();
+    ctx.roundRect(L.trackX, L.trackY, L.trackW, L.trackH, 14);
+    ctx.stroke();
+    // 内层细线
+    ctx.strokeStyle = 'rgba(80, 110, 255, 0.5)';
+    ctx.lineWidth = 1;
+    ctx.shadowBlur = 0;
+    ctx.beginPath();
+    ctx.roundRect(L.trackX + 5, L.trackY + 5, L.trackW - 10, L.trackH - 10, 10);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawDots(t, L) {
+    ctx.save();
+    for (const d of L.dots) {
+      if (d.eaten) continue;
+      const pulse = 0.8 + 0.2 * Math.sin(t / 260 + d.x);
+      const r = (d.big ? 8 : 5) * pulse;
+      ctx.fillStyle = d.big ? '#ffb897' : '#ffcc66';
+      ctx.shadowColor = d.big ? '#ffb897' : '#ffcc66';
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawPacMan(t, L, pacmanX) {
+    const r = L.size / 2;
+    // 嘴部开合：0.28s 周期
+    const chomp = 0.5 + 0.5 * Math.sin(t / 140);
+    const mouth = 0.12 + chomp * 0.32; // 张角（弧度的一半）
+    ctx.save();
+    ctx.translate(pacmanX, L.trackY + L.trackH / 2);
+    ctx.fillStyle = '#ffd600';
+    ctx.shadowColor = 'rgba(255, 214, 0, 0.75)';
+    ctx.shadowBlur = 22;
+    ctx.beginPath();
+    ctx.arc(0, 0, r, mouth, Math.PI * 2 - mouth);
+    ctx.lineTo(0, 0);
+    ctx.closePath();
+    ctx.fill();
+    // 眼睛
+    ctx.fillStyle = '#000';
+    ctx.shadowBlur = 0;
+    ctx.beginPath();
+    ctx.arc(-r * 0.08, -r * 0.42, Math.max(3, r * 0.14), 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawGhost(t, L, pacmanX) {
+    // 幽灵从头像后方追赶（装饰性，位置随吃豆人移动而保持距离）
+    const gx = pacmanX - L.size * 2.4;
+    const gy = L.trackY + L.trackH / 2 + Math.sin(t / 400) * 6;
+    const r = L.size * 0.42;
+    ctx.save();
+    ctx.translate(gx, gy);
+    ctx.fillStyle = '#ff3b30';
+    ctx.shadowColor = 'rgba(255, 59, 48, 0.5)';
+    ctx.shadowBlur = 14;
+    // 身体（圆顶 + 波浪底）
+    ctx.beginPath();
+    ctx.arc(0, 0, r, Math.PI, 0);
+    const waves = 4;
+    const ww = (r * 2) / waves;
+    for (let i = 0; i < waves; i++) {
+      const x0 = r - (i + 1) * ww;
+      ctx.lineTo(x0 + ww / 2, r * 0.72 + (i % 2 ? -4 : 4));
+      ctx.lineTo(x0, r * 0.55);
+    }
+    ctx.closePath();
+    ctx.fill();
+    // 眼睛
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(-r * 0.32, -r * 0.15, r * 0.22, 0, Math.PI * 2);
+    ctx.arc(r * 0.32, -r * 0.15, r * 0.22, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#1932ff';
+    ctx.beginPath();
+    ctx.arc(-r * 0.24, -r * 0.12, r * 0.11, 0, Math.PI * 2);
+    ctx.arc(r * 0.4, -r * 0.12, r * 0.11, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawAvatarAt(t, L, x, y, d, scale, alpha) {
+    if (!avatarImg.complete || !avatarImg.naturalWidth) {
+      // 未加载完成：占位圆
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = '#ff3b30';
+      ctx.lineWidth = 3;
+      ctx.shadowColor = 'rgba(255, 59, 48, 0.8)';
+      ctx.shadowBlur = 18;
+      ctx.beginPath();
+      ctx.arc(x, y, d / 2, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+      return;
+    }
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    const rr = d * scale;
+    ctx.shadowColor = 'rgba(255, 59, 48, 0.8)';
+    ctx.shadowBlur = 18;
+    // 圆形裁切
+    ctx.beginPath();
+    ctx.arc(x, y, rr / 2, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(avatarImg, x - rr / 2, y - rr / 2, rr, rr);
+    ctx.strokeStyle = '#ff3b30';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawReady(t) {
+    if (t > T.ready + 200) return;
+    const blink = t % 600 < 320;
+    if (!blink) return;
+    ctx.save();
+    ctx.fillStyle = '#ff3b30';
+    ctx.shadowColor = 'rgba(255, 59, 48, 0.7)';
+    ctx.shadowBlur = 14;
+    ctx.font = `700 ${Math.max(16, W * 0.018)}px var(--font-mono, monospace)`;
+    ctx.textAlign = 'center';
+    ctx.fillText('READY!', W / 2, H / 2 + 84);
+    ctx.restore();
+  }
+
+  function drawInsertCoin(t) {
+    // 底部 INSERT COIN（READY 阶段后渐入）
+    const a = clamp01((t - T.ready) / 400);
+    ctx.save();
+    ctx.globalAlpha = a * 0.85;
+    ctx.fillStyle = '#ffcc00';
+    ctx.font = `400 ${Math.max(10, W * 0.011)}px monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText('INSERT COIN TO ENTER BLOG', W / 2, H - 48);
+    ctx.restore();
+  }
+
+  function drawBurst(t, L) {
+    // 吃下头像瞬间的爆裂（3.0~3.4s）
+    const p = clamp01((t - T.eatAvatar) / 400);
+    if (p >= 1) return;
+    ctx.save();
+    const g = ctx.createRadialGradient(L.avatarX, L.avatarY, 0, L.avatarX, L.avatarY, 120 * p + 20);
+    g.addColorStop(0, `rgba(255,255,255,${0.95 * (1 - p)})`);
+    g.addColorStop(0.4, `rgba(255,214,0,${0.8 * (1 - p)})`);
+    g.addColorStop(0.8, `rgba(255,59,48,${0.5 * (1 - p)})`);
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(L.avatarX, L.avatarY, 120 * p + 20, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // 黑幕：吸收到侧栏头像点（3.35~4.2s 逐渐揭开）
+  function drawBlackVeil(t, target) {
+    const p = clamp01((t - T.absorb) / (T.end - T.absorb));
+    const q = easeOut(p);
+    // 半径从覆盖全屏 → 收到目标点
+    const fullR = Math.hypot(W, H);
+    const dx0 = W / 2 - target.x;
+    const dy0 = H / 2 - target.y;
+    const r = lerp(fullR, 0, q);
+    ctx.save();
+    // 反向：画黑色矩形减去圆（用 evenodd 或 4 个包围盒更简单：用 clip 反转）
+    // 简单做法：先画全屏黑，再在圆内擦掉——用 composite
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'destination-out';
+    const gg = ctx.createRadialGradient(target.x, target.y, 0, target.x, target.y, r);
+    gg.addColorStop(0, 'rgba(0,0,0,1)');
+    gg.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = gg;
+    ctx.beginPath();
+    ctx.arc(target.x, target.y, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // 飞行头像：从终点飞向侧栏头像（3.35~4.0s，沿轻弧线）
+  function drawFlyingAvatar(t, L, target) {
+    const p = clamp01((t - T.absorb) / 680);
+    if (p >= 1) return;
+    const e = easeOut(p);
+    // 弧线：中点往上抬
+    const mx = lerp(L.avatarX, target.x, 0.5);
+    const my = Math.min(L.avatarY, target.y) - L.size;
+    const x = (1 - e) * (1 - e) * L.avatarX + 2 * (1 - e) * e * mx + e * e * target.x;
+    const y = (1 - e) * (1 - e) * L.avatarY + 2 * (1 - e) * e * my + e * e * target.y;
+    const d = lerp(L.size, Math.max(target.w, target.h) || L.size * 0.6, e);
+    drawAvatarAt(t, L, x, y, d, 1, 1 - p * 0.15);
+  }
+
+  // ---- 主循环 ----
+  let rafId = 0;
+  let t0 = 0;
+  let finished = false;
+
+  function finish(reason) {
+    if (finished) return;
+    finished = true;
+    cancelAnimationFrame(rafId);
+    window.clearTimeout(skipTimerId);
+    document.documentElement.classList.remove('pac-intro-active');
+    root.remove();
+    localStorage.setItem('pac-intro-force', '0');
+    void reason;
+  }
+
+  function frame(now) {
+    const t = now - t0;
+    const L = layout();
+    const target = sidebarTarget();
+
+    // 黑底
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(0, 0, W, H);
+
+    // 吃豆人位置：700~2900ms 从起点到头像
+    const moveP = t < T.moveStart ? 0 : clamp01((t - T.moveStart) / (T.moveEnd - T.moveStart));
+    const pacmanX = lerp(L.start.x, L.avatarX, moveP);
+
+    drawMaze(t, L);
+    drawGhost(t, L, pacmanX);
+    // 吃过的豆消失
+    for (const d of L.dots) {
+      if (!d.eaten && pacmanX >= d.x - L.size * 0.2) {
+        d.eaten = true;
+        score += d.big ? 500 : dotsPer;
+      }
+    }
+    drawDots(t, L);
+
+    // 头像终点：READY/移动阶段显示；被吃时爆裂
+    if (t < T.eatAvatar) {
+      const pulse = 1 + 0.06 * Math.sin(t / 500);
+      drawAvatarAt(t, L, L.avatarX, L.avatarY, L.size * pulse, 1, 1);
+    }
+    drawBurst(t, L);
+
+    // 吃豆人（吸收到一半后淡出）
+    const pacAlpha = t > T.absorb ? clamp01(1 - (t - T.absorb) / 400) : 1;
+    if (pacAlpha > 0) {
+      ctx.save();
+      ctx.globalAlpha = pacAlpha;
+      drawPacMan(t, L, pacmanX);
+      ctx.restore();
+    }
+
+    drawReady(t);
+    drawInsertCoin(t);
+
+    // 吸入阶段：黑幕 + 飞行头像
+    if (t >= T.absorb) {
+      drawBlackVeil(t, target);
+      drawFlyingAvatar(t, L, target);
+    }
+
+    // HUD 分数
+    scoreShown += (score - scoreShown) * 0.2;
+    if (Math.abs(score - scoreShown) < 2) scoreShown = score;
+    if (scoreEl) scoreEl.textContent = String(Math.round(scoreShown)).padStart(4, '0');
+
+    // 整幕淡出（4.0~4.2s）
+    if (t >= 4000) {
+      const a = clamp01(1 - (t - 4000) / 200);
+      root.style.opacity = String(a);
+    }
+
+    if (t >= T.end) {
+      finish('complete');
+      return;
+    }
+    rafId = requestAnimationFrame(frame);
+  }
+
+  function start() {
+    t0 = performance.now();
+    document.documentElement.classList.add('pac-intro-active');
+    rafId = requestAnimationFrame(frame);
+    // 兜底：8s 后强制结束（防 rAF 挂起）
+    skipTimerId = window.setTimeout(() => finish('timeout'), 8000);
+  }
+
+  let skipTimerId = 0;
+  function skip() {
+    if (finished) return;
+    // 快进：直接跳到结尾淡出
+    if (t0 === 0) t0 = performance.now();
+    const now = performance.now();
+    if (now - t0 < T.absorb) {
+      // 把时间轴拨到吸收段
+      t0 = now - T.absorb;
+    }
+    if (now - t0 >= T.end - 300) finish('skip');
+  }
+
+  skipBtn.addEventListener('click', skip, { once: true });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') skip();
+  }, { once: true });
+
+  start();
+
+  // astro 客户端导航：返回/进入首页时若 HUD 未挂载则重建
+  document.addEventListener('astro:page-load', () => {
+    if (!document.getElementById('pac-intro')) return;
+  });
+})();
 </script>
