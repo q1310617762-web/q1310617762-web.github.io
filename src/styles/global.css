@@ -683,61 +683,61 @@ pre {
   50% { transform: scaleY(1); }
 }
 
-/* ================= 首页开屏：经典街机吃豆人（纯黑底 + 吃豆吃头像） ================= */
-.pac-intro {
+/* ================= 首页开屏：经典街机吃豆人（Canvas 重制版） ================= */
+/* 覆盖层：默认隐藏，JS 决定播放时才显示 */
+#pac-intro {
   position: fixed;
   inset: 0;
   z-index: 999;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #000000;
-  color: #ffffff;
-  padding: clamp(16px, 3vh, 32px) clamp(16px, 4vw, 40px);
-  overflow: hidden;
+  display: none;
+  background: #000000;
   user-select: none;
-  font-family: var(--font-mono);
-  box-sizing: border-box;
+}
+#pac-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
 }
 
-/* 顶部记分条 */
-.pac-header {
-  width: 100%;
-  max-width: 860px;
+/* 顶部街机记分 HUD */
+.pac-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  padding: clamp(14px, 3vh, 28px) clamp(16px, 4vw, 40px);
+  font-family: var(--font-mono);
   font-size: clamp(12px, 1.8vw, 15px);
   letter-spacing: 0.15em;
+  color: #ffffff;
+  pointer-events: none;
 }
-
-.pac-score-box {
+.pac-hud-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-
-.pac-label {
+.pac-hud-label {
   color: #ff3b30;
   font-weight: 700;
   text-shadow: 0 0 8px rgba(255, 59, 48, 0.6);
 }
-
-.pac-score {
-  color: #ffffff;
+.pac-hud-score {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.2em;
 }
-
 .pac-skip-btn {
+  pointer-events: auto;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #8e8e93;
   padding: 6px 14px;
   border-radius: 6px;
   font-size: 11px;
-  font-family: inherit;
+  font-family: var(--font-mono);
   letter-spacing: 0.12em;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -745,8 +745,7 @@ pre {
   align-items: center;
   gap: 6px;
 }
-
-.pac-skip-btn span {
+.pac-skip-key {
   background: #1c1c1e;
   color: #ffcc00;
   padding: 1px 5px;
@@ -754,362 +753,19 @@ pre {
   font-size: 9px;
   border: 1px solid rgba(255, 204, 0, 0.4);
 }
-
 .pac-skip-btn:hover {
   border-color: #ffcc00;
   color: #ffffff;
   box-shadow: 0 0 12px rgba(255, 204, 0, 0.3);
 }
 
-/* 中间主舞台（轨道宽度自适应，PC 800px，手机铺满） */
-.pac-stage {
-  position: relative;
-  width: 100%;
-  max-width: 820px;
-  height: clamp(140px, 22vh, 180px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 霓虹蓝色街机迷宫轨道边框 */
-.pac-track-border {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: #1932ff;
-  box-shadow: 0 0 10px #1932ff, 0 0 20px rgba(25, 50, 255, 0.5);
-  border-radius: 2px;
-}
-.pac-track-top { top: 10px; }
-.pac-track-bottom { bottom: 10px; }
-
-.pac-track {
-  position: relative;
-  width: 100%;
-  height: clamp(70px, 12vw, 90px);
-  display: flex;
-  align-items: center;
-}
-
-/* 吃豆人主体 (黄色经典造型，张嘴咬合动画 + 向右移动动画) */
-.pac-hero {
-  position: absolute;
-  left: 0;
-  width: clamp(52px, 8.5vw, 68px);
-  height: clamp(52px, 8.5vw, 68px);
-  z-index: 10;
-  /* 移动从 0% -> 终点头像位置 (约 86%)，时长 3.5 秒匀速前进 */
-  animation: pac-run 3.5s linear forwards;
-}
-
-/* 上半嘴巴 (利用边框画出扇形咬合) */
-.pac-mouth-top {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: #ffd600;
-  box-shadow: 0 0 20px rgba(255, 214, 0, 0.7);
-  clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%, 50% 50%);
-  transform-origin: 50% 50%;
-  animation: pac-chomp-top 0.28s infinite alternate ease-in-out;
-}
-
-/* 下半嘴巴 */
-.pac-mouth-bottom {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: #ffd600;
-  box-shadow: 0 0 20px rgba(255, 214, 0, 0.7);
-  clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%, 50% 50%);
-  transform-origin: 50% 50%;
-  animation: pac-chomp-bottom 0.28s infinite alternate ease-in-out;
-}
-
-/* 吃豆人的眼睛 */
-.pac-eye {
-  position: absolute;
-  top: 22%;
-  left: 48%;
-  width: clamp(6px, 1.2vw, 8px);
-  height: clamp(6px, 1.2vw, 8px);
-  background: #000;
-  border-radius: 50%;
-  z-index: 12;
-}
-
-/* 7颗排布在轨道上的能量豆 */
-.pac-dots {
-  position: absolute;
-  left: clamp(70px, 12vw, 90px);
-  right: clamp(70px, 12vw, 90px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 5;
-}
-
-.pac-dot {
-  width: clamp(10px, 1.8vw, 14px);
-  height: clamp(10px, 1.8vw, 14px);
-  background: #ffb897;
-  border-radius: 50%;
-  box-shadow: 0 0 8px rgba(255, 184, 151, 0.8), 0 0 16px rgba(255, 138, 92, 0.5);
-  animation-fill-mode: forwards;
-}
-
-/* 吃豆人每经过一颗豆子，豆子立即缩小消失 (按吃豆人行进时间 0s ~ 3.2s 分布) */
-.dot-1 { animation: dot-eaten 0.1s 0.50s forwards; }
-.dot-2 { animation: dot-eaten 0.1s 0.95s forwards; }
-.dot-3 { animation: dot-eaten 0.1s 1.40s forwards; }
-.dot-4 { animation: dot-eaten 0.1s 1.85s forwards; }
-.dot-5 { animation: dot-eaten 0.1s 2.30s forwards; }
-.dot-6 { animation: dot-eaten 0.1s 2.75s forwards; }
-.dot-7 { animation: dot-eaten 0.1s 3.15s forwards; }
-
-/* 终点：博客头像目标 */
-.pac-target {
-  position: absolute;
-  right: 0;
-  width: clamp(56px, 9vw, 76px);
-  height: clamp(56px, 9vw, 76px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 8;
-  animation: target-pulse 1.2s infinite alternate ease-in-out, target-eaten 0.35s 3.48s forwards cubic-bezier(0.6, -0.28, 0.735, 0.045);
-}
-
-.pac-avatar-glow {
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 59, 48, 0.5), transparent 70%);
-  animation: glow-pulse 1.2s infinite alternate;
-}
-
-.pac-avatar-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 3px solid #ff3b30;
-  box-shadow: 0 0 20px rgba(255, 59, 48, 0.8);
-  object-fit: cover;
-  position: relative;
-  z-index: 2;
-}
-
-.pac-target-ring {
-  position: absolute;
-  inset: -10px;
-  border: 1px dashed rgba(255, 204, 0, 0.6);
-  border-radius: 50%;
-  animation: target-rotate 4s linear infinite;
-}
-
-/* 吃下头像瞬间的金色爆光 */
-.pac-burst {
-  position: absolute;
-  inset: -30px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #ffffff 10%, #ffd600 40%, rgba(255, 59, 48, 0.8) 70%, transparent 90%);
-  opacity: 0;
-  transform: scale(0.2);
-  pointer-events: none;
-  z-index: 20;
-  animation: burst-flash 0.45s 3.48s forwards ease-out;
-}
-
-/* 吃到头像后的飞行副本：由终点飞向侧栏中的真实头像 */
-.pac-flight-avatar {
-  position: fixed;
-  z-index: 60;
-  width: clamp(56px, 9vw, 76px);
-  height: clamp(56px, 9vw, 76px);
-  border: 3px solid #ffd600;
-  border-radius: 50%;
-  object-fit: cover;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-/* 底部状态条 */
-.pac-footer {
-  width: 100%;
-  max-width: 860px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.pac-title-bar {
-  color: #ffcc00;
-  font-size: clamp(11px, 1.8vw, 13px);
-  letter-spacing: 0.18em;
-  text-align: center;
-  text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
-}
-
-.pac-ready-text {
-  color: #ff3b30;
-  font-size: clamp(14px, 2.4vw, 18px);
-  font-weight: 700;
-  letter-spacing: 0.3em;
-  animation: ready-blink 0.8s infinite alternate;
-}
-
-/* 退出转场：整幕在 3.9s~4.3s 缩放隐去，主页进入 */
-.pac-intro.is-leaving {
-  pointer-events: none;
-  animation: pac-leave 0.45s cubic-bezier(0.7, 0, 0.84, 0.15) forwards;
-}
-
-/* 头像被吃后：吃豆人不减速，头像沿曲线飞向主页头像；黑幕向终点吸入 */
-.pac-intro.is-avatar-flying {
-  --absorb-x: 50vw;
-  --absorb-y: 50vh;
-  pointer-events: none;
-  animation: pac-absorb 0.62s cubic-bezier(0.72, 0, 0.18, 1) forwards;
-}
-.pac-intro.is-avatar-flying::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 40;
-  pointer-events: none;
-  background: #000;
-  clip-path: circle(150% at var(--absorb-x) var(--absorb-y));
-  animation: pac-black-absorb 0.62s cubic-bezier(0.72, 0, 0.18, 1) forwards;
-}
-.pac-intro.is-avatar-flying .pac-header,
-.pac-intro.is-avatar-flying .pac-stage,
-.pac-intro.is-avatar-flying .pac-footer {
-  animation: pac-scene-dim 0.2s ease forwards;
-}
-.pac-intro.is-avatar-flying .pac-target {
-  animation: pac-target-consume 0.2s ease forwards;
-}
-.pac-intro.is-avatar-flying .pac-flight-avatar {
-  opacity: 1;
-  animation: pac-avatar-flight 0.62s cubic-bezier(0.72, 0, 0.18, 1) forwards;
-}
-
-/* 动画关键帧声明 */
-@keyframes pac-chomp-top {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(-35deg); }
-}
-
-@keyframes pac-chomp-bottom {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(35deg); }
-}
-
-@keyframes pac-run {
-  0% {
-    left: 0;
-    transform: scale(1);
-  }
-  92% {
-    left: calc(100% - clamp(60px, 9vw, 80px));
-    transform: scale(1);
-  }
-  /* 咬下头像瞬间吃豆人轻微膨胀吞入 */
-  97% {
-    left: calc(100% - clamp(60px, 9vw, 80px));
-    transform: scale(1.22);
-  }
-  100% {
-    left: calc(100% - clamp(60px, 9vw, 80px));
-    transform: scale(1.15);
-  }
-}
-
-@keyframes dot-eaten {
-  0%   { transform: scale(1); opacity: 1; }
-  50%  { transform: scale(1.4); opacity: 0.8; }
-  100% { transform: scale(0); opacity: 0; }
-}
-
-@keyframes target-pulse {
-  0%   { transform: scale(1); }
-  100% { transform: scale(1.08); }
-}
-
-@keyframes glow-pulse {
-  0%   { opacity: 0.4; transform: scale(0.95); }
-  100% { opacity: 0.9; transform: scale(1.25); }
-}
-
-@keyframes target-rotate {
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes target-eaten {
-  0%   { transform: scale(1.08); opacity: 1; }
-  40%  { transform: scale(1.35) rotate(-15deg); filter: brightness(2); }
-  100% { transform: scale(0) rotate(180deg); opacity: 0; filter: brightness(3); }
-}
-
-@keyframes burst-flash {
-  0%   { opacity: 0; transform: scale(0.2); }
-  40%  { opacity: 1; transform: scale(1.4); }
-  100% { opacity: 0; transform: scale(2.2); }
-}
-
-@keyframes ready-blink {
-  0%   { opacity: 0.2; }
-  100% { opacity: 1; }
-}
-
-@keyframes pac-leave {
-  0%   { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.05); filter: brightness(1.8); visibility: hidden; }
-}
-@keyframes pac-scene-dim {
-  to { opacity: .04; transform: scale(1.02); }
-}
-@keyframes pac-target-consume {
-  to { opacity: 0; transform: scale(.72); }
-}
-@keyframes pac-avatar-flight {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.15);
-    filter: brightness(1.4) drop-shadow(0 0 18px #ffd600);
-  }
-  58% {
-    opacity: 1;
-    transform: translate(calc(-50% + var(--flight-dx) * .58), calc(-50% + var(--flight-dy) * .58)) scale(calc(1.15 - (1.15 - var(--flight-scale)) * .58));
-    filter: brightness(1.8) drop-shadow(0 0 24px #ffd600);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(calc(-50% + var(--flight-dx)), calc(-50% + var(--flight-dy))) scale(var(--flight-scale));
-    filter: brightness(2) drop-shadow(0 0 2px #fff);
-  }
-}
-@keyframes pac-black-absorb {
-  0% { clip-path: circle(150% at var(--absorb-x) var(--absorb-y)); }
-  100% { clip-path: circle(0% at var(--absorb-x) var(--absorb-y)); }
-}
-@keyframes pac-absorb {
-  0% { opacity: 1; }
-  72% { opacity: 1; }
-  100% { opacity: 0; visibility: hidden; }
-}
-
+/* 主页入场：开屏激活时推迟到全幕淡出后再接上 */
 .home-page {
   animation: home-page-in 0.65s 0.08s ease both;
 }
-.home-intro-active .home-page {
-  animation-delay: 3.8s;
+.pac-intro-active .home-page {
+  animation-delay: 4.0s;
 }
-
 @keyframes home-page-in {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1120,11 +776,11 @@ pre {
 ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-muted) 40%, transparent); border-radius: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 
-/* 动效：尊重减少动画偏好（吃豆人开屏独立保证完整4秒） */
+/* 动效：尊重减少动画偏好（吃豆人开屏为 canvas 主动画，不受影响） */
 @media (prefers-reduced-motion: reduce) {
-  html:not(.home-intro-active) *,
-  html:not(.home-intro-active) *::before,
-  html:not(.home-intro-active) *::after {
+  html:not(.pac-intro-active) *,
+  html:not(.pac-intro-active) *::before,
+  html:not(.pac-intro-active) *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
