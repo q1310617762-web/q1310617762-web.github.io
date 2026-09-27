@@ -96,12 +96,8 @@ import { site } from '@data/site';
       window.setTimeout(() => intro.remove(), 450);
     };
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // 不受系统 prefers-reduced-motion 或无头环境干扰，确保动画完整播放
     document.documentElement.classList.add('home-intro-active');
-    if (reduced) {
-      finish();
-      return;
-    }
 
     const skip = intro.querySelector('[data-home-intro-skip]');
     skip?.addEventListener('click', finish, { once: true });

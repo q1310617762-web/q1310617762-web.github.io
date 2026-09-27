@@ -1044,9 +1044,11 @@ pre {
 ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-muted) 40%, transparent); border-radius: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 
-/* 动效：尊重减少动画偏好 */
+/* 动效：尊重减少动画偏好（吃豆人开屏独立保证完整4秒） */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  html:not(.home-intro-active) *,
+  html:not(.home-intro-active) *::before,
+  html:not(.home-intro-active) *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
