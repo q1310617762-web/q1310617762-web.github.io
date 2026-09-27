@@ -862,6 +862,21 @@ pre {
 .home-intro-star-b { top: 34%; left: 78%; animation: intro-star 2.8s 1.35s ease-in-out infinite; }
 .home-intro-star-c { top: 68%; left: 16%; animation: intro-star 2.6s 1.7s ease-in-out infinite; }
 .home-intro-star-d { top: 76%; left: 84%; animation: intro-star 3s 1.15s ease-in-out infinite; }
+.home-intro.is-reduced-motion .home-intro-content,
+.home-intro.is-reduced-motion .home-intro-footer,
+.home-intro.is-reduced-motion .home-intro-sun,
+.home-intro.is-reduced-motion .home-intro-moon,
+.home-intro.is-reduced-motion .home-intro-star {
+  animation: none;
+}
+.home-intro.is-reduced-motion .home-intro-content,
+.home-intro.is-reduced-motion .home-intro-footer {
+  opacity: 1;
+}
+.home-intro.is-reduced-motion .home-intro-rule {
+  width: min(160px, 30vw);
+  animation: none;
+}
 .home-intro.is-leaving {
   pointer-events: none;
   animation: intro-leave .56s cubic-bezier(.65, 0, .84, .12) forwards;

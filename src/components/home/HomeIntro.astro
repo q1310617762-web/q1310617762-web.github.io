@@ -43,26 +43,18 @@
       intro.classList.add('is-leaving');
       document.documentElement.classList.remove('home-intro-active');
       window.setTimeout(() => intro.remove(), 560);
-      try {
-        sessionStorage.setItem('home-intro-seen', '1');
-      } catch {}
     };
 
-    let seen = false;
-    try {
-      seen = sessionStorage.getItem('home-intro-seen') === '1';
-    } catch {}
-
-    if (seen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      finish();
-      return;
-    }
-
+    // 每次真正打开/刷新首页都展示一次，避免用户因为 sessionStorage 记录而看不到动画。
+    // 减少动画模式仍保留短暂的静态开屏，只关闭位移和闪烁等动效。
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.documentElement.classList.add('home-intro-active');
     intro.setAttribute('aria-hidden', 'false');
+    if (reduced) intro.classList.add('is-reduced-motion');
+
     const skip = intro.querySelector('[data-home-intro-skip]');
     skip?.addEventListener('click', finish, { once: true });
-    window.setTimeout(finish, 2500);
+    window.setTimeout(finish, reduced ? 900 : 2500);
   }
 
   initHomeIntro();
