@@ -683,14 +683,14 @@ pre {
   50% { transform: scaleY(1); }
 }
 
-/* ================= 首页开屏：经典街机吃豆人（Canvas 重制版） ================= */
+/* ================= 首页开屏：经典街机吃豆人（Canvas 极简版） ================= */
 /* 覆盖层：默认隐藏，JS 决定播放时才显示 */
 #pac-intro {
   position: fixed;
   inset: 0;
   z-index: 999;
   display: none;
-  background: #000000;
+  background: transparent;
   user-select: none;
 }
 #pac-canvas {
@@ -699,64 +699,39 @@ pre {
   display: block;
 }
 
-/* 顶部街机记分 HUD */
-.pac-hud {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: clamp(14px, 3vh, 28px) clamp(16px, 4vw, 40px);
-  font-family: var(--font-mono);
-  font-size: clamp(12px, 1.8vw, 15px);
-  letter-spacing: 0.15em;
-  color: #ffffff;
-  pointer-events: none;
-}
-.pac-hud-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.pac-hud-label {
-  color: #ff3b30;
-  font-weight: 700;
-  text-shadow: 0 0 8px rgba(255, 59, 48, 0.6);
-}
-.pac-hud-score {
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.2em;
-}
+/* 跳过按钮（右下角，极简） */
 .pac-skip-btn {
-  pointer-events: auto;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: #8e8e93;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 11px;
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
   font-family: var(--font-mono);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  backdrop-filter: blur(6px);
 }
 .pac-skip-key {
-  background: #1c1c1e;
+  background: rgba(255, 204, 0, 0.15);
   color: #ffcc00;
-  padding: 1px 5px;
-  border-radius: 3px;
-  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10px;
   border: 1px solid rgba(255, 204, 0, 0.4);
 }
 .pac-skip-btn:hover {
   border-color: #ffcc00;
   color: #ffffff;
-  box-shadow: 0 0 12px rgba(255, 204, 0, 0.3);
+  box-shadow: 0 0 14px rgba(255, 204, 0, 0.35);
 }
 
 /* 主页入场：开屏激活时推迟到全幕淡出后再接上 */

@@ -1,7 +1,8 @@
 ---
-// 首页开屏：经典街机吃豆人（Canvas 重制版）
-// 结构：全屏 canvas 覆盖层 + 顶部街机记分 HUD + SKIP 按钮。
-// 时间轴（总 4.2s）：READY! → 吃豆前进吃豆 → 到达头像爆裂 → 头像沿弧线吸入侧栏真实头像 → 全幕淡出。
+// 首页开屏：经典街机吃豆人（Canvas 极简版）
+// 只有三要素：吃豆人、豆子、主页头像。
+// 时间轴（总 4.2s）：吃豆人从左侧吃豆前进 → 吃下头像（爆裂）→ 头像吸入侧栏真实头像 → 全幕淡出。
+// 音效：Web Audio 合成吃豆音（无资源文件）。
 // 播放频率：PLAY_EVERY_LOAD=true 每次进首页都播（测试期）；改 false 后同一天只播一次。
 // URL 带 ?intro=1 可强制播放（测试用）。
 import { site } from '@data/site';
@@ -10,19 +11,9 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
 
 <div id="pac-intro" data-pac-intro aria-label="开屏动画：吃豆人进入博客">
   <canvas id="pac-canvas" aria-hidden="true"></canvas>
-  <div class="pac-hud" aria-hidden="true">
-    <div class="pac-hud-item">
-      <span class="pac-hud-label">1UP</span>
-      <span class="pac-hud-score" id="pac-score">0000</span>
-    </div>
-    <div class="pac-hud-item">
-      <span class="pac-hud-label">HIGH SCORE</span>
-      <span class="pac-hud-score">19800</span>
-    </div>
-    <button type="button" id="pac-skip" class="pac-skip-btn">
-      SKIP<span class="pac-skip-key">ESC</span>
-    </button>
-  </div>
+  <button type="button" id="pac-skip" class="pac-skip-btn" aria-label="跳过开屏动画">
+    跳过<span class="pac-skip-key">ESC</span>
+  </button>
 </div>
 
 <script is:inline define:vars={{ avatarSrc }}>
@@ -49,7 +40,6 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
 
   const canvas = document.getElementById('pac-canvas');
   const ctx = canvas.getContext('2d');
-  const scoreEl = document.getElementById('pac-score');
   const skipBtn = document.getElementById('pac-skip');
   if (!canvas || !ctx) return;
 
@@ -71,12 +61,6 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
   resize();
   window.addEventListener('resize', resize);
 
-  function rrect(x, y, w, h, r) {
-    ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(x, y, w, h, r);
-    else ctx.rect(x, y, w, h);
-  }
-
   // ---- 侧栏头像位置（飞行终点，动态测量；移动端侧栏在顶部） ----
   function sidebarTarget() {
     const img = document.querySelector('.app-aside img');
@@ -87,77 +71,100 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     return { x: W / 2, y: 40, w: 72, h: 72 };
   }
 
-  // ---- 几何：街机走廊 + 头像终点 ----
+  // ---- 几何：走廊 + 头像终点（极简：只有吃豆人、豆子、头像） ----
   function layout() {
     const isMobile = W < 640;
     const trackW = Math.min(W * 0.92, isMobile ? W - 24 : 720);
-    const trackH = isMobile ? 90 : 120;
     const trackX = (W - trackW) / 2;
-    const trackY = H / 2 - trackH / 2;
+    const trackY = H / 2 - 60;
     const size = isMobile ? 56 : 72; // 吃豆人/头像直径
     const avatarX = trackX + trackW - size / 2 - 4;
-    const avatarY = trackY + trackH / 2;
-    const start = { x: trackX + size / 2, y: trackY + trackH / 2 };
+    const avatarY = trackY;
+    const start = { x: trackX + size / 2, y: trackY };
     const dots = [];
     const usableStart = trackX + size * 1.2;
     const usableEnd = avatarX - size * 1.1;
     for (let i = 0; i < 6; i++) {
       dots.push({
         x: usableStart + ((usableEnd - usableStart) / 5) * i,
-        y: avatarY,
-        big: i === 3, // 第 4 颗是能量豆
+        y: trackY,
+        big: i === 3, // 第 4 颗是能量豆（稍大）
       });
     }
-    return { trackW, trackH, trackX, trackY, size, avatarX, avatarY, start, dots };
+    return { trackW, trackX, trackY, size, avatarX, avatarY, start, dots };
   }
 
   // ---- 时间轴（ms） ----
   const T = {
-    ready: 600,
-    moveStart: 700,
-    moveEnd: 2900,
-    eatAvatar: 3000,
-    absorb: 3350,
-    end: 4200,
+    moveStart: 400,  // 吃豆人开始移动
+    moveEnd: 2800,   // 到达头像
+    eatAvatar: 2900, // 吃下头像（爆裂）
+    absorb: 3300,    // 头像吸入侧栏
+    end: 4200,       // 全幕淡出结束
   };
   const lerp = (a, b, p) => a + (b - a) * p;
   const easeOut = (p) => 1 - Math.pow(1 - p, 3);
   const clamp01 = (p) => Math.max(0, Math.min(1, p));
-  const MONO = '"JetBrains Mono", ui-monospace, monospace';
 
-  // 按吃豆人位置确定性地计分（每帧重算，无状态漂移）
-  function dotsScored(pacmanX, L) {
-    let s = 0;
-    for (const d of L.dots) if (pacmanX >= d.x - L.size * 0.2) s += d.big ? 500 : 100;
-    return s;
+  // ---- 吃豆音效（Web Audio 合成，无资源文件） ----
+  let audioCtx = null;
+  function ensureAudio() {
+    if (!audioCtx) {
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      } catch (e) {
+        audioCtx = null;
+      }
+    }
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
   }
+  // 首次交互（点击/按键）时解锁音频（浏览器自动播放策略）
+  window.addEventListener('pointerdown', ensureAudio, { once: true });
+  window.addEventListener('keydown', ensureAudio, { once: true });
 
-  function drawMaze(t, L) {
-    ctx.save();
-    ctx.globalAlpha = clamp01(t / 400);
-    ctx.strokeStyle = '#1932ff';
-    ctx.lineWidth = 3;
-    ctx.shadowColor = '#1932ff';
-    ctx.shadowBlur = 12;
-    rrect(L.trackX, L.trackY, L.trackW, L.trackH, 14);
-    ctx.stroke();
-    ctx.strokeStyle = 'rgba(80, 110, 255, 0.5)';
-    ctx.lineWidth = 1;
-    ctx.shadowBlur = 0;
-    rrect(L.trackX + 5, L.trackY + 5, L.trackW - 10, L.trackH - 10, 10);
-    ctx.stroke();
-    ctx.restore();
+  function playDotSound() {
+    if (!audioCtx || audioCtx.state !== 'running') return;
+    const t0 = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, t0);
+    osc.frequency.exponentialRampToValueAtTime(200, t0 + 0.08);
+    gain.gain.setValueAtTime(0.12, t0);
+    gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.09);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t0);
+    osc.stop(t0 + 0.1);
   }
+  function playBurstSound() {
+    if (!audioCtx || audioCtx.state !== 'running') return;
+    const t0 = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(400, t0);
+    osc.frequency.exponentialRampToValueAtTime(80, t0 + 0.3);
+    gain.gain.setValueAtTime(0.15, t0);
+    gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.32);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t0);
+    osc.stop(t0 + 0.35);
+  }
+  let lastDotIdx = -1;
+  let burstPlayed = false;
 
   function drawDots(t, L, pacmanX) {
     ctx.save();
     for (const d of L.dots) {
-      if (pacmanX >= d.x - L.size * 0.2) continue;
-      const pulse = 0.8 + 0.2 * Math.sin(t / 260 + d.x);
-      const r = (d.big ? 8 : 5) * pulse;
+      if (pacmanX >= d.x - L.size * 0.2) continue; // 已被吃掉
+      // 靠近吃豆人时轻微放大 + 呼吸，吃的时候更"活"
+      const dist = d.x - pacmanX;
+      const near = clamp01(1 - dist / (L.size * 3));
+      const pulse = 0.8 + 0.2 * Math.sin(t / 260 + d.x) + near * 0.25;
+      const r = (d.big ? 9 : 6) * pulse;
       ctx.fillStyle = d.big ? '#ffb897' : '#ffcc66';
       ctx.shadowColor = ctx.fillStyle;
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = 10 + near * 6;
       ctx.beginPath();
       ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
       ctx.fill();
@@ -165,111 +172,45 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     ctx.restore();
   }
 
-  function drawPacMan(t, L, pacmanX) {
+  function drawPacMan(t, L, pacmanX, isMoving) {
     const r = L.size / 2;
-    const chomp = 0.5 + 0.5 * Math.sin(t / 140);
-    const mouth = 0.12 + chomp * 0.32;
+    // 嘴部开合：前进时张合更快（吃豆感），静止时慢（待机感）
+    const chomp = 0.5 + 0.5 * Math.sin(t / (isMoving ? 90 : 180));
+    const mouth = 0.1 + chomp * 0.38;
     ctx.save();
-    ctx.translate(pacmanX, L.trackY + L.trackH / 2);
+    ctx.translate(pacmanX, L.trackY);
     ctx.fillStyle = '#ffd600';
-    ctx.shadowColor = 'rgba(255, 214, 0, 0.75)';
-    ctx.shadowBlur = 22;
     ctx.beginPath();
     ctx.arc(0, 0, r, mouth, Math.PI * 2 - mouth);
     ctx.lineTo(0, 0);
     ctx.closePath();
     ctx.fill();
     ctx.fillStyle = '#000';
-    ctx.shadowBlur = 0;
     ctx.beginPath();
     ctx.arc(-r * 0.08, -r * 0.42, Math.max(3, r * 0.14), 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
   }
 
-  function drawGhost(t, L, pacmanX) {
-    const gx = pacmanX - L.size * 2.4;
-    const gy = L.trackY + L.trackH / 2 + Math.sin(t / 400) * 6;
-    const r = L.size * 0.42;
-    ctx.save();
-    ctx.translate(gx, gy);
-    ctx.fillStyle = '#ff3b30';
-    ctx.shadowColor = 'rgba(255, 59, 48, 0.5)';
-    ctx.shadowBlur = 14;
-    ctx.beginPath();
-    ctx.arc(0, 0, r, Math.PI, 0);
-    const waves = 4;
-    const ww = (r * 2) / waves;
-    for (let i = 0; i < waves; i++) {
-      const x0 = r - (i + 1) * ww;
-      ctx.lineTo(x0 + ww / 2, r * 0.72 + (i % 2 ? -4 : 4));
-      ctx.lineTo(x0, r * 0.55);
-    }
-    ctx.closePath();
-    ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = '#fff';
-    ctx.beginPath();
-    ctx.arc(-r * 0.32, -r * 0.15, r * 0.22, 0, Math.PI * 2);
-    ctx.arc(r * 0.32, -r * 0.15, r * 0.22, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = '#1932ff';
-    ctx.beginPath();
-    ctx.arc(-r * 0.24, -r * 0.12, r * 0.11, 0, Math.PI * 2);
-    ctx.arc(r * 0.4, -r * 0.12, r * 0.11, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-
   function drawAvatarAt(x, y, d, alpha) {
     if (!avatarImg.complete || !avatarImg.naturalWidth) {
-      // 未加载完成：占位圆
+      // 未加载完成：淡白占位圆
       ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.strokeStyle = '#ff3b30';
-      ctx.lineWidth = 3;
-      ctx.shadowColor = 'rgba(255, 59, 48, 0.8)';
-      ctx.shadowBlur = 18;
+      ctx.globalAlpha = alpha * 0.35;
+      ctx.fillStyle = '#ffffff';
       ctx.beginPath();
       ctx.arc(x, y, d / 2, 0, Math.PI * 2);
-      ctx.stroke();
+      ctx.fill();
       ctx.restore();
       return;
     }
+    // 纯圆形裁切贴图，无红圈无边框无光晕
     ctx.save();
     ctx.globalAlpha = alpha;
-    ctx.shadowColor = 'rgba(255, 59, 48, 0.8)';
-    ctx.shadowBlur = 18;
     ctx.beginPath();
     ctx.arc(x, y, d / 2, 0, Math.PI * 2);
     ctx.clip();
     ctx.drawImage(avatarImg, x - d / 2, y - d / 2, d, d);
-    ctx.strokeStyle = '#ff3b30';
-    ctx.lineWidth = 3;
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  function drawReady(t) {
-    if (t > T.ready + 200 || t % 600 >= 320) return;
-    ctx.save();
-    ctx.fillStyle = '#ff3b30';
-    ctx.shadowColor = 'rgba(255, 59, 48, 0.7)';
-    ctx.shadowBlur = 14;
-    ctx.font = `700 ${Math.max(16, W * 0.018)}px ${MONO}`;
-    ctx.textAlign = 'center';
-    ctx.fillText('READY!', W / 2, H / 2 + 84);
-    ctx.restore();
-  }
-
-  function drawInsertCoin(t) {
-    const a = clamp01((t - T.ready) / 400);
-    ctx.save();
-    ctx.globalAlpha = a * 0.85;
-    ctx.fillStyle = '#ffcc00';
-    ctx.font = `400 ${Math.max(10, W * 0.011)}px ${MONO}`;
-    ctx.textAlign = 'center';
-    ctx.fillText('INSERT COIN TO ENTER BLOG', W / 2, H - 48);
     ctx.restore();
   }
 
@@ -307,11 +248,12 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     ctx.restore();
   }
 
-  // 飞行头像：从走廊终点沿弧线飞入侧栏真实头像
+  // 飞行头像：从走廊终点沿弧线飞入侧栏真实头像（缓动更平滑）
   function drawFlyingAvatar(t, L, target) {
     const p = clamp01((t - T.absorb) / 680);
     if (p >= 1) return;
-    const e = easeOut(p);
+    // 先快后慢的平滑缓动（easeInOutCubic 风格）
+    const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
     const mx = lerp(L.avatarX, target.x, 0.5);
     const my = Math.min(L.avatarY, target.y) - L.size;
     const x = (1 - e) * (1 - e) * L.avatarX + 2 * (1 - e) * e * mx + e * e * target.x;
@@ -330,7 +272,6 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     window.clearTimeout(guardTimer);
     if (onKey) window.removeEventListener('keydown', onKey);
     root.remove();
-    // 稍后再解锁主页动画，避免 class 移除导致 .home-page 重排闪烁
     window.setTimeout(() => document.documentElement.classList.remove('pac-intro-active'), 900);
   }
 
@@ -341,14 +282,15 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
 
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.clearRect(0, 0, W, H);
+    // 全黑背景（完全遮住主页，街机氛围）
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, W, H);
 
+    // 吃豆人移动：缓入缓出（细腻，不匀速生硬）
     const moveP = t < T.moveStart ? 0 : clamp01((t - T.moveStart) / (T.moveEnd - T.moveStart));
-    const pacmanX = lerp(L.start.x, L.avatarX, moveP);
+    const moveEased = moveP < 0.5 ? 2 * moveP * moveP : 1 - Math.pow(-2 * moveP + 2, 2) / 2; // easeInOutQuad
+    const pacmanX = lerp(L.start.x, L.avatarX, moveEased);
 
-    drawMaze(t, L);
-    drawGhost(t, L, pacmanX);
     drawDots(t, L, pacmanX);
 
     if (t < T.eatAvatar) {
@@ -360,19 +302,27 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     if (pacAlpha > 0) {
       ctx.save();
       ctx.globalAlpha = pacAlpha;
-      drawPacMan(t, L, pacmanX);
+      drawPacMan(t, L, pacmanX, t >= T.moveStart && t <= T.moveEnd);
       ctx.restore();
     }
-
-    drawReady(t);
-    drawInsertCoin(t);
 
     if (t >= T.absorb) {
       drawBlackVeil(t, target);
       drawFlyingAvatar(t, L, target);
     }
 
-    if (scoreEl) scoreEl.textContent = String(dotsScored(pacmanX, L)).padStart(4, '0');
+    // 吃豆音效：每吃一颗豆播一次
+    let eaten = 0;
+    for (const d of L.dots) if (pacmanX >= d.x - L.size * 0.2) eaten++;
+    if (eaten > lastDotIdx) {
+      lastDotIdx = eaten;
+      playDotSound();
+    }
+    if (t >= T.eatAvatar && !burstPlayed) {
+      burstPlayed = true;
+      playBurstSound();
+    }
+
     if (t >= 4000) root.style.opacity = String(clamp01(1 - (t - 4000) / 200));
 
     if (t >= T.end) {
@@ -382,19 +332,33 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     rafId = requestAnimationFrame(frame);
   }
 
-  function start() {
+  // ---- 头像预加载：加载完成前不开始动画（避免右侧显示占位白圈） ----
+  let started = false;
+  const startNow = () => {
+    if (started) return;
+    started = true;
     root.style.display = 'block';
     root.style.opacity = '1';
     t0 = performance.now();
     document.documentElement.classList.add('pac-intro-active');
+    ensureAudio();
     rafId = requestAnimationFrame(frame);
-    guardTimer = window.setTimeout(finish, 8000); // 兜底防挂
+    guardTimer = window.setTimeout(finish, 8000);
+  };
+
+  if (avatarImg.complete && avatarImg.naturalWidth) {
+    startNow();
+  } else {
+    avatarImg.addEventListener('load', startNow, { once: true });
+    avatarImg.addEventListener('error', startNow, { once: true }); // 加载失败也降级开播
+    // 兜底：500ms 内头像仍未就绪则强制开播（防图片路径异常）
+    window.setTimeout(startNow, 500);
   }
 
   function skip() {
     if (finished) return;
     const now = performance.now();
-    if (now - t0 < T.absorb) t0 = now - T.absorb; // 快进到吸收段
+    if (now - t0 < T.absorb) t0 = now - T.absorb;
     if (now - t0 >= T.end - 200) finish();
   }
 
@@ -406,7 +370,5 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     }
   };
   window.addEventListener('keydown', onKey);
-
-  start();
 })();
 </script>
