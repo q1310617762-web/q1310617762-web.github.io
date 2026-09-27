@@ -165,6 +165,17 @@ const W = grayData.info.width;
 const H = grayData.info.height;
 const box = detectQrBox(grayData.data, W, H);
 
+/** 二维码最终编码：灰度 + 少量调色板的 PNG
+ *  二维码只有黑白两色，全彩 PNG 会白白浪费体积（720² 要 189KB）。
+ *  实测各 DPR 栅格下能否解码：
+ *    · 全彩 720       189 KB  4/6
+ *    · 硬二值化 720   5.5 KB  2/6  ← 丢掉边缘抗锯齿反而更难扫
+ *    · 灰度 8 色 720  10.1 KB 4/6  ← 与原图完全一致，但小 95%
+ *  所以保留抗锯齿，只做灰度化 + 调色板量化。 */
+function qrPng(pipeline) {
+  return pipeline.greyscale().png({ compressionLevel: 9, palette: true, colors: 8 });
+}
+
 let buf;
 let desc;
 
@@ -202,17 +213,14 @@ if (box) {
     .png()
     .toBuffer();
 
-  buf = await sharp(squared).resize(720, 720).png({ compressionLevel: 9 }).toBuffer();
+  buf = await qrPng(sharp(squared).resize(720, 720)).toBuffer();
 
   desc = `已从 ${W}×${H} 中裁出二维码 ${box.width}×${box.height}（占原图宽 ${((box.width / W) * 100).toFixed(0)}%），四周补白至 ${target}×${target}`;
 } else {
   // 没识别出二维码：按「本来就是干净方图」处理，只做补白/缩放
-  buf = await sharp(input.file)
-    .rotate()
-    .flatten({ background: '#ffffff' })
-    .resize(720, 720, { fit: 'inside' })
-    .png({ compressionLevel: 9 })
-    .toBuffer();
+  buf = await qrPng(
+    sharp(input.file).rotate().flatten({ background: '#ffffff' }).resize(720, 720, { fit: 'inside' })
+  ).toBuffer();
   desc = `未识别出名片卡结构，按整张图处理（${W}×${H}）`;
   if (Math.abs(W / H - 1) > 0.05) {
     say(`⚠️ 源图不是正方形（${W}×${H}）—— 二维码通常应以正方形保存。`);

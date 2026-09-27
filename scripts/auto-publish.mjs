@@ -84,6 +84,17 @@ async function resolveGit() {
     return;
   }
 
+  // 1.4) 为新图片生成 WebP 缩略图（页面展示用的是缩略图，能省约 90% 流量）
+  const img = await run(NODE, [path.join(ROOT, 'scripts', 'optimize-images.mjs')]);
+  const imgOut = (img.out || '').split('\n').filter(Boolean);
+  // 只在真的生成了新缩略图时才记一笔，否则日志会被每次都一样的「已是最新」刷屏
+  const imgLine =
+    img.code !== 0
+      ? `缩略图异常: ${(img.err || img.out || '').split('\n').filter(Boolean).pop() || img.code}`
+      : imgOut.some((l) => l.includes('生成 '))
+        ? imgOut[imgOut.length - 1]
+        : '';
+
   // 1.5) 微信二维码：投递文件夹里有新图就自动转成 public/wechat.png
   //      退出码 2 = 没有二维码可处理，属于正常跳过
   const wx = await run(NODE, [path.join(ROOT, 'scripts', 'set-wechat.mjs')]);
@@ -93,6 +104,7 @@ async function resolveGit() {
   } else if (wx.code !== 2) {
     wxLine = `二维码处理异常: ${(wx.err || wx.out || '').split('\n').filter(Boolean).pop() || wx.code}`;
   }
+  const extra = [wxLine, imgLine].filter(Boolean).join(' | ');
 
   // 2) 有没有变化？没有就立刻退出（不做任何多余工作）
   await run(git, ['add', '-A']);
@@ -100,12 +112,12 @@ async function resolveGit() {
   const changed = diff.out ? diff.out.split('\n').filter(Boolean).length : 0;
 
   if (changed === 0) {
-    log(`无变化 | ${syncLine}${wxLine ? ' | ' + wxLine : ''} | ${Date.now() - started}ms`);
+    log(`无变化 | ${syncLine}${extra ? ' | ' + extra : ''} | ${Date.now() - started}ms`);
     return;
   }
 
   // 3) 提交并推送（GitHub Actions 会自动构建部署）
-  log(`检测到 ${changed} 个文件变化 | ${syncLine}${wxLine ? ' | ' + wxLine : ''}`);
+  log(`检测到 ${changed} 个文件变化 | ${syncLine}${extra ? ' | ' + extra : ''}`);
 
   const commit = await run(git, [
     '-c', 'user.name=东芽果DYG',

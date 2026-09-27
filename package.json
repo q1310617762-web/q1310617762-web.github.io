@@ -12,7 +12,8 @@
     "sync:photos": "node scripts/sync-photos.mjs",
     "publish:photos": "node scripts/auto-publish.mjs",
     "set:gate": "node scripts/set-photo-gate.mjs",
-    "set:wechat": "node scripts/set-wechat.mjs"
+    "set:wechat": "node scripts/set-wechat.mjs",
+    "optimize:images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",

@@ -45,9 +45,25 @@ function basePathFixer() {
               walk(p);
             } else if (entry.name.endsWith('.html')) {
               const src = fs.readFileSync(p, 'utf8');
-              const out = src.replace(/(\s(?:href|src)=")(\/[^"]*)"/g, (m, attr, url) =>
+              let out = src.replace(/(\s(?:href|src)=")(\/[^"]*)"/g, (m, attr, url) =>
                 needsPrefix(url) ? `${attr}${prefix}${url}"` : m
               );
+              // srcset 里是一串「路径 宽度」的组合，要逐个改写，
+              // 否则缩略图在 GitHub Pages 项目页（子路径）下会 404
+              out = out.replace(/(\ssrcset=")([^"]*)"/g, (m, attr, list) => {
+                const fixed = list
+                  .split(',')
+                  .map((part) => {
+                    const t = part.trim();
+                    if (!t) return t;
+                    const sp = t.indexOf(' ');
+                    const url = sp < 0 ? t : t.slice(0, sp);
+                    const rest = sp < 0 ? '' : t.slice(sp);
+                    return needsPrefix(url) ? `${prefix}${url}${rest}` : t;
+                  })
+                  .join(', ');
+                return `${attr}${fixed}"`;
+              });
               if (out !== src) {
                 fs.writeFileSync(p, out, 'utf8');
                 htmlCount++;

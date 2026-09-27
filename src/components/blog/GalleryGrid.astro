@@ -4,6 +4,7 @@
 // 灯箱用事件委托绑定在外层容器上，因此解锁后动态出现的图片也能点击查看
 import { albums as albumData } from '@data/site';
 import { getPhotoAlbum } from '@utils/photos';
+import { thumb, thumbSet } from '@utils/thumbs';
 import GatedAlbum from './GatedAlbum.astro';
 
 const auto = getPhotoAlbum();
@@ -31,9 +32,12 @@ const Card = null; // 占位（模板里直接用内联结构，便于两类相�
               class="group relative aspect-[4/3] overflow-hidden rounded-(--radius-card) border border-(--color-border) bg-(--color-surface) shadow-(--shadow-card) transition-all duration-300 hover:-translate-y-1.5 hover:border-(--color-primary)/45 hover:shadow-(--shadow-card-hover) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface)"
             >
               <img
-                src={it.src}
+                src={thumb(it.src, 480)}
+                srcset={thumbSet(it.src)}
+                sizes="(min-width:1024px) 260px, (min-width:640px) 280px, 45vw"
                 alt={it.title}
                 loading="lazy"
+                decoding="async"
                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <span
@@ -73,9 +77,12 @@ const Card = null; // 占位（模板里直接用内联结构，便于两类相�
               class="group relative aspect-[4/3] overflow-hidden rounded-(--radius-card) border border-(--color-border) bg-(--color-surface) shadow-(--shadow-card) transition-all duration-300 hover:-translate-y-1.5 hover:border-(--color-primary)/45 hover:shadow-(--shadow-card-hover) dark:border-(--color-dark-border) dark:bg-(--color-dark-surface)"
             >
               <img
-                src={it.src}
+                src={thumb(it.src, 480)}
+                srcset={thumbSet(it.src)}
+                sizes="(min-width:1024px) 260px, (min-width:640px) 280px, 45vw"
                 alt={it.title}
                 loading="lazy"
+                decoding="async"
                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <span

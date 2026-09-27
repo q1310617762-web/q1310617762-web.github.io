@@ -148,7 +148,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: url('/wallpaper.jpg') center / cover no-repeat;
+  background: url('/wallpaper.webp') center / cover no-repeat;
   opacity: var(--wallpaper-opacity);
   pointer-events: none;
   transition: opacity 0.4s ease;
