@@ -6,7 +6,10 @@
 // 播放频率：PLAY_EVERY_LOAD=true 每次进首页都播（测试期）；改 false 后同一天只播一次。
 // URL 带 ?intro=1 可强制播放（测试用）。
 import { site } from '@data/site';
-const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
+// 头像路径：BASE_URL + site.avatar（避免双斜杠）
+const rawAvatar = site.avatar || '/avatar.jpg';
+const base = import.meta.env.BASE_URL || '/';
+const avatarSrc = base.replace(/\/$/, '') + (rawAvatar.startsWith('/') ? rawAvatar : `/${rawAvatar}`);
 ---
 
 <div id="pac-intro" data-pac-intro aria-label="开屏动画：吃豆人进入博客">
@@ -43,9 +46,14 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
   const skipBtn = document.getElementById('pac-skip');
   if (!canvas || !ctx) return;
 
-  // ---- 头像（canvas 绘制，子路径部署需 BASE_URL 前缀） ----
+  // ---- 头像源：优先复用侧栏已加载好的 <img>（保证与侧栏 100% 一致），new Image() 兜底 ----
   const avatarImg = new Image();
   avatarImg.src = window.__AVATAR_SRC__;
+  function getAvatarImg() {
+    const side = document.querySelector('.app-aside img');
+    if (side && side.complete && side.naturalWidth > 0) return side;
+    return avatarImg;
+  }
 
   // ---- 画布尺寸（跟随视口 + devicePixelRatio） ----
   let W = 0, H = 0, DPR = 1;
@@ -150,8 +158,53 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     osc.start(t0);
     osc.stop(t0 + 0.35);
   }
+
+  // 水漩涡音效：噪声（白噪声）低通滤波 + 低频嗡鸣，模拟"咕噜咕噜"吸水的声音
+  function playSwirlSound() {
+    if (!audioCtx || audioCtx.state !== 'running') return;
+    const t0 = audioCtx.currentTime;
+    const dur = 0.95;
+
+    // 白噪声缓冲
+    const bufLen = audioCtx.sampleRate * dur;
+    const buf = audioCtx.createBuffer(1, bufLen, audioCtx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
+
+    // 噪声 → 低通（频率从 800Hz 滑到 150Hz，像水被吸走）
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buf;
+    const lp = audioCtx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(800, t0);
+    lp.frequency.exponentialRampToValueAtTime(120, t0 + dur);
+    lp.Q.value = 4;
+
+    const nGain = audioCtx.createGain();
+    nGain.gain.setValueAtTime(0, t0);
+    nGain.gain.linearRampToValueAtTime(0.18, t0 + 0.15);
+    nGain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+
+    noise.connect(lp).connect(nGain).connect(audioCtx.destination);
+    noise.start(t0);
+    noise.stop(t0 + dur);
+
+    // 低频嗡鸣（漩涡中心"嗡"声）
+    const osc = audioCtx.createOscillator();
+    const oGain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(110, t0);
+    osc.frequency.exponentialRampToValueAtTime(45, t0 + dur);
+    oGain.gain.setValueAtTime(0, t0);
+    oGain.gain.linearRampToValueAtTime(0.08, t0 + 0.2);
+    oGain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+    osc.connect(oGain).connect(audioCtx.destination);
+    osc.start(t0);
+    osc.stop(t0 + dur);
+  }
   let lastDotIdx = -1;
   let burstPlayed = false;
+  let swirlPlayed = false;
 
   function drawDots(t, L, pacmanX) {
     ctx.save();
@@ -193,7 +246,8 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
   }
 
   function drawAvatarAt(x, y, d, alpha) {
-    if (!avatarImg.complete || !avatarImg.naturalWidth) {
+    const img = getAvatarImg();
+    if (!img.complete || !img.naturalWidth) {
       // 未加载完成：淡白占位圆
       ctx.save();
       ctx.globalAlpha = alpha * 0.35;
@@ -210,7 +264,7 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     ctx.beginPath();
     ctx.arc(x, y, d / 2, 0, Math.PI * 2);
     ctx.clip();
-    ctx.drawImage(avatarImg, x - d / 2, y - d / 2, d, d);
+    ctx.drawImage(img, x - d / 2, y - d / 2, d, d);
     ctx.restore();
   }
 
@@ -230,21 +284,76 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     ctx.restore();
   }
 
-  // 黑幕：整幕转黑后向侧栏头像点收缩（揭开主页）
+  // 黑幕：水漩涡特效（螺旋臂旋入 + 涟漪环），向侧栏头像点吸入
   function drawBlackVeil(t, target) {
     const p = clamp01((t - T.absorb) / (T.end - T.absorb));
-    const r = lerp(Math.hypot(W, H) * 1.1, 0, easeOut(p));
+    const q = easeOut(p);
+    const cx = target.x;
+    const cy = target.y;
+    const fullR = Math.hypot(W, H) * 1.1;
+    // 1) 整幕黑
     ctx.save();
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, W, H);
+
+    // 2) 漩涡臂：螺旋线向心旋入（平滑，destination-out 擦黑幕露出主页）
+    const armCount = 4;
+    const twist = 2.6 * Math.PI; // 旋转总量
+    const rot = p * twist * 0.5;
+    // 揭开比例：前 35% 基本全黑，后 65% 才逐渐揭开（让漩涡有"蓄水"过程）
+    const reveal = clamp01((p - 0.35) / 0.65);
+    const holeQ = easeOut(reveal);
+    const maxHole = fullR * 0.4;
     ctx.globalCompositeOperation = 'destination-out';
-    const gg = ctx.createRadialGradient(target.x, target.y, 0, target.x, target.y, Math.max(r, 1));
-    gg.addColorStop(0, 'rgba(0,0,0,1)');
-    gg.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = gg;
-    ctx.beginPath();
-    ctx.arc(target.x, target.y, Math.max(r, 1), 0, Math.PI * 2);
-    ctx.fill();
+    ctx.lineCap = 'round';
+    for (let a = 0; a < armCount; a++) {
+      const baseAngle = (a / armCount) * Math.PI * 2 + rot;
+      const steps = 48;
+      ctx.beginPath();
+      for (let s = 0; s <= steps; s++) {
+        const sp = s / steps;
+        // 半径从外缘向中心：外圈随 reveal 收缩，内圈保持
+        const radius = lerp(fullR * (1 - holeQ * 0.75), maxHole * (1 - sp), sp);
+        const angle = baseAngle + sp * twist * (0.5 + 0.5 * p);
+        const px = cx + Math.cos(angle) * radius;
+        const py = cy + Math.sin(angle) * radius;
+        if (s === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.lineWidth = 26 * (1 - p * 0.4) + 6;
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = 'rgba(0,0,0,1)';
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    // 3) 中心洞（漩涡汇合处，揭开主页）
+    const holeR = lerp(0, maxHole, holeQ);
+    if (holeR > 1) {
+      const gg = ctx.createRadialGradient(cx, cy, 0, cx, cy, holeR);
+      gg.addColorStop(0, 'rgba(0,0,0,1)');
+      gg.addColorStop(0.85, 'rgba(0,0,0,0.9)');
+      gg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = gg;
+      ctx.beginPath();
+      ctx.arc(cx, cy, holeR, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // 4) 水波纹涟漪（在黑幕之上，淡蓝色，向心收缩）
+    ctx.save();
+    const rippleCount = 3;
+    for (let k = 0; k < rippleCount; k++) {
+      const rp = clamp01((p - 0.1 - k * 0.22) / 0.55);
+      if (rp <= 0 || rp >= 1) continue;
+      const rr = lerp(fullR * 0.4, 0, easeOut(rp));
+      ctx.strokeStyle = `rgba(140, 210, 255, ${0.28 * (1 - rp)})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rr, 0, Math.PI * 2);
+      ctx.stroke();
+    }
     ctx.restore();
   }
 
@@ -321,6 +430,10 @@ const avatarSrc = import.meta.env.BASE_URL + (site.avatar || '/avatar.jpg');
     if (t >= T.eatAvatar && !burstPlayed) {
       burstPlayed = true;
       playBurstSound();
+    }
+    if (t >= T.absorb && !swirlPlayed) {
+      swirlPlayed = true;
+      playSwirlSound();
     }
 
     if (t >= 4000) root.style.opacity = String(clamp01(1 - (t - 4000) / 200));
