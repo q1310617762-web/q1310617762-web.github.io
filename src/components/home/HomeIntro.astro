@@ -1,0 +1,70 @@
+---
+// 首页开屏：只做视觉引导，不阻塞页面内容加载。
+---
+<div class="home-intro" data-home-intro aria-hidden="true">
+  <div class="home-intro-sky" aria-hidden="true">
+    <span class="home-intro-sun" />
+    <span class="home-intro-moon" />
+    <span class="home-intro-star home-intro-star-a" />
+    <span class="home-intro-star home-intro-star-b" />
+    <span class="home-intro-star home-intro-star-c" />
+    <span class="home-intro-star home-intro-star-d" />
+  </div>
+
+  <div class="home-intro-content" role="status" aria-live="polite">
+    <span class="home-intro-kicker">A QUIET CORNER</span>
+    <span class="home-intro-rule" aria-hidden="true" />
+    <p class="home-intro-title">东芽果DYG 的博客</p>
+    <p class="home-intro-subtitle">记录游戏、音乐与日常想法</p>
+    <div class="home-intro-topics" aria-label="内容分类">
+      <span>ANIME</span>
+      <i aria-hidden="true">·</i>
+      <span>GAMES</span>
+      <i aria-hidden="true">·</i>
+      <span>LIFE</span>
+    </div>
+  </div>
+
+  <div class="home-intro-footer">
+    <span class="home-intro-loading"><span />正在进入空间</span>
+    <button type="button" class="home-intro-skip" data-home-intro-skip>跳过动画</button>
+  </div>
+</div>
+
+<script>
+  function initHomeIntro() {
+    const intro = document.querySelector('[data-home-intro]');
+    if (!(intro instanceof HTMLElement) || intro.dataset.bound === '1') return;
+    intro.dataset.bound = '1';
+
+    const finish = () => {
+      if (intro.dataset.finished === '1') return;
+      intro.dataset.finished = '1';
+      intro.classList.add('is-leaving');
+      document.documentElement.classList.remove('home-intro-active');
+      window.setTimeout(() => intro.remove(), 560);
+      try {
+        sessionStorage.setItem('home-intro-seen', '1');
+      } catch {}
+    };
+
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem('home-intro-seen') === '1';
+    } catch {}
+
+    if (seen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      finish();
+      return;
+    }
+
+    document.documentElement.classList.add('home-intro-active');
+    intro.setAttribute('aria-hidden', 'false');
+    const skip = intro.querySelector('[data-home-intro-skip]');
+    skip?.addEventListener('click', finish, { once: true });
+    window.setTimeout(finish, 2500);
+  }
+
+  initHomeIntro();
+  document.addEventListener('astro:page-load', initHomeIntro);
+</script>
