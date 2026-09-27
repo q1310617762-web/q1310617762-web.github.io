@@ -683,258 +683,361 @@ pre {
   50% { transform: scaleY(1); }
 }
 
-/* ================= 首页开屏：晨光 / 星夜 ================= */
-.home-intro {
+/* ================= 首页开屏：经典街机吃豆人（纯黑底 + 吃豆吃头像） ================= */
+.pac-intro {
   position: fixed;
   inset: 0;
-  z-index: 80;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  color: #3f4363;
-  background:
-    radial-gradient(70% 70% at 50% 10%, rgba(255,255,255,.92), transparent 68%),
-    linear-gradient(145deg, #edf5ff 0%, #fdf7f1 56%, #f6eaf3 100%);
-  isolation: isolate;
-  animation: intro-appear .45s ease both;
-}
-.home-intro::before,
-.home-intro::after {
-  position: absolute;
-  content: '';
-  pointer-events: none;
-}
-.home-intro::before {
-  inset: 0;
-  z-index: -2;
-  opacity: .15;
-  background: url('/wallpaper.webp') center / cover no-repeat;
-  filter: saturate(.8) blur(1px);
-  transform: scale(1.03);
-}
-.home-intro::after {
-  inset: -25%;
-  z-index: -1;
-  background:
-    radial-gradient(circle at 18% 30%, rgba(165, 206, 255, .28), transparent 18%),
-    radial-gradient(circle at 82% 72%, rgba(248, 191, 215, .24), transparent 20%);
-  animation: intro-drift 12s ease-in-out infinite alternate;
-}
-.home-intro-content {
-  position: relative;
-  z-index: 2;
+  z-index: 999;
   display: flex;
-  width: min(88vw, 560px);
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  animation: intro-content-in .9s .18s cubic-bezier(.22, .8, .25, 1) both;
-}
-.home-intro-kicker {
-  color: #8198bb;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .32em;
-}
-.home-intro-rule {
-  position: relative;
-  display: block;
-  width: 0;
-  height: 1px;
-  margin: 16px 0 18px;
-  background: linear-gradient(90deg, transparent, #e4adbd, transparent);
-  animation: intro-rule 1s .5s ease forwards;
-}
-.home-intro-title {
-  margin: 0;
-  color: #303550;
-  font-family: var(--font-serif);
-  font-size: clamp(27px, 5vw, 44px);
-  font-weight: 700;
-  letter-spacing: .08em;
-  line-height: 1.2;
-  text-shadow: 0 4px 20px rgba(136, 151, 187, .16);
-}
-.home-intro-subtitle {
-  margin: 15px 0 0;
-  color: #7e86a2;
-  font-size: 13px;
-  letter-spacing: .16em;
-}
-.home-intro-topics {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 29px;
-  color: #b08aa1;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .22em;
-}
-.home-intro-topics i {
-  color: #c9a4b5;
-  font-style: normal;
-}
-.home-intro-footer {
-  position: absolute;
-  right: 28px;
-  bottom: 27px;
-  left: 28px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
   justify-content: space-between;
-  color: #8b92a9;
-  font-size: 11px;
-  animation: intro-footer-in .7s .8s ease both;
+  align-items: center;
+  background-color: #000000;
+  color: #ffffff;
+  padding: clamp(16px, 3vh, 32px) clamp(16px, 4vw, 40px);
+  overflow: hidden;
+  user-select: none;
+  font-family: var(--font-mono);
+  box-sizing: border-box;
 }
-.home-intro-loading {
+
+/* 顶部记分条 */
+.pac-header {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(12px, 1.8vw, 15px);
+  letter-spacing: 0.15em;
+}
+
+.pac-score-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pac-label {
+  color: #ff3b30;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(255, 59, 48, 0.6);
+}
+
+.pac-score {
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.2em;
+}
+
+.pac-skip-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #8e8e93;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: inherit;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 6px;
 }
-.home-intro-loading span {
-  display: block;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #d99caf;
-  box-shadow: 0 0 0 5px rgba(217, 156, 175, .12);
-  animation: intro-pulse 1.4s ease-in-out infinite;
+
+.pac-skip-btn span {
+  background: #1c1c1e;
+  color: #ffcc00;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 9px;
+  border: 1px solid rgba(255, 204, 0, 0.4);
 }
-.home-intro-skip {
-  min-height: 32px;
-  padding: 0 12px;
-  border: 1px solid rgba(130, 145, 180, .24);
-  border-radius: var(--radius-pill);
-  color: #79829d;
-  background: rgba(255, 255, 255, .35);
-  font-size: 11px;
-  cursor: pointer;
-  transition: border-color .15s ease, color .15s ease, background .15s ease, transform .15s ease;
+
+.pac-skip-btn:hover {
+  border-color: #ffcc00;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 204, 0, 0.3);
 }
-.home-intro-skip:hover {
-  border-color: rgba(217, 156, 175, .58);
-  color: #a96783;
-  background: rgba(255, 255, 255, .64);
-  transform: translateY(-1px);
+
+/* 中间主舞台（轨道宽度自适应，PC 800px，手机铺满） */
+.pac-stage {
+  position: relative;
+  width: 100%;
+  max-width: 820px;
+  height: clamp(140px, 22vh, 180px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.home-intro-skip:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
-  outline-offset: 3px;
+
+/* 霓虹蓝色街机迷宫轨道边框 */
+.pac-track-border {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #1932ff;
+  box-shadow: 0 0 10px #1932ff, 0 0 20px rgba(25, 50, 255, 0.5);
+  border-radius: 2px;
 }
-.home-intro-sky {
+.pac-track-top { top: 10px; }
+.pac-track-bottom { bottom: 10px; }
+
+.pac-track {
+  position: relative;
+  width: 100%;
+  height: clamp(70px, 12vw, 90px);
+  display: flex;
+  align-items: center;
+}
+
+/* 吃豆人主体 (黄色经典造型，张嘴咬合动画 + 向右移动动画) */
+.pac-hero {
+  position: absolute;
+  left: 0;
+  width: clamp(52px, 8.5vw, 68px);
+  height: clamp(52px, 8.5vw, 68px);
+  z-index: 10;
+  /* 移动从 0% -> 终点头像位置 (约 86%)，时长 3.5 秒匀速前进 */
+  animation: pac-run 3.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* 上半嘴巴 (利用边框画出扇形咬合) */
+.pac-mouth-top {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-}
-.home-intro-sun,
-.home-intro-moon {
-  position: absolute;
-  top: 15%;
-  right: 13%;
-  display: block;
-  width: clamp(46px, 7vw, 78px);
-  aspect-ratio: 1;
   border-radius: 50%;
+  background: #ffd600;
+  box-shadow: 0 0 20px rgba(255, 214, 0, 0.7);
+  clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%, 50% 50%);
+  transform-origin: 50% 50%;
+  animation: pac-chomp-top 0.28s infinite alternate ease-in-out;
 }
-.home-intro-sun {
-  background: radial-gradient(circle at 35% 32%, #fffdf2 0 12%, #ffe2a9 48%, #f2b7a7 100%);
-  box-shadow: 0 0 0 15px rgba(255, 220, 166, .12), 0 0 58px rgba(245, 190, 149, .32);
-  animation: intro-sun-float 5s ease-in-out infinite;
-}
-.home-intro-moon {
-  display: none;
-  background: radial-gradient(circle at 34% 32%, #fff 0 12%, #dce4ff 46%, #a9bce9 100%);
-  box-shadow: 0 0 0 14px rgba(180, 198, 255, .08), 0 0 52px rgba(134, 161, 246, .3);
-  animation: intro-moon-float 5s ease-in-out infinite;
-}
-.home-intro-star {
+
+/* 下半嘴巴 */
+.pac-mouth-bottom {
   position: absolute;
-  width: 3px;
-  height: 3px;
+  inset: 0;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 10px 2px rgba(203, 220, 255, .75);
+  background: #ffd600;
+  box-shadow: 0 0 20px rgba(255, 214, 0, 0.7);
+  clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%, 50% 50%);
+  transform-origin: 50% 50%;
+  animation: pac-chomp-bottom 0.28s infinite alternate ease-in-out;
+}
+
+/* 吃豆人的眼睛 */
+.pac-eye {
+  position: absolute;
+  top: 22%;
+  left: 48%;
+  width: clamp(6px, 1.2vw, 8px);
+  height: clamp(6px, 1.2vw, 8px);
+  background: #000;
+  border-radius: 50%;
+  z-index: 12;
+}
+
+/* 7颗排布在轨道上的能量豆 */
+.pac-dots {
+  position: absolute;
+  left: clamp(70px, 12vw, 90px);
+  right: clamp(70px, 12vw, 90px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+}
+
+.pac-dot {
+  width: clamp(10px, 1.8vw, 14px);
+  height: clamp(10px, 1.8vw, 14px);
+  background: #ffb897;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 184, 151, 0.8), 0 0 16px rgba(255, 138, 92, 0.5);
+  animation-fill-mode: forwards;
+}
+
+/* 吃豆人每经过一颗豆子，豆子立即缩小消失 (按吃豆人行进时间 0s ~ 3.2s 分布) */
+.dot-1 { animation: dot-eaten 0.1s 0.50s forwards; }
+.dot-2 { animation: dot-eaten 0.1s 0.95s forwards; }
+.dot-3 { animation: dot-eaten 0.1s 1.40s forwards; }
+.dot-4 { animation: dot-eaten 0.1s 1.85s forwards; }
+.dot-5 { animation: dot-eaten 0.1s 2.30s forwards; }
+.dot-6 { animation: dot-eaten 0.1s 2.75s forwards; }
+.dot-7 { animation: dot-eaten 0.1s 3.15s forwards; }
+
+/* 终点：博客头像目标 */
+.pac-target {
+  position: absolute;
+  right: 0;
+  width: clamp(56px, 9vw, 76px);
+  height: clamp(56px, 9vw, 76px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 8;
+  animation: target-pulse 1.2s infinite alternate ease-in-out, target-eaten 0.35s 3.48s forwards cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+
+.pac-avatar-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 59, 48, 0.5), transparent 70%);
+  animation: glow-pulse 1.2s infinite alternate;
+}
+
+.pac-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid #ff3b30;
+  box-shadow: 0 0 20px rgba(255, 59, 48, 0.8);
+  object-fit: cover;
+  position: relative;
+  z-index: 2;
+}
+
+.pac-target-ring {
+  position: absolute;
+  inset: -10px;
+  border: 1px dashed rgba(255, 204, 0, 0.6);
+  border-radius: 50%;
+  animation: target-rotate 4s linear infinite;
+}
+
+/* 吃下头像瞬间的金色爆光 */
+.pac-burst {
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 10%, #ffd600 40%, rgba(255, 59, 48, 0.8) 70%, transparent 90%);
   opacity: 0;
-}
-.home-intro-star-a { top: 19%; left: 18%; animation: intro-star 2.4s 1s ease-in-out infinite; }
-.home-intro-star-b { top: 34%; left: 78%; animation: intro-star 2.8s 1.35s ease-in-out infinite; }
-.home-intro-star-c { top: 68%; left: 16%; animation: intro-star 2.6s 1.7s ease-in-out infinite; }
-.home-intro-star-d { top: 76%; left: 84%; animation: intro-star 3s 1.15s ease-in-out infinite; }
-.home-intro.is-reduced-motion .home-intro-content,
-.home-intro.is-reduced-motion .home-intro-footer,
-.home-intro.is-reduced-motion .home-intro-sun,
-.home-intro.is-reduced-motion .home-intro-moon,
-.home-intro.is-reduced-motion .home-intro-star {
-  animation: none;
-}
-.home-intro.is-reduced-motion .home-intro-content,
-.home-intro.is-reduced-motion .home-intro-footer {
-  opacity: 1;
-}
-.home-intro.is-reduced-motion .home-intro-rule {
-  width: min(160px, 30vw);
-  animation: none;
-}
-.home-intro.is-leaving {
+  transform: scale(0.2);
   pointer-events: none;
-  animation: intro-leave .56s cubic-bezier(.65, 0, .84, .12) forwards;
+  z-index: 20;
+  animation: burst-flash 0.45s 3.48s forwards ease-out;
 }
-.home-intro.is-leaving .home-intro-content {
-  animation: intro-content-out .42s ease forwards;
+
+/* 底部状态条 */
+.pac-footer {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
-.home-intro.is-leaving .home-intro-footer,
-.home-intro.is-leaving .home-intro-sky {
-  opacity: 0;
-  transition: opacity .25s ease;
+
+.pac-title-bar {
+  color: #ffcc00;
+  font-size: clamp(11px, 1.8vw, 13px);
+  letter-spacing: 0.18em;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
 }
+
+.pac-ready-text {
+  color: #ff3b30;
+  font-size: clamp(14px, 2.4vw, 18px);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  animation: ready-blink 0.8s infinite alternate;
+}
+
+/* 退出转场：整幕在 3.9s~4.3s 缩放隐去，主页进入 */
+.pac-intro.is-leaving {
+  pointer-events: none;
+  animation: pac-leave 0.45s cubic-bezier(0.7, 0, 0.84, 0.15) forwards;
+}
+
+/* 动画关键帧声明 */
+@keyframes pac-chomp-top {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(-35deg); }
+}
+
+@keyframes pac-chomp-bottom {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(35deg); }
+}
+
+@keyframes pac-run {
+  0% {
+    left: 0;
+    transform: scale(1);
+  }
+  92% {
+    left: calc(100% - clamp(60px, 9vw, 80px));
+    transform: scale(1);
+  }
+  /* 咬下头像瞬间吃豆人轻微膨胀吞入 */
+  97% {
+    left: calc(100% - clamp(60px, 9vw, 80px));
+    transform: scale(1.22);
+  }
+  100% {
+    left: calc(100% - clamp(60px, 9vw, 80px));
+    transform: scale(1.15);
+  }
+}
+
+@keyframes dot-eaten {
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(1.4); opacity: 0.8; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+@keyframes target-pulse {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+@keyframes glow-pulse {
+  0%   { opacity: 0.4; transform: scale(0.95); }
+  100% { opacity: 0.9; transform: scale(1.25); }
+}
+
+@keyframes target-rotate {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes target-eaten {
+  0%   { transform: scale(1.08); opacity: 1; }
+  40%  { transform: scale(1.35) rotate(-15deg); filter: brightness(2); }
+  100% { transform: scale(0) rotate(180deg); opacity: 0; filter: brightness(3); }
+}
+
+@keyframes burst-flash {
+  0%   { opacity: 0; transform: scale(0.2); }
+  40%  { opacity: 1; transform: scale(1.4); }
+  100% { opacity: 0; transform: scale(2.2); }
+}
+
+@keyframes ready-blink {
+  0%   { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+@keyframes pac-leave {
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.05); filter: brightness(1.8); visibility: hidden; }
+}
+
 .home-page {
-  animation: home-page-in .65s .08s ease both;
+  animation: home-page-in 0.65s 0.08s ease both;
 }
 .home-intro-active .home-page {
-  animation-delay: 2.2s;
+  animation-delay: 3.8s;
 }
-[data-theme="night"] .home-intro {
-  color: #e8edff;
-  background:
-    radial-gradient(55% 65% at 50% 10%, rgba(93, 113, 199, .2), transparent 68%),
-    linear-gradient(145deg, #080d20 0%, #111832 54%, #211733 100%);
-}
-[data-theme="night"] .home-intro::before {
-  opacity: .3;
-  filter: saturate(.75) brightness(.55) blur(1px);
-}
-[data-theme="night"] .home-intro::after {
-  background:
-    radial-gradient(circle at 14% 28%, rgba(91, 133, 255, .22), transparent 20%),
-    radial-gradient(circle at 82% 72%, rgba(185, 109, 204, .2), transparent 20%);
-}
-[data-theme="night"] .home-intro-sun { display: none; }
-[data-theme="night"] .home-intro-moon { display: block; }
-[data-theme="night"] .home-intro-kicker { color: #9daee3; }
-[data-theme="night"] .home-intro-rule { background: linear-gradient(90deg, transparent, #8eaaf5, transparent); }
-[data-theme="night"] .home-intro-title { color: #f1f3ff; text-shadow: 0 4px 24px rgba(124, 151, 255, .24); }
-[data-theme="night"] .home-intro-subtitle,
-[data-theme="night"] .home-intro-footer { color: #9ca7c9; }
-[data-theme="night"] .home-intro-topics { color: #c5a4de; }
-[data-theme="night"] .home-intro-topics i { color: #8395ca; }
-[data-theme="night"] .home-intro-loading span { background: #b8caff; box-shadow: 0 0 0 5px rgba(147, 172, 255, .14); }
-[data-theme="night"] .home-intro-skip { border-color: rgba(174, 191, 255, .25); color: #aeb9db; background: rgba(21, 30, 62, .42); }
-[data-theme="night"] .home-intro-skip:hover { border-color: #9db8ff; color: #d7e1ff; background: rgba(47, 62, 111, .6); }
 
-@keyframes intro-appear { from { opacity: 0; } to { opacity: 1; } }
-@keyframes intro-content-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes intro-content-out { to { opacity: 0; transform: translateY(-18px); } }
-@keyframes intro-footer-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes intro-rule { to { width: min(160px, 30vw); } }
-@keyframes intro-drift { from { transform: translate3d(-1%, -1%, 0) scale(1); } to { transform: translate3d(1%, 1%, 0) scale(1.04); } }
-@keyframes intro-sun-float { 50% { transform: translateY(5px); } }
-@keyframes intro-moon-float { 50% { transform: translateY(5px) rotate(-3deg); } }
-@keyframes intro-star { 0%, 100% { opacity: 0; transform: scale(.5); } 45%, 65% { opacity: .9; transform: scale(1); } }
-@keyframes intro-pulse { 50% { opacity: .35; transform: scale(.75); } }
-@keyframes intro-leave { to { opacity: 0; visibility: hidden; } }
-@keyframes home-page-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes home-page-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 /* 滚动条美化 */
 ::-webkit-scrollbar { width: 10px; height: 10px; }

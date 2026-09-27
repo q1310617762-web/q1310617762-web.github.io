@@ -1,62 +1,124 @@
 ---
-// 首页开屏：只做视觉引导，不阻塞页面内容加载。
+// 首页开屏：经典街机吃豆人吃豆子，最后一口吃下博客头像，总长4秒，自适应PC和手机。
+import { site } from '@data/site';
 ---
-<div class="home-intro" data-home-intro aria-hidden="true">
-  <div class="home-intro-sky" aria-hidden="true">
-    <span class="home-intro-sun" />
-    <span class="home-intro-moon" />
-    <span class="home-intro-star home-intro-star-a" />
-    <span class="home-intro-star home-intro-star-b" />
-    <span class="home-intro-star home-intro-star-c" />
-    <span class="home-intro-star home-intro-star-d" />
+
+<div class="pac-intro" data-home-intro aria-label="开屏动画：吃豆人进入博客">
+  <!-- 顶部街机记分面板 -->
+  <div class="pac-header" aria-hidden="true">
+    <div class="pac-score-box">
+      <span class="pac-label">1UP</span>
+      <span class="pac-score" data-pac-score>0000</span>
+    </div>
+    <div class="pac-score-box">
+      <span class="pac-label">HIGH SCORE</span>
+      <span class="pac-score">19800</span>
+    </div>
+    <button type="button" class="pac-skip-btn" data-home-intro-skip>
+      SKIP <span>ESC</span>
+    </button>
   </div>
 
-  <div class="home-intro-content" role="status" aria-live="polite">
-    <span class="home-intro-kicker">A QUIET CORNER</span>
-    <span class="home-intro-rule" aria-hidden="true" />
-    <p class="home-intro-title">东芽果DYG 的博客</p>
-    <p class="home-intro-subtitle">记录游戏、音乐与日常想法</p>
-    <div class="home-intro-topics" aria-label="内容分类">
-      <span>ANIME</span>
-      <i aria-hidden="true">·</i>
-      <span>GAMES</span>
-      <i aria-hidden="true">·</i>
-      <span>LIFE</span>
+  <!-- 中间主舞台：吃豆轨道 -->
+  <div class="pac-stage" aria-hidden="true">
+    <!-- 霓虹街机迷宫轨道边框 -->
+    <div class="pac-track-border pac-track-top"></div>
+    <div class="pac-track-border pac-track-bottom"></div>
+
+    <div class="pac-track">
+      <!-- 吃豆人实体 -->
+      <div class="pac-hero">
+        <div class="pac-mouth-top"></div>
+        <div class="pac-mouth-bottom"></div>
+        <div class="pac-eye"></div>
+      </div>
+
+      <!-- 7颗发光能量豆 -->
+      <div class="pac-dots">
+        <span class="pac-dot dot-1"></span>
+        <span class="pac-dot dot-2"></span>
+        <span class="pac-dot dot-3"></span>
+        <span class="pac-dot dot-4"></span>
+        <span class="pac-dot dot-5"></span>
+        <span class="pac-dot dot-6"></span>
+        <span class="pac-dot dot-7"></span>
+      </div>
+
+      <!-- 终点：博客头像（大能量果实） -->
+      <div class="pac-target">
+        <div class="pac-avatar-glow"></div>
+        <img
+          src={site.avatar}
+          alt={site.title}
+          class="pac-avatar-img"
+          loading="eager"
+          decoding="sync"
+        />
+        <div class="pac-target-ring"></div>
+        <!-- 吃到瞬间的爆裂光效 -->
+        <div class="pac-burst"></div>
+      </div>
     </div>
   </div>
 
-  <div class="home-intro-footer">
-    <span class="home-intro-loading"><span />正在进入空间</span>
-    <button type="button" class="home-intro-skip" data-home-intro-skip>跳过动画</button>
+  <!-- 底部像素文字与进度 -->
+  <div class="pac-footer" aria-hidden="true">
+    <div class="pac-title-bar">
+      <span class="pac-status-text">INSERT COIN TO ENTER DYG'S BLOG...</span>
+    </div>
+    <div class="pac-ready-text">READY!</div>
   </div>
 </div>
 
 <script>
-  function initHomeIntro() {
+  function initPacIntro() {
     const intro = document.querySelector('[data-home-intro]');
     if (!(intro instanceof HTMLElement) || intro.dataset.bound === '1') return;
     intro.dataset.bound = '1';
 
+    const scoreEl = intro.querySelector('[data-pac-score]');
+    let score = 0;
+
+    // 随着吃豆进程增加街机分数 (0 -> 100 -> 200 ... -> 1600)
+    const scoreTimer = window.setInterval(() => {
+      if (score < 1600) {
+        score += 200;
+        if (scoreEl) scoreEl.textContent = String(score).padStart(4, '0');
+      }
+    }, 380);
+
     const finish = () => {
       if (intro.dataset.finished === '1') return;
       intro.dataset.finished = '1';
+      window.clearInterval(scoreTimer);
       intro.classList.add('is-leaving');
       document.documentElement.classList.remove('home-intro-active');
-      window.setTimeout(() => intro.remove(), 560);
+      window.setTimeout(() => intro.remove(), 450);
     };
 
-    // 每次真正打开/刷新首页都展示一次，避免用户因为 sessionStorage 记录而看不到动画。
-    // 减少动画模式仍保留短暂的静态开屏，只关闭位移和闪烁等动效。
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.documentElement.classList.add('home-intro-active');
-    intro.setAttribute('aria-hidden', 'false');
-    if (reduced) intro.classList.add('is-reduced-motion');
+    if (reduced) {
+      finish();
+      return;
+    }
 
     const skip = intro.querySelector('[data-home-intro-skip]');
     skip?.addEventListener('click', finish, { once: true });
-    window.setTimeout(finish, reduced ? 900 : 2500);
+
+    // 支持 ESC 快速跳过
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        window.removeEventListener('keydown', onKey);
+        finish();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+
+    // 总长 4 秒整（3.5s 吃下头像爆发，4.0s 整幕平滑退出）
+    window.setTimeout(finish, 4000);
   }
 
-  initHomeIntro();
-  document.addEventListener('astro:page-load', initHomeIntro);
+  initPacIntro();
+  document.addEventListener('astro:page-load', initPacIntro);
 </script>
