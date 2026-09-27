@@ -801,7 +801,7 @@ pre {
   height: clamp(52px, 8.5vw, 68px);
   z-index: 10;
   /* 移动从 0% -> 终点头像位置 (约 86%)，时长 3.5 秒匀速前进 */
-  animation: pac-run 3.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation: pac-run 3.5s linear forwards;
 }
 
 /* 上半嘴巴 (利用边框画出扇形咬合) */
@@ -922,6 +922,20 @@ pre {
   animation: burst-flash 0.45s 3.48s forwards ease-out;
 }
 
+/* 吃到头像后的飞行副本：由终点飞向侧栏中的真实头像 */
+.pac-flight-avatar {
+  position: fixed;
+  z-index: 60;
+  width: clamp(56px, 9vw, 76px);
+  height: clamp(56px, 9vw, 76px);
+  border: 3px solid #ffd600;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1);
+}
+
 /* 底部状态条 */
 .pac-footer {
   width: 100%;
@@ -952,6 +966,36 @@ pre {
 .pac-intro.is-leaving {
   pointer-events: none;
   animation: pac-leave 0.45s cubic-bezier(0.7, 0, 0.84, 0.15) forwards;
+}
+
+/* 头像被吃后：吃豆人不减速，头像沿曲线飞向主页头像；黑幕向终点吸入 */
+.pac-intro.is-avatar-flying {
+  --absorb-x: 50vw;
+  --absorb-y: 50vh;
+  pointer-events: none;
+  animation: pac-absorb 0.62s cubic-bezier(0.72, 0, 0.18, 1) forwards;
+}
+.pac-intro.is-avatar-flying::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  background: #000;
+  clip-path: circle(150% at var(--absorb-x) var(--absorb-y));
+  animation: pac-black-absorb 0.62s cubic-bezier(0.72, 0, 0.18, 1) forwards;
+}
+.pac-intro.is-avatar-flying .pac-header,
+.pac-intro.is-avatar-flying .pac-stage,
+.pac-intro.is-avatar-flying .pac-footer {
+  animation: pac-scene-dim 0.2s ease forwards;
+}
+.pac-intro.is-avatar-flying .pac-target {
+  animation: pac-target-consume 0.2s ease forwards;
+}
+.pac-intro.is-avatar-flying .pac-flight-avatar {
+  opacity: 1;
+  animation: pac-avatar-flight 0.62s cubic-bezier(0.72, 0, 0.18, 1) forwards;
 }
 
 /* 动画关键帧声明 */
@@ -1025,6 +1069,38 @@ pre {
 @keyframes pac-leave {
   0%   { opacity: 1; transform: scale(1); }
   100% { opacity: 0; transform: scale(1.05); filter: brightness(1.8); visibility: hidden; }
+}
+@keyframes pac-scene-dim {
+  to { opacity: .04; transform: scale(1.02); }
+}
+@keyframes pac-target-consume {
+  to { opacity: 0; transform: scale(.72); }
+}
+@keyframes pac-avatar-flight {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+    filter: brightness(1.4) drop-shadow(0 0 18px #ffd600);
+  }
+  58% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--flight-dx) * .58), calc(-50% + var(--flight-dy) * .58)) scale(calc(1.15 - (1.15 - var(--flight-scale)) * .58));
+    filter: brightness(1.8) drop-shadow(0 0 24px #ffd600);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--flight-dx)), calc(-50% + var(--flight-dy))) scale(var(--flight-scale));
+    filter: brightness(2) drop-shadow(0 0 2px #fff);
+  }
+}
+@keyframes pac-black-absorb {
+  0% { clip-path: circle(150% at var(--absorb-x) var(--absorb-y)); }
+  100% { clip-path: circle(0% at var(--absorb-x) var(--absorb-y)); }
+}
+@keyframes pac-absorb {
+  0% { opacity: 1; }
+  72% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
 }
 
 .home-page {

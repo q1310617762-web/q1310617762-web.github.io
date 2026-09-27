@@ -58,6 +58,8 @@ import { site } from '@data/site';
         <!-- 吃到瞬间的爆裂光效 -->
         <div class="pac-burst"></div>
       </div>
+      <!-- 吃到头像后，头像飞向主页侧栏中的真实头像位置 -->
+      <img src={site.avatar} alt="" class="pac-flight-avatar" aria-hidden="true" />
     </div>
   </div>
 
@@ -93,7 +95,36 @@ import { site } from '@data/site';
       window.clearInterval(scoreTimer);
       intro.classList.add('is-leaving');
       document.documentElement.classList.remove('home-intro-active');
-      window.setTimeout(() => intro.remove(), 450);
+      window.setTimeout(() => intro.remove(), 700);
+    };
+
+    const finishWithAvatarFlight = () => {
+      if (intro.dataset.finished === '1') return;
+      intro.dataset.finished = '1';
+      window.clearInterval(scoreTimer);
+
+      const source = intro.querySelector('.pac-target');
+      const destination = document.querySelector('.app-aside img');
+      const flight = intro.querySelector('.pac-flight-avatar');
+      if (source instanceof HTMLElement && destination instanceof HTMLImageElement && flight instanceof HTMLElement) {
+        const from = source.getBoundingClientRect();
+        const to = destination.getBoundingClientRect();
+        const fromX = from.left + from.width / 2;
+        const fromY = from.top + from.height / 2;
+        const toX = to.left + to.width / 2;
+        const toY = to.top + to.height / 2;
+        intro.style.setProperty('--absorb-x', `${toX}px`);
+        intro.style.setProperty('--absorb-y', `${toY}px`);
+        flight.style.left = `${fromX}px`;
+        flight.style.top = `${fromY}px`;
+        flight.style.setProperty('--flight-dx', `${toX - fromX}px`);
+        flight.style.setProperty('--flight-dy', `${toY - fromY}px`);
+        flight.style.setProperty('--flight-scale', String(Math.max(0.28, to.width / Math.max(from.width, 1))));
+      }
+
+      intro.classList.add('is-avatar-flying');
+      document.documentElement.classList.remove('home-intro-active');
+      window.setTimeout(() => intro.remove(), 620);
     };
 
     // 不受系统 prefers-reduced-motion 或无头环境干扰，确保动画完整播放
@@ -111,8 +142,8 @@ import { site } from '@data/site';
     };
     window.addEventListener('keydown', onKey);
 
-    // 总长 4 秒整（3.5s 吃下头像爆发，4.0s 整幕平滑退出）
-    window.setTimeout(finish, 4000);
+    // 3.5 秒吃到头像；头像飞向主页真实头像，同时黑色背景被吸入目标点。
+    window.setTimeout(finishWithAvatarFlight, 3500);
   }
 
   initPacIntro();
