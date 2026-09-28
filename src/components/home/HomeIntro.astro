@@ -206,6 +206,70 @@ const avatarSrc = base.replace(/\/$/, '') + (rawAvatar.startsWith('/') ? rawAvat
   let burstPlayed = false;
   let swirlPlayed = false;
 
+  // ---- 粒子系统（豆子迸溅 + 水花飞溅） ----
+  const particles = [];
+  function spawnDotSparks(x, y, big) {
+    const n = big ? 7 : 4;
+    for (let i = 0; i < n; i++) {
+      const a = (Math.PI * 2 * i) / n + Math.random() * 0.5;
+      const sp = 0.04 + Math.random() * 0.06; // 每秒移动的屏幕比例
+      particles.push({
+        x, y,
+        vx: Math.cos(a) * sp,
+        vy: Math.sin(a) * sp - 0.02,
+        life: 0.4 + Math.random() * 0.2,
+        age: 0,
+        r: big ? 3 : 2,
+        color: big ? '#ffb897' : '#ffcc66',
+        kind: 'spark',
+      });
+    }
+  }
+  function spawnSplash(cx, cy, fullR) {
+    // 水花：从漩涡中心向外甩出的水珠
+    const n = 26;
+    for (let i = 0; i < n; i++) {
+      const a = (Math.PI * 2 * i) / n + Math.random() * 0.4;
+      const speed = 0.15 + Math.random() * 0.25; // 屏幕比例/秒
+      particles.push({
+        x: cx, y: cy,
+        vx: Math.cos(a) * speed,
+        vy: Math.sin(a) * speed - 0.05,
+        life: 0.5 + Math.random() * 0.4,
+        age: 0,
+        r: 2 + Math.random() * 3,
+        color: 'rgba(150, 215, 255, 0.9)',
+        kind: 'drop',
+      });
+    }
+  }
+  let splashSpawned = false;
+  function updateAndDrawParticles(dt, L, target) {
+    if (!particles.length) return;
+    ctx.save();
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.age += dt;
+      if (p.age >= p.life) {
+        particles.splice(i, 1);
+        continue;
+      }
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      if (p.kind === 'drop') p.vy += 0.08 * dt; // 水珠重力
+      const fade = 1 - p.age / p.life;
+      ctx.globalAlpha = fade;
+      ctx.fillStyle = p.color;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = p.kind === 'drop' ? 6 : 8;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * fade + 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+
   function drawDots(t, L, pacmanX) {
     ctx.save();
     for (const d of L.dots) {
@@ -225,11 +289,19 @@ const avatarSrc = base.replace(/\/$/, '') + (rawAvatar.startsWith('/') ? rawAvat
     ctx.restore();
   }
 
-  function drawPacMan(t, L, pacmanX, isMoving) {
+  function drawPacMan(t, L, pacmanX, isMoving, nextDotDist) {
     const r = L.size / 2;
-    // 嘴部开合：前进时张合更快（吃豆感），静止时慢（待机感）
+    // 嘴部开合：
+    //  - 静止时慢速待机张合
+    //  - 前进时正常张合
+    //  - 接近下一颗豆子（dist < 0.6*size）时张开到最大，咬过时迅速闭合（"咬"的动作）
     const chomp = 0.5 + 0.5 * Math.sin(t / (isMoving ? 90 : 180));
-    const mouth = 0.1 + chomp * 0.38;
+    let mouth = 0.1 + chomp * 0.38;
+    if (nextDotDist !== null && nextDotDist < L.size * 0.6) {
+      // 接近豆子：张大嘴（越近越大）
+      const nearP = clamp01(1 - nextDotDist / (L.size * 0.6));
+      mouth = 0.3 + nearP * 0.55; // 张到 0.3~0.85
+    }
     ctx.save();
     ctx.translate(pacmanX, L.trackY);
     ctx.fillStyle = '#ffd600';
