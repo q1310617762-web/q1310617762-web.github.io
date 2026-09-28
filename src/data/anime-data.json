@@ -1,50 +1,12 @@
 {
-  "fetchedAt": "2026-09-28T08:07:33.679Z",
-  "total": 29,
+  "fetchedAt": "2026-09-28T17:55:43.623Z",
+  "total": 28,
   "days": [
-    {
-      "date": "9-28",
-      "dateTs": 1790524800,
-      "weekday": "一",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6421774",
-          "title": "万古至尊：李云霄传",
-          "index": "第23话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
-          "seasonId": 119017,
-          "url": "https://www.bilibili.com/bangumi/play/ep6421774",
-          "delay": ""
-        },
-        {
-          "id": "4875819",
-          "title": "成也萧河",
-          "index": "第11话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/26bdc9418905c503ff58197c353da702bf211c36.png",
-          "seasonId": 264634,
-          "url": "https://www.bilibili.com/bangumi/play/ep4875819",
-          "delay": ""
-        },
-        {
-          "id": "6291964",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第7话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291964",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "9-29",
       "dateTs": 1790611200,
       "weekday": "二",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "5096202",
@@ -344,6 +306,34 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
           "seasonId": 45969,
           "url": "https://www.bilibili.com/bangumi/play/ep3537949",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-5",
+      "dateTs": 1791129600,
+      "weekday": "一",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "4875820",
+          "title": "成也萧河",
+          "index": "第12话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/26bdc9418905c503ff58197c353da702bf211c36.png",
+          "seasonId": 264634,
+          "url": "https://www.bilibili.com/bangumi/play/ep4875820",
+          "delay": ""
+        },
+        {
+          "id": "6291971",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第14话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291971",
           "delay": ""
         }
       ]
