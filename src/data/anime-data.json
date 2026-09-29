@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-09-28T22:54:37.220Z",
-  "total": 28,
+  "fetchedAt": "2026-09-29T07:48:14.176Z",
+  "total": 32,
   "days": [
     {
       "date": "9-29",
@@ -11,7 +11,7 @@
         {
           "id": "5096202",
           "title": "掌门低调点",
-          "index": "即将更新 第32话",
+          "index": "第32话",
           "time": "09:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
           "seasonId": 272443,
@@ -21,11 +21,21 @@
         {
           "id": "6291965",
           "title": "小车队大救援：自然护卫队",
-          "index": "即将更新 第8话",
+          "index": "第8话",
           "time": "10:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
           "seasonId": 298872,
           "url": "https://www.bilibili.com/bangumi/play/ep6291965",
+          "delay": ""
+        },
+        {
+          "id": "6504014",
+          "title": "我是不白吃",
+          "index": "即将更新 第1085话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep6504014",
           "delay": ""
         }
       ]
@@ -112,6 +122,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/2cfa7e1dd6dc7d0eeefcd6bdfc137bbff4cc55c4.png",
           "seasonId": 105212,
           "url": "https://www.bilibili.com/bangumi/play/ep5137679",
+          "delay": ""
+        },
+        {
+          "id": "6504015",
+          "title": "我是不白吃",
+          "index": "第1086话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep6504015",
           "delay": ""
         }
       ]
@@ -239,6 +259,16 @@
           "seasonId": 28747,
           "url": "https://www.bilibili.com/bangumi/play/ep3854818",
           "delay": ""
+        },
+        {
+          "id": "6504016",
+          "title": "我是不白吃",
+          "index": "第1087话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep6504016",
+          "delay": ""
         }
       ]
     },
@@ -256,6 +286,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
           "seasonId": 264970,
           "url": "https://www.bilibili.com/bangumi/play/ep4883711",
+          "delay": ""
+        },
+        {
+          "id": "6514448",
+          "title": "肥志百科",
+          "index": "原来你是这样的鲎~原来你是这样的白蚁",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/30c124c6f85df11a8a830df5810c2196c95880c7.jpg",
+          "seasonId": 34569,
+          "url": "https://www.bilibili.com/bangumi/play/ep6514448",
           "delay": ""
         },
         {
