@@ -1,50 +1,12 @@
 {
-  "fetchedAt": "2026-09-29T07:48:14.176Z",
-  "total": 32,
+  "fetchedAt": "2026-09-29T16:18:24.682Z",
+  "total": 35,
   "days": [
-    {
-      "date": "9-29",
-      "dateTs": 1790611200,
-      "weekday": "二",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "5096202",
-          "title": "掌门低调点",
-          "index": "第32话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
-          "seasonId": 272443,
-          "url": "https://www.bilibili.com/bangumi/play/ep5096202",
-          "delay": ""
-        },
-        {
-          "id": "6291965",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第8话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291965",
-          "delay": ""
-        },
-        {
-          "id": "6504014",
-          "title": "我是不白吃",
-          "index": "即将更新 第1085话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep6504014",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "9-30",
       "dateTs": 1790697600,
       "weekday": "三",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "4809963",
@@ -221,6 +183,16 @@
           "seasonId": 96881,
           "url": "https://www.bilibili.com/bangumi/play/ep6281867",
           "delay": ""
+        },
+        {
+          "id": "6519247",
+          "title": "公主驾到，天才厨子已超神！",
+          "index": "第12话",
+          "time": "23:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4766bd4a732abb2d2408eb0187a9c648f76d4176.jpg",
+          "seasonId": 284272,
+          "url": "https://www.bilibili.com/bangumi/play/ep6519247",
+          "delay": ""
         }
       ]
     },
@@ -241,6 +213,16 @@
           "delay": ""
         },
         {
+          "id": "6518819",
+          "title": "气运世界杯，我能复制所有球星技能",
+          "index": "第16话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f6920c0319f78939fb6e419fe718ea7d9b60b474.jpg",
+          "seasonId": 263605,
+          "url": "https://www.bilibili.com/bangumi/play/ep6518819",
+          "delay": ""
+        },
+        {
           "id": "6291969",
           "title": "小车队大救援：自然护卫队",
           "index": "第12话",
@@ -258,6 +240,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
           "seasonId": 28747,
           "url": "https://www.bilibili.com/bangumi/play/ep3854818",
+          "delay": ""
+        },
+        {
+          "id": "6520098",
+          "title": "无良系统变向导，我被四个哨兵拿捏了",
+          "index": "第13话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/748726fd8faf7c11a6898a4b37c129c526e09e61.jpg",
+          "seasonId": 285345,
+          "url": "https://www.bilibili.com/bangumi/play/ep6520098",
           "delay": ""
         },
         {
@@ -374,6 +366,44 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
           "seasonId": 298872,
           "url": "https://www.bilibili.com/bangumi/play/ep6291971",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-6",
+      "dateTs": 1791216000,
+      "weekday": "二",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "5096204",
+          "title": "掌门低调点",
+          "index": "第34话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
+          "seasonId": 272443,
+          "url": "https://www.bilibili.com/bangumi/play/ep5096204",
+          "delay": ""
+        },
+        {
+          "id": "6291972",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第15话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291972",
+          "delay": ""
+        },
+        {
+          "id": "6504017",
+          "title": "我是不白吃",
+          "index": "第1088话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep6504017",
           "delay": ""
         }
       ]
