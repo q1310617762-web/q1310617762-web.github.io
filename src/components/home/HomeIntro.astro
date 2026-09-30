@@ -1,21 +1,89 @@
 ---
-// 首页开屏：经典街机吃豆人（Canvas 极简版）
-// 只有三要素：吃豆人、豆子、主页头像。
-// 时间轴（总 4.2s）：吃豆人从左侧吃豆前进 → 吃下头像（爆裂）→ 头像吸入侧栏真实头像 → 全幕淡出。
-// 音效：Web Audio 合成吃豆音（无资源文件）。
-// 播放频率：PLAY_EVERY_LOAD=true 每次进首页都播（测试期）；改 false 后同一天只播一次。
-// URL 带 ?intro=1 可强制播放（测试用）。
+// 首页开屏：街机吃豆人（motion-lab 动效 + ui 令牌重构版）
+//
+// 动效来源（motion-lab）：
+//   blur-in         舞台与背景从模糊到清晰
+//   svg-dash-animate 霓虹轨道蚂蚁线
+//   stagger-fade    豆子错落浮现
+//   mask-reveal     标题遮罩揭示
+//   typewriter      状态行逐字输入
+//   pulse           能量豆呼吸
+//   scale-in        吃豆人入场
+//   scale-out       吃豆人与终点头像的吞入收束
+//
+// 规范来源（ui）：设计令牌化（无魔法值）、只动画 transform/opacity/box-shadow、
+// 真实 button + 可见焦点 + ESC 可跳过、尊重 prefers-reduced-motion、<420px 不破版。
+//
+// 相对上一版（Canvas）的取舍：改为纯 CSS/DOM，去掉逐帧重绘与粒子数组，
+// 省下大量主线程开销；保留已确认的特性 —— 逐颗吃豆音效、头像吸入侧栏真实头像、
+// 匀速不减速、?intro=1 强制播放。
 import { site } from '@data/site';
-// 头像路径：BASE_URL + site.avatar（避免双斜杠）
+
 const rawAvatar = site.avatar || '/avatar.jpg';
 const base = import.meta.env.BASE_URL || '/';
 const avatarSrc = base.replace(/\/$/, '') + (rawAvatar.startsWith('/') ? rawAvatar : `/${rawAvatar}`);
+
+const DOT_COUNT = 7;
+const POWER_INDEX = 3; // 第 4 颗为能量豆
+const statusText = 'INSERT COIN TO ENTER';
 ---
 
-<div id="pac-intro" data-pac-intro aria-label="开屏动画：吃豆人进入博客">
-  <canvas id="pac-canvas" aria-hidden="true"></canvas>
-  <button type="button" id="pac-skip" class="pac-skip-btn" aria-label="跳过开屏动画">
-    跳过<span class="pac-skip-key">ESC</span>
+<div class="intro" data-intro aria-label="开屏动画：吃豆人进入博客">
+  <!-- 记分 HUD -->
+  <div class="intro-hud" aria-hidden="true">
+    <div class="intro-hud-cell">
+      <span class="intro-hud-label">1UP</span>
+      <span class="intro-hud-value" data-intro-score>0000</span>
+    </div>
+    <div class="intro-hud-cell">
+      <span class="intro-hud-label">HIGH SCORE</span>
+      <span class="intro-hud-value">19800</span>
+    </div>
+  </div>
+
+  <!-- 舞台：霓虹轨道 + 豆子 + 吃豆人 + 终点头像 -->
+  <div class="intro-field" aria-hidden="true">
+    <svg class="intro-rails" viewBox="0 0 100 20" preserveAspectRatio="none">
+      <line class="intro-rail" x1="0" y1="5" x2="100" y2="5" />
+      <line class="intro-rail" x1="0" y1="15" x2="100" y2="15" />
+    </svg>
+
+    <div class="intro-track" data-intro-track>
+      <ol class="intro-dots" data-intro-dots>
+        {Array.from({ length: DOT_COUNT }).map((_, i) => (
+          <li class={`intro-dot${i === POWER_INDEX ? ' is-power' : ''}`} data-intro-dot style={`--i:${i}`}>
+            <span class="intro-dot-core" />
+          </li>
+        ))}
+      </ol>
+
+      <div class="intro-pac" data-intro-pac>
+        <i class="intro-pac-eye" />
+      </div>
+
+      <div class="intro-target" data-intro-target>
+        <img class="intro-target-img" src={avatarSrc} alt="" />
+        <span class="intro-burst" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 字幕区：mask-reveal 标题 + typewriter 状态行 -->
+  <div class="intro-caption">
+    <p class="intro-title"><span class="intro-title-inner">READY!</span></p>
+    <p class="intro-status">
+      <span data-intro-type data-text={statusText}></span><i class="intro-caret" />
+    </p>
+  </div>
+
+  <!-- 吃到头像后的飞行副本：飞向侧栏真实头像 -->
+  <img class="intro-flyer" data-intro-flyer src={avatarSrc} alt="" aria-hidden="true" />
+
+  <!-- 吸入黑幕：向侧栏头像收束 -->
+  <div class="intro-veil" data-intro-veil aria-hidden="true"></div>
+
+  <button type="button" class="intro-skip" data-intro-skip aria-label="跳过开屏动画">
+    跳过 <kbd class="intro-kbd">ESC</kbd>
   </button>
 </div>
 
@@ -24,536 +92,246 @@ const avatarSrc = base.replace(/\/$/, '') + (rawAvatar.startsWith('/') ? rawAvat
 </script>
 
 <script>
-(function () {
-  const root = document.getElementById('pac-intro');
-  if (!root) return;
+  (function () {
+    const root = document.querySelector('[data-intro]');
+    if (!(root instanceof HTMLElement) || root.dataset.bound === '1') return;
+    root.dataset.bound = '1';
 
-  // ---- 播放频率开关 ----
-  const PLAY_EVERY_LOAD = true; // 测试期：每次进首页都播；上线改为 false（同一天只播一次）
-  const DAY_KEY = 'pac-intro-last-day';
-  const today = new Date().toDateString();
-  const force =
-    new URLSearchParams(location.search).get('intro') === '1' ||
-    localStorage.getItem('pac-intro-force') === '1';
-  if (!force && !PLAY_EVERY_LOAD && localStorage.getItem(DAY_KEY) === today) {
-    root.remove();
-    return;
-  }
-  if (!PLAY_EVERY_LOAD) localStorage.setItem(DAY_KEY, today);
+    // ===== 时间轴（ms）：匀速不减速，豆子按实测几何精确对齐 =====
+    const S = {
+      start: 700, // 吃豆人开始前进
+      travel: 2400, // 匀速前进时长
+      flightStart: 3160, // 头像副本起飞
+      flightDur: 620,
+      absorbStart: 3320, // 黑幕吸入
+      absorbDur: 720,
+      end: 4180, // 整幕结束
+    };
+    const TRAVEL_DUR_CSS = S.travel + 'ms';
 
-  const canvas = document.getElementById('pac-canvas');
-  const ctx = canvas.getContext('2d');
-  const skipBtn = document.getElementById('pac-skip');
-  if (!canvas || !ctx) return;
-
-  // ---- 头像源：优先复用侧栏已加载好的 <img>（保证与侧栏 100% 一致），new Image() 兜底 ----
-  const avatarImg = new Image();
-  avatarImg.src = window.__AVATAR_SRC__;
-  function getAvatarImg() {
-    const side = document.querySelector('.app-aside img');
-    if (side && side.complete && side.naturalWidth > 0) return side;
-    return avatarImg;
-  }
-
-  // ---- 画布尺寸（跟随视口 + devicePixelRatio） ----
-  let W = 0, H = 0, DPR = 1;
-  function resize() {
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
-    W = window.innerWidth;
-    H = window.innerHeight;
-    canvas.width = Math.round(W * DPR);
-    canvas.height = Math.round(H * DPR);
-    canvas.style.width = W + 'px';
-    canvas.style.height = H + 'px';
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // ---- 侧栏头像位置（飞行终点，动态测量；移动端侧栏在顶部） ----
-  function sidebarTarget() {
-    const img = document.querySelector('.app-aside img');
-    if (img) {
-      const r = img.getBoundingClientRect();
-      if (r.width > 0) return { x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width, h: r.height };
+    // ---- 播放频率 ----
+    const PLAY_EVERY_LOAD = true; // 上线后可改 false：同一天只播一次
+    const DAY_KEY = 'intro-last-day';
+    const today = new Date().toDateString();
+    const force = new URLSearchParams(location.search).get('intro') === '1';
+    if (!force && !PLAY_EVERY_LOAD && localStorage.getItem(DAY_KEY) === today) {
+      root.remove();
+      return;
     }
-    return { x: W / 2, y: 40, w: 72, h: 72 };
-  }
-
-  // ---- 几何：走廊 + 头像终点（极简：只有吃豆人、豆子、头像） ----
-  function layout() {
-    const isMobile = W < 640;
-    const trackW = Math.min(W * 0.92, isMobile ? W - 24 : 720);
-    const trackX = (W - trackW) / 2;
-    const trackY = H / 2 - 60;
-    const size = isMobile ? 56 : 72; // 吃豆人/头像直径
-    const avatarX = trackX + trackW - size / 2 - 4;
-    const avatarY = trackY;
-    const start = { x: trackX + size / 2, y: trackY };
-    const dots = [];
-    const usableStart = trackX + size * 1.2;
-    const usableEnd = avatarX - size * 1.1;
-    for (let i = 0; i < 6; i++) {
-      dots.push({
-        x: usableStart + ((usableEnd - usableStart) / 5) * i,
-        y: trackY,
-        big: i === 3, // 第 4 颗是能量豆（稍大）
-      });
-    }
-    return { trackW, trackX, trackY, size, avatarX, avatarY, start, dots };
-  }
-
-  // ---- 时间轴（ms） ----
-  const T = {
-    moveStart: 400,  // 吃豆人开始移动
-    moveEnd: 2800,   // 到达头像
-    eatAvatar: 2900, // 吃下头像（爆裂）
-    absorb: 3300,    // 头像吸入侧栏
-    end: 4200,       // 全幕淡出结束
-  };
-  const lerp = (a, b, p) => a + (b - a) * p;
-  const easeOut = (p) => 1 - Math.pow(1 - p, 3);
-  const clamp01 = (p) => Math.max(0, Math.min(1, p));
-
-  // ---- 吃豆音效（Web Audio 合成，无资源文件） ----
-  let audioCtx = null;
-  function ensureAudio() {
-    if (!audioCtx) {
+    if (!PLAY_EVERY_LOAD) {
       try {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      } catch (e) {
-        audioCtx = null;
-      }
-    }
-    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-  }
-  // 首次交互（点击/按键）时解锁音频（浏览器自动播放策略）
-  window.addEventListener('pointerdown', ensureAudio, { once: true });
-  window.addEventListener('keydown', ensureAudio, { once: true });
-
-  function playDotSound() {
-    if (!audioCtx || audioCtx.state !== 'running') return;
-    const t0 = audioCtx.currentTime;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(600, t0);
-    osc.frequency.exponentialRampToValueAtTime(200, t0 + 0.08);
-    gain.gain.setValueAtTime(0.12, t0);
-    gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.09);
-    osc.connect(gain).connect(audioCtx.destination);
-    osc.start(t0);
-    osc.stop(t0 + 0.1);
-  }
-  function playBurstSound() {
-    if (!audioCtx || audioCtx.state !== 'running') return;
-    const t0 = audioCtx.currentTime;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(400, t0);
-    osc.frequency.exponentialRampToValueAtTime(80, t0 + 0.3);
-    gain.gain.setValueAtTime(0.15, t0);
-    gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.32);
-    osc.connect(gain).connect(audioCtx.destination);
-    osc.start(t0);
-    osc.stop(t0 + 0.35);
-  }
-
-  // 水漩涡音效：噪声（白噪声）低通滤波 + 低频嗡鸣，模拟"咕噜咕噜"吸水的声音
-  function playSwirlSound() {
-    if (!audioCtx || audioCtx.state !== 'running') return;
-    const t0 = audioCtx.currentTime;
-    const dur = 0.95;
-
-    // 白噪声缓冲
-    const bufLen = audioCtx.sampleRate * dur;
-    const buf = audioCtx.createBuffer(1, bufLen, audioCtx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
-
-    // 噪声 → 低通（频率从 800Hz 滑到 150Hz，像水被吸走）
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buf;
-    const lp = audioCtx.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.setValueAtTime(800, t0);
-    lp.frequency.exponentialRampToValueAtTime(120, t0 + dur);
-    lp.Q.value = 4;
-
-    const nGain = audioCtx.createGain();
-    nGain.gain.setValueAtTime(0, t0);
-    nGain.gain.linearRampToValueAtTime(0.18, t0 + 0.15);
-    nGain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
-
-    noise.connect(lp).connect(nGain).connect(audioCtx.destination);
-    noise.start(t0);
-    noise.stop(t0 + dur);
-
-    // 低频嗡鸣（漩涡中心"嗡"声）
-    const osc = audioCtx.createOscillator();
-    const oGain = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(110, t0);
-    osc.frequency.exponentialRampToValueAtTime(45, t0 + dur);
-    oGain.gain.setValueAtTime(0, t0);
-    oGain.gain.linearRampToValueAtTime(0.08, t0 + 0.2);
-    oGain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
-    osc.connect(oGain).connect(audioCtx.destination);
-    osc.start(t0);
-    osc.stop(t0 + dur);
-  }
-  let lastDotIdx = -1;
-  let burstPlayed = false;
-  let swirlPlayed = false;
-
-  // ---- 粒子系统（豆子迸溅 + 水花飞溅） ----
-  const particles = [];
-  function spawnDotSparks(x, y, big) {
-    const n = big ? 7 : 4;
-    for (let i = 0; i < n; i++) {
-      const a = (Math.PI * 2 * i) / n + Math.random() * 0.5;
-      const sp = 0.04 + Math.random() * 0.06; // 每秒移动的屏幕比例
-      particles.push({
-        x, y,
-        vx: Math.cos(a) * sp,
-        vy: Math.sin(a) * sp - 0.02,
-        life: 0.4 + Math.random() * 0.2,
-        age: 0,
-        r: big ? 3 : 2,
-        color: big ? '#ffb897' : '#ffcc66',
-        kind: 'spark',
-      });
-    }
-  }
-  function spawnSplash(cx, cy, fullR) {
-    // 水花：从漩涡中心向外甩出的水珠
-    const n = 26;
-    for (let i = 0; i < n; i++) {
-      const a = (Math.PI * 2 * i) / n + Math.random() * 0.4;
-      const speed = 0.15 + Math.random() * 0.25; // 屏幕比例/秒
-      particles.push({
-        x: cx, y: cy,
-        vx: Math.cos(a) * speed,
-        vy: Math.sin(a) * speed - 0.05,
-        life: 0.5 + Math.random() * 0.4,
-        age: 0,
-        r: 2 + Math.random() * 3,
-        color: 'rgba(150, 215, 255, 0.9)',
-        kind: 'drop',
-      });
-    }
-  }
-  let splashSpawned = false;
-  function updateAndDrawParticles(dt, L, target) {
-    if (!particles.length) return;
-    ctx.save();
-    for (let i = particles.length - 1; i >= 0; i--) {
-      const p = particles[i];
-      p.age += dt;
-      if (p.age >= p.life) {
-        particles.splice(i, 1);
-        continue;
-      }
-      p.x += p.vx * dt;
-      p.y += p.vy * dt;
-      if (p.kind === 'drop') p.vy += 0.08 * dt; // 水珠重力
-      const fade = 1 - p.age / p.life;
-      ctx.globalAlpha = fade;
-      ctx.fillStyle = p.color;
-      ctx.shadowColor = p.color;
-      ctx.shadowBlur = p.kind === 'drop' ? 6 : 8;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r * fade + 0.5, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-    ctx.restore();
-  }
-
-  function drawDots(t, L, pacmanX) {
-    ctx.save();
-    for (const d of L.dots) {
-      if (pacmanX >= d.x - L.size * 0.2) continue; // 已被吃掉
-      // 靠近吃豆人时轻微放大 + 呼吸，吃的时候更"活"
-      const dist = d.x - pacmanX;
-      const near = clamp01(1 - dist / (L.size * 3));
-      const pulse = 0.8 + 0.2 * Math.sin(t / 260 + d.x) + near * 0.25;
-      const r = (d.big ? 9 : 6) * pulse;
-      ctx.fillStyle = d.big ? '#ffb897' : '#ffcc66';
-      ctx.shadowColor = ctx.fillStyle;
-      ctx.shadowBlur = 10 + near * 6;
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.restore();
-  }
-
-  function drawPacMan(t, L, pacmanX, isMoving, nextDotDist) {
-    const r = L.size / 2;
-    // 嘴部开合：
-    //  - 静止时慢速待机张合
-    //  - 前进时正常张合
-    //  - 接近下一颗豆子（dist < 0.6*size）时张开到最大，咬过时迅速闭合（"咬"的动作）
-    const chomp = 0.5 + 0.5 * Math.sin(t / (isMoving ? 90 : 180));
-    let mouth = 0.1 + chomp * 0.38;
-    if (nextDotDist !== null && nextDotDist < L.size * 0.6) {
-      // 接近豆子：张大嘴（越近越大）
-      const nearP = clamp01(1 - nextDotDist / (L.size * 0.6));
-      mouth = 0.3 + nearP * 0.55; // 张到 0.3~0.85
-    }
-    ctx.save();
-    ctx.translate(pacmanX, L.trackY);
-    ctx.fillStyle = '#ffd600';
-    ctx.beginPath();
-    ctx.arc(0, 0, r, mouth, Math.PI * 2 - mouth);
-    ctx.lineTo(0, 0);
-    ctx.closePath();
-    ctx.fill();
-    ctx.fillStyle = '#000';
-    ctx.beginPath();
-    ctx.arc(-r * 0.08, -r * 0.42, Math.max(3, r * 0.14), 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-
-  function drawAvatarAt(x, y, d, alpha) {
-    const img = getAvatarImg();
-    if (!img.complete || !img.naturalWidth) {
-      // 未加载完成：淡白占位圆
-      ctx.save();
-      ctx.globalAlpha = alpha * 0.35;
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.arc(x, y, d / 2, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-      return;
-    }
-    // 纯圆形裁切贴图，无红圈无边框无光晕
-    ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.beginPath();
-    ctx.arc(x, y, d / 2, 0, Math.PI * 2);
-    ctx.clip();
-    ctx.drawImage(img, x - d / 2, y - d / 2, d, d);
-    ctx.restore();
-  }
-
-  function drawBurst(t, L) {
-    const p = clamp01((t - T.eatAvatar) / 400);
-    if (p >= 1 || t < T.eatAvatar) return;
-    ctx.save();
-    const g = ctx.createRadialGradient(L.avatarX, L.avatarY, 0, L.avatarX, L.avatarY, 120 * p + 20);
-    g.addColorStop(0, `rgba(255,255,255,${0.95 * (1 - p)})`);
-    g.addColorStop(0.4, `rgba(255,214,0,${0.8 * (1 - p)})`);
-    g.addColorStop(0.8, `rgba(255,59,48,${0.5 * (1 - p)})`);
-    g.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(L.avatarX, L.avatarY, 120 * p + 20, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-
-  // 黑幕：水漩涡特效（螺旋臂旋入 + 涟漪环），向侧栏头像点吸入
-  function drawBlackVeil(t, target) {
-    const p = clamp01((t - T.absorb) / (T.end - T.absorb));
-    const q = easeOut(p);
-    const cx = target.x;
-    const cy = target.y;
-    const fullR = Math.hypot(W, H) * 1.1;
-    // 1) 整幕黑
-    ctx.save();
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, W, H);
-
-    // 2) 漩涡臂：螺旋线向心旋入（平滑，destination-out 擦黑幕露出主页）
-    const armCount = 4;
-    const twist = 2.6 * Math.PI; // 旋转总量
-    const rot = p * twist * 0.5;
-    // 揭开比例：前 35% 基本全黑，后 65% 才逐渐揭开（让漩涡有"蓄水"过程）
-    const reveal = clamp01((p - 0.35) / 0.65);
-    const holeQ = easeOut(reveal);
-    const maxHole = fullR * 0.4;
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.lineCap = 'round';
-    for (let a = 0; a < armCount; a++) {
-      const baseAngle = (a / armCount) * Math.PI * 2 + rot;
-      const steps = 48;
-      ctx.beginPath();
-      for (let s = 0; s <= steps; s++) {
-        const sp = s / steps;
-        // 半径从外缘向中心：外圈随 reveal 收缩，内圈保持
-        const radius = lerp(fullR * (1 - holeQ * 0.75), maxHole * (1 - sp), sp);
-        const angle = baseAngle + sp * twist * (0.5 + 0.5 * p);
-        const px = cx + Math.cos(angle) * radius;
-        const py = cy + Math.sin(angle) * radius;
-        if (s === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      }
-      ctx.lineWidth = 26 * (1 - p * 0.4) + 6;
-      ctx.globalAlpha = 0.85;
-      ctx.strokeStyle = 'rgba(0,0,0,1)';
-      ctx.stroke();
-    }
-    ctx.globalAlpha = 1;
-
-    // 3) 中心洞（漩涡汇合处，揭开主页）
-    const holeR = lerp(0, maxHole, holeQ);
-    if (holeR > 1) {
-      const gg = ctx.createRadialGradient(cx, cy, 0, cx, cy, holeR);
-      gg.addColorStop(0, 'rgba(0,0,0,1)');
-      gg.addColorStop(0.85, 'rgba(0,0,0,0.9)');
-      gg.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = gg;
-      ctx.beginPath();
-      ctx.arc(cx, cy, holeR, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.restore();
-
-    // 4) 水波纹涟漪（在黑幕之上，淡蓝色，向心收缩）
-    ctx.save();
-    const rippleCount = 3;
-    for (let k = 0; k < rippleCount; k++) {
-      const rp = clamp01((p - 0.1 - k * 0.22) / 0.55);
-      if (rp <= 0 || rp >= 1) continue;
-      const rr = lerp(fullR * 0.4, 0, easeOut(rp));
-      ctx.strokeStyle = `rgba(140, 210, 255, ${0.28 * (1 - rp)})`;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.arc(cx, cy, rr, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
-
-  // 飞行头像：从走廊终点沿弧线飞入侧栏真实头像（缓动更平滑）
-  function drawFlyingAvatar(t, L, target) {
-    const p = clamp01((t - T.absorb) / 680);
-    if (p >= 1) return;
-    // 先快后慢的平滑缓动（easeInOutCubic 风格）
-    const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
-    const mx = lerp(L.avatarX, target.x, 0.5);
-    const my = Math.min(L.avatarY, target.y) - L.size;
-    const x = (1 - e) * (1 - e) * L.avatarX + 2 * (1 - e) * e * mx + e * e * target.x;
-    const y = (1 - e) * (1 - e) * L.avatarY + 2 * (1 - e) * e * my + e * e * target.y;
-    const d = lerp(L.size, Math.max(target.w, target.h) || L.size * 0.6, e);
-    drawAvatarAt(x, y, d, 1 - p * 0.15);
-  }
-
-  // ---- 主循环 ----
-  let rafId = 0, t0 = 0, finished = false, guardTimer = 0, onKey = null;
-
-  function finish() {
-    if (finished) return;
-    finished = true;
-    cancelAnimationFrame(rafId);
-    window.clearTimeout(guardTimer);
-    if (onKey) window.removeEventListener('keydown', onKey);
-    root.remove();
-    window.setTimeout(() => document.documentElement.classList.remove('pac-intro-active'), 900);
-  }
-
-  function frame(now) {
-    const t = now - t0;
-    const L = layout();
-    const target = sidebarTarget();
-
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    ctx.clearRect(0, 0, W, H);
-    // 全黑背景（完全遮住主页，街机氛围）
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, W, H);
-
-    // 吃豆人移动：缓入缓出（细腻，不匀速生硬）
-    const moveP = t < T.moveStart ? 0 : clamp01((t - T.moveStart) / (T.moveEnd - T.moveStart));
-    const moveEased = moveP < 0.5 ? 2 * moveP * moveP : 1 - Math.pow(-2 * moveP + 2, 2) / 2; // easeInOutQuad
-    const pacmanX = lerp(L.start.x, L.avatarX, moveEased);
-
-    drawDots(t, L, pacmanX);
-
-    if (t < T.eatAvatar) {
-      drawAvatarAt(L.avatarX, L.avatarY, L.size * (1 + 0.06 * Math.sin(t / 500)), 1);
-    }
-    drawBurst(t, L);
-
-    const pacAlpha = t > T.absorb ? clamp01(1 - (t - T.absorb) / 400) : 1;
-    if (pacAlpha > 0) {
-      ctx.save();
-      ctx.globalAlpha = pacAlpha;
-      drawPacMan(t, L, pacmanX, t >= T.moveStart && t <= T.moveEnd);
-      ctx.restore();
+        localStorage.setItem(DAY_KEY, today);
+      } catch {}
     }
 
-    if (t >= T.absorb) {
-      drawBlackVeil(t, target);
-      drawFlyingAvatar(t, L, target);
-    }
+    const pac = root.querySelector('[data-intro-pac]');
+    const track = root.querySelector('[data-intro-track]');
+    const target = root.querySelector('[data-intro-target]');
+    const dots = Array.from(root.querySelectorAll('[data-intro-dot]'));
+    const scoreEl = root.querySelector('[data-intro-score]');
+    const statusEl = root.querySelector('[data-intro-type]');
+    const flyer = root.querySelector('[data-intro-flyer]');
+    const skipBtn = root.querySelector('[data-intro-skip]');
 
-    // 吃豆音效：每吃一颗豆播一次
-    let eaten = 0;
-    for (const d of L.dots) if (pacmanX >= d.x - L.size * 0.2) eaten++;
-    if (eaten > lastDotIdx) {
-      lastDotIdx = eaten;
-      playDotSound();
-    }
-    if (t >= T.eatAvatar && !burstPlayed) {
-      burstPlayed = true;
-      playBurstSound();
-    }
-    if (t >= T.absorb && !swirlPlayed) {
-      swirlPlayed = true;
-      playSwirlSound();
-    }
+    const timers = [];
+    const rafs = [];
+    const later = (fn, ms) => timers.push(window.setTimeout(fn, ms));
+    const clamp01 = (p) => (p < 0 ? 0 : p > 1 ? 1 : p);
 
-    if (t >= 4000) root.style.opacity = String(clamp01(1 - (t - 4000) / 200));
+    let finished = false;
+    let scoreTimer = null;
 
-    if (t >= T.end) {
-      finish();
-      return;
-    }
-    rafId = requestAnimationFrame(frame);
-  }
-
-  // ---- 头像预加载：加载完成前不开始动画（避免右侧显示占位白圈） ----
-  let started = false;
-  const startNow = () => {
-    if (started) return;
-    started = true;
-    root.style.display = 'block';
-    root.style.opacity = '1';
-    t0 = performance.now();
-    document.documentElement.classList.add('pac-intro-active');
-    ensureAudio();
-    rafId = requestAnimationFrame(frame);
-    guardTimer = window.setTimeout(finish, 8000);
-  };
-
-  if (avatarImg.complete && avatarImg.naturalWidth) {
-    startNow();
-  } else {
-    avatarImg.addEventListener('load', startNow, { once: true });
-    avatarImg.addEventListener('error', startNow, { once: true }); // 加载失败也降级开播
-    // 兜底：500ms 内头像仍未就绪则强制开播（防图片路径异常）
-    window.setTimeout(startNow, 500);
-  }
-
-  function skip() {
-    if (finished) return;
-    const now = performance.now();
-    if (now - t0 < T.absorb) t0 = now - T.absorb;
-    if (now - t0 >= T.end - 200) finish();
-  }
-
-  skipBtn.addEventListener('click', skip, { once: true });
-  onKey = (e) => {
-    if (e.key === 'Escape') {
+    function finish() {
+      if (finished) return;
+      finished = true;
+      timers.forEach((t) => window.clearTimeout(t));
+      rafs.forEach((r) => cancelAnimationFrame(r));
+      if (scoreTimer) window.clearInterval(scoreTimer);
       window.removeEventListener('keydown', onKey);
-      skip();
+      window.removeEventListener('resize', relayout);
+      root.classList.add('is-leaving');
+      document.documentElement.classList.remove('intro-active');
+      window.setTimeout(() => root.remove(), 520);
     }
-  };
-  window.addEventListener('keydown', onKey);
-})();
+
+    // ---- 音效：Web Audio 合成，无资源文件 ----
+    let audioCtx = null;
+    function ensureAudio() {
+      if (!audioCtx) {
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch {
+          audioCtx = null;
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+    }
+    window.addEventListener('pointerdown', ensureAudio, { once: true });
+    window.addEventListener('keydown', ensureAudio, { once: true });
+
+    function blip(freqFrom, freqTo, dur, vol, type) {
+      if (!audioCtx || audioCtx.state !== 'running') return;
+      const t0 = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type || 'sine';
+      osc.frequency.setValueAtTime(freqFrom, t0);
+      osc.frequency.exponentialRampToValueAtTime(freqTo, t0 + dur);
+      gain.gain.setValueAtTime(vol, t0);
+      gain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start(t0);
+      osc.stop(t0 + dur + 0.02);
+    }
+
+    // 水漩涡吸入：白噪声低通 + 低频嗡鸣
+    function swirlSound() {
+      if (!audioCtx || audioCtx.state !== 'running') return;
+      const t0 = audioCtx.currentTime;
+      const dur = 0.9;
+      const len = Math.floor(audioCtx.sampleRate * dur);
+      const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buf;
+      const lp = audioCtx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(800, t0);
+      lp.frequency.exponentialRampToValueAtTime(120, t0 + dur);
+      lp.Q.value = 4;
+      const ng = audioCtx.createGain();
+      ng.gain.setValueAtTime(0, t0);
+      ng.gain.linearRampToValueAtTime(0.16, t0 + 0.15);
+      ng.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+      noise.connect(lp).connect(ng).connect(audioCtx.destination);
+      noise.start(t0);
+      noise.stop(t0 + dur);
+      const osc = audioCtx.createOscillator();
+      const og = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(110, t0);
+      osc.frequency.exponentialRampToValueAtTime(45, t0 + dur);
+      og.gain.setValueAtTime(0, t0);
+      og.gain.linearRampToValueAtTime(0.07, t0 + 0.2);
+      og.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+      osc.connect(og).connect(audioCtx.destination);
+      osc.start(t0);
+      osc.stop(t0 + dur);
+    }
+
+    // ---- 几何测量：把「吃豆人中心到达豆子」换算成精确延迟 ----
+    function measure() {
+      if (!pac || !track || !target) return null;
+      const tr = track.getBoundingClientRect();
+      const pr = pac.getBoundingClientRect();
+      const gr = target.getBoundingClientRect();
+      // 让吃豆人的「中心」正好落到终点头像的「中心」—— 既是"吃到"的画面，
+      // 也保证它一定能越过最后一颗豆子（否则末颗豆子永远吃不到）。
+      const travel = Math.max(0, tr.width - (pr.width + gr.width) / 2);
+      root.style.setProperty('--pac-travel', travel + 'px');
+      root.style.setProperty('--pac-dur', TRAVEL_DUR_CSS);
+
+      const startCenter = pr.width / 2;
+      const schedule = [];
+      dots.forEach((dot) => {
+        const dr = dot.getBoundingClientRect();
+        const center = dr.left + dr.width / 2 - tr.left;
+        const p = travel > 0 ? clamp01((center - startCenter) / travel) : 0;
+        const at = S.start + S.travel * p;
+        dot.style.setProperty('--eat-delay', Math.round(at) + 'ms');
+        schedule.push({ at, power: dot.classList.contains('is-power') });
+      });
+      return schedule;
+    }
+
+    function relayout() {
+      measure();
+    }
+
+    function syncVeilAndFlyer() {
+      // 终点：侧栏真实头像中心（移动端侧栏在顶部，实测即可）
+      const side = document.querySelector('.app-aside img');
+      const fr = side ? side.getBoundingClientRect() : null;
+      const trg = target ? target.getBoundingClientRect() : null;
+      const to = fr && fr.width > 0
+        ? { x: fr.left + fr.width / 2, y: fr.top + fr.height / 2, w: fr.width }
+        : { x: window.innerWidth / 2, y: 56, w: 72 };
+      root.style.setProperty('--veil-x', to.x + 'px');
+      root.style.setProperty('--veil-y', to.y + 'px');
+
+      if (flyer && trg) {
+        const from = { x: trg.left + trg.width / 2, y: trg.top + trg.height / 2, w: trg.width };
+        flyer.style.left = from.x + 'px';
+        flyer.style.top = from.y + 'px';
+        root.style.setProperty('--fly-dx', to.x - from.x + 'px');
+        root.style.setProperty('--fly-dy', to.y - from.y + 'px');
+        root.style.setProperty('--fly-scale', String(Math.max(0.3, to.w / Math.max(from.w, 1))));
+      }
+    }
+
+    document.documentElement.classList.add('intro-active');
+
+    // 跳过入口必须在「减少动画」提前 return 之前就注册好：
+    // finish() 里要 removeEventListener(onKey)，若 onKey 还在暂时性死区，
+    // finish() 会抛 ReferenceError 并且再也无法卸载开屏。
+    const onKey = (e) => {
+      if (e.key === 'Escape') finish();
+    };
+    window.addEventListener('keydown', onKey);
+    skipBtn?.addEventListener('click', finish, { once: true });
+
+    // ---- 尊重减少动画：不做位移动效，静态展示一小段后进入 ----
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      root.classList.add('is-reduced');
+      if (statusEl) statusEl.textContent = statusEl.getAttribute('data-text') || '';
+      // 静态模式下也要把黑幕定位到侧栏头像，否则收尾时看不到目标点
+      syncVeilAndFlyer();
+      later(finish, 1300);
+      return;
+    }
+
+    const schedule = measure();
+    syncVeilAndFlyer();
+    window.addEventListener('resize', relayout);
+    // 量好几何、写好 --pac-travel / --eat-delay 之后再放行动效，
+    // 否则豆子会因为 --eat-delay 默认 0ms 在首帧就被吃掉
+    root.classList.add('is-armed');
+
+    // ---- 记分：随吃豆进度累加 ----
+    let score = 0;
+    if (scoreEl) {
+      scoreTimer = window.setInterval(() => {
+        if (score >= 1600) return;
+        score += 100;
+        scoreEl.textContent = String(score).padStart(4, '0');
+      }, 190);
+    }
+
+    // ---- 逐颗吃豆：到点消失 + 音效（时间与几何严格对齐）----
+    if (schedule) {
+      schedule.forEach((item) => {
+        later(() => {
+          blip(item.power ? 900 : 600, item.power ? 300 : 200, item.power ? 0.14 : 0.08, 0.11, 'sine');
+        }, item.at);
+      });
+    }
+
+    // ---- 3.16s 吃到头像 ----
+    later(() => {
+      root.classList.add('is-eaten');
+      blip(400, 80, 0.3, 0.14, 'square');
+    }, S.flightStart);
+
+    // ---- 头像副本起飞 + 黑幕吸入 ----
+    later(() => {
+      syncVeilAndFlyer();
+      root.classList.add('is-flying');
+      swirlSound();
+    }, S.flightStart + 10);
+
+    later(() => root.classList.add('is-absorbing'), S.absorbStart);
+    later(finish, S.end);
+  })();
 </script>
