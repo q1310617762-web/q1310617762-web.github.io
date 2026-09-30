@@ -146,32 +146,47 @@ const RIPPLES = [0, 90, 180, 270, 360];
     };
     const RUN_END = T.enter + T.travel;
 
-    // ---- 播放频率 ----
-    const PLAY_EVERY_LOAD = true;
-    const DAY_KEY = 'intro-last-day';
-    const today = new Date().toDateString();
+    // ---- 播放判定：开屏只在「本次会话第一次进入首页」时播放 ----
+    // 开屏是「进入站点」的欢迎动画，不该在站内点「首页」时又放一遍。
+    // 坑在于：点首页可能走两条完全不同的路径，必须都挡住 ——
+    //   1) 客户端换页（ClientRouter 接管，同一文档内替换内容）
+    //   2) 整页加载（点得太快、路由还没接管；移动端慢网络下很容易发生）
+    // 实测线上就是这样：同一操作第 1 次整页加载会播、第 2~6 次换页不播。
+    // 所以主判定用 sessionStorage（跨整页加载依然有效），
+    // 再补两条堵住「首次进入就是子页」的情况。
+    const SEEN_KEY = 'intro-shown';
     const force = new URLSearchParams(location.search).get('intro') === '1';
-    // 开屏是「进入站点」的欢迎动画，不该在站内点「首页」回来时又放一遍。
-    // 站点启用了 ClientRouter（客户端路由），点首页是换页而非重新加载。
-    // 两道判定，覆盖两种来源，且都不依赖事件派发顺序：
-    //   a) 文档初始路径 ≠ 当前路径 —— 说明首页是被站内导航带出来的
-    //      （覆盖「先落在子页，再点首页」；此时本组件脚本才第一次加载）
-    //   b) 本次窗口已经播过 —— 覆盖「首页 → 子页 → 首页」来回
-    // 真正的整页加载首页 / 刷新 会重置窗口，照常播（保持原行为）。
-    const SEEN_KEY = '__introPlayedInThisLoad';
-    const initialPath = window.__initialPath;
-    const cameFromClientNav = typeof initialPath === 'string' && initialPath !== location.pathname;
-    const playedAlready = window[SEEN_KEY] === true;
-    if (!force && (cameFromClientNav || playedAlready || (!PLAY_EVERY_LOAD && localStorage.getItem(DAY_KEY) === today))) {
+    const navEntry = performance.getEntriesByType('navigation')[0];
+    const navType = navEntry ? navEntry.type : 'navigate';
+
+    let shownThisSession = false;
+    try {
+      // 刷新视作「重新进入」：清掉标记，照常播
+      if (navType === 'reload') sessionStorage.removeItem(SEEN_KEY);
+      shownThisSession = sessionStorage.getItem(SEEN_KEY) === '1';
+    } catch {}
+
+    // a) 同一文档内的客户端换页：文档初始路径 ≠ 当前路径
+    const cameFromClientNav =
+      typeof window.__initialPath === 'string' && window.__initialPath !== location.pathname;
+    // b) 整页加载，但来源是站内其它页（点首页太快、路由还没接管）
+    const cameFromInternalLink = (() => {
+      try {
+        if (!document.referrer) return false;
+        const ref = new URL(document.referrer);
+        return ref.origin === location.origin && ref.pathname !== location.pathname;
+      } catch {
+        return false;
+      }
+    })();
+
+    if (!force && (shownThisSession || cameFromClientNav || cameFromInternalLink)) {
       root.remove();
       return;
     }
-    window[SEEN_KEY] = true;
-    if (!PLAY_EVERY_LOAD) {
-      try {
-        localStorage.setItem(DAY_KEY, today);
-      } catch {}
-    }
+    try {
+      sessionStorage.setItem(SEEN_KEY, '1');
+    } catch {}
 
     const pac = root.querySelector('[data-intro-pac]');
     const dotsWrap = root.querySelector('[data-intro-dots]');
