@@ -744,15 +744,16 @@ pre {
   pointer-events: none;
   clip-path: circle(150% at var(--vx, 50%) var(--vy, 50%));
 }
-/* 吸入条纹：细密的放射状亮线 + 径向遮罩（外淡内亮），
- * 旋转并整体向心收缩 —— 物质被拉向视界的感觉。 */
+/* 吸入条纹：中灰色细密放射线（不是黄色）。
+ * 用中灰是为了在黑幕上偏亮、在黑幕化掉后的浅色主页上偏暗，
+ * 两种底色下都读得出来 —— 这才像"暗物质被抽进去"。 */
 .intro-veil::before {
   content: '';
   position: absolute;
   inset: -60%;
   background: repeating-conic-gradient(
     from 0deg at var(--vx, 50%) var(--vy, 50%),
-    rgba(255, 255, 255, 0.11) 0 1.2deg,
+    rgba(88, 92, 112, 0.5) 0 1.2deg,
     transparent 1.2deg 11deg
   );
   -webkit-mask-image: radial-gradient(
@@ -772,8 +773,10 @@ pre {
   transform-origin: var(--vx, 50%) var(--vy, 50%);
   animation: intro-spin var(--spin) linear infinite;
 }
-/* 吸积盘：暖色高亮环盘，绕视界旋转并缩进去。中间掏空，头像本身就是视界。
- * 它是 .intro-veil 的子元素，所以会被 veil 的 clip-path 一起收进头像边框。 */
+/* 吸积盘：黑色涡流环（原来是白→金→橙的暖色，用户要求改成黑的）。
+ * 用不同深浅的黑/深灰做出层次，靠与浅色主页的对比来读，
+ * 而不是靠发光。中间掏空，头像本身就是视界。
+ * 它是 .intro-veil 的子元素，会随 veil 的 clip-path 一起收进头像边框。 */
 .intro-bh-disk {
   position: absolute;
   left: var(--vx, 50%);
@@ -787,16 +790,16 @@ pre {
   background: conic-gradient(
     from 0deg,
     transparent 0 6%,
-    rgba(255, 236, 170, 0.9) 20%,
-    rgba(255, 150, 60, 0.95) 33%,
-    rgba(255, 90, 40, 0.5) 46%,
+    rgba(0, 0, 0, 0.94) 20%,
+    rgba(14, 14, 20, 0.96) 33%,
+    rgba(46, 48, 62, 0.6) 46%,
     transparent 57%,
-    rgba(160, 205, 255, 0.4) 72%,
+    rgba(0, 0, 0, 0.5) 72%,
     transparent 86%
   );
   -webkit-mask: radial-gradient(circle, transparent 0 33%, #000 45%, #000 78%, transparent 92%);
   mask: radial-gradient(circle, transparent 0 33%, #000 45%, #000 78%, transparent 92%);
-  filter: blur(1.5px) saturate(1.35);
+  filter: blur(1.5px);
 }
 .intro.is-absorbing .intro-veil {
   animation: intro-absorb 900ms cubic-bezier(0.7, 0, 0.2, 1) forwards;
@@ -808,8 +811,8 @@ pre {
 .intro.is-absorbing .intro-bh-disk {
   animation: intro-bh-disk 900ms cubic-bezier(0.6, 0, 0.2, 1) forwards;
 }
-/* 亮环：从外圈一路收到「头像边框」上，最后停在边框处微微发亮，
- * 明确告诉眼睛：黑幕是被这圈边框吸进去的。 */
+/* 亮环改成「黑环」：从外圈收到头像边框上，最后停在边框处。
+ * 用黑色（不是金黄），在浅色主页上读作一圈被吸进边框的暗环。 */
 .intro-veil::after {
   content: '';
   position: absolute;
@@ -821,8 +824,8 @@ pre {
   border-radius: 50%;
   opacity: 0;
   box-shadow:
-    0 0 0 2px rgba(255, 255, 255, 0.55),
-    0 0 34px 8px rgba(255, 214, 0, 0.4);
+    0 0 0 2px rgba(0, 0, 0, 0.8),
+    0 0 34px 10px rgba(0, 0, 0, 0.5);
 }
 .intro.is-absorbing .intro-veil::after {
   animation: intro-ring 900ms ease-out forwards;
@@ -1012,6 +1015,7 @@ pre {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
+/* 撞击爆光：由白/金黄/红改成黑色冲击波（用户要求吸收不要黄色）。 */
 .intro-burst {
   position: absolute;
   inset: -30%;
@@ -1021,9 +1025,9 @@ pre {
   transform: scale(0.2);
   background: radial-gradient(
     circle,
-    #fff 8%,
-    var(--arcade-pac) 38%,
-    rgba(255, 59, 48, 0.75) 68%,
+    rgba(0, 0, 0, 0.92) 0 16%,
+    rgba(10, 10, 16, 0.7) 42%,
+    rgba(40, 42, 56, 0.35) 66%,
     transparent 88%
   );
 }
@@ -1165,8 +1169,9 @@ pre {
   26%  { scale: 1.18; filter: brightness(1.6); }
   100% { scale: 1;    filter: brightness(1); }
 }
-/* 头像边框 = 事件视界：吸幕时点亮成白色细环 + 暖色外晕，
- * 让"黑幕是被这一圈边缘吸进去的"变成画面上的事实。
+/* 头像边框 = 事件视界：吸幕时变成一圈「黑色暗环 + 黑色外晕」，
+ * 并把头像压暗一点，像光被吸进去。
+ * （原来是白/金/橙的发光环，用户要求改成黑色。）
  * 只动画 box-shadow / filter，绝不碰 opacity —— 头像必须一直看得见。 */
 @keyframes intro-rim-drink {
   0% {
@@ -1177,18 +1182,16 @@ pre {
   }
   30% {
     box-shadow:
-      0 0 0 3px rgba(255, 255, 255, 1),
-      0 0 30px 8px rgba(255, 236, 170, 0.95),
-      0 0 72px 24px rgba(255, 150, 60, 0.6),
-      0 0 150px 64px rgba(255, 90, 40, 0.28);
-    filter: brightness(1.2);
+      0 0 0 4px rgba(0, 0, 0, 0.92),
+      0 0 42px 12px rgba(0, 0, 0, 0.68),
+      0 0 120px 44px rgba(0, 0, 0, 0.34);
+    filter: brightness(0.82);
   }
   100% {
     box-shadow:
-      0 0 0 3px rgba(255, 255, 255, 0.85),
-      0 0 26px 6px rgba(255, 214, 0, 0.6),
-      0 0 64px 20px rgba(255, 120, 50, 0.3);
-    filter: brightness(1.06);
+      0 0 0 3px rgba(0, 0, 0, 0.72),
+      0 0 30px 8px rgba(0, 0, 0, 0.46);
+    filter: brightness(0.93);
   }
 }
 /* 吃豆人自毁：闪白 → 放大 → 旋转塌缩到无 */
