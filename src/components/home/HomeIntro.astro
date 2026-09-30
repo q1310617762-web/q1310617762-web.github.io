@@ -22,20 +22,22 @@ const DOT_COUNT = 9;
 const statusText = 'INSERT COIN TO ENTER';
 
 // 开屏一开始就是一片星空，撞毁时整片星空被卷进头像。
-// 三层做出纵深：C 远景最外最暗、A 中景、B 近景最内。
+// 三层做出纵深：C 远景最外、A 中景、B 近景最内。
 // 用确定性公式生成（不用随机），保证每次构建结果一致。
-// a=起始角度(黄金角分布) r=初始半径(vmin，随视口缩放) d=闪烁延迟 s=粒径 o=基础亮度
+// a=起始角度(黄金角分布，角度上天然均匀不结块)
+// r=初始半径(vmin，随视口缩放)
+// 各层半径区间刻意拉宽并互相交叠，让星星更"散开"、不聚成几圈。
 const makeStars = (count, seed, rMin, rMax) =>
   Array.from({ length: count }, (_, i) => ({
     a: Math.round((i * 137.508 + seed * 41) % 360),
     r: Math.round(rMin + ((i * 37 + seed * 13) % Math.max(1, rMax - rMin))),
     d: ((i * 53 + seed * 17) % 8) * 55,
-    s: 2 + ((i + seed * 5) % 3),
-    o: +(0.35 + ((i * 29 + seed * 11) % 5) * 0.13).toFixed(2),
+    s: 1 + ((i + seed * 5) % 4),
+    o: +(0.3 + ((i * 29 + seed * 11) % 6) * 0.12).toFixed(2),
   }));
-const starsA = makeStars(30, 0, 19, 49);
-const starsB = makeStars(22, 3, 9, 27);
-const starsC = makeStars(20, 7, 52, 92);
+const starsA = makeStars(32, 0, 16, 62);
+const starsB = makeStars(24, 3, 8, 34);
+const starsC = makeStars(26, 7, 44, 104);
 
 // 漩涡波纹：一圈圈同心的暗环错峰收束到头像边框，形成"一波接一波被吸进去"的观感。
 // 5 圈 × 90ms 错峰 + 540ms 时长 = 900ms，正好落在吸幕(900ms)之内。

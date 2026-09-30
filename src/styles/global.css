@@ -890,10 +890,12 @@ pre {
 }
 .intro-ripples i {
   position: absolute;
-  left: calc(var(--target-size, 64px) / -2);
-  top: calc(var(--target-size, 64px) / -2);
-  width: var(--target-size, 64px);
-  height: var(--target-size, 64px);
+  /* 宽高不等 = 椭圆环。正圆环转起来和没转一样，
+   * 所以必须做成椭圆，顺时针自转才看得出来。 */
+  left: calc(var(--target-size, 64px) * -0.59);
+  top: calc(var(--target-size, 64px) * -0.42);
+  width: calc(var(--target-size, 64px) * 1.18);
+  height: calc(var(--target-size, 64px) * 0.84);
   border-radius: 50%;
   opacity: 0;
   /* 三层叠出波纹的厚度：亮边 + 中间带 + 外晕 */
@@ -909,7 +911,7 @@ pre {
   0% {
     opacity: 0;
     /* 从更远处扫进来（scale 9 ≈ 半径 360px），波纹扫过的范围更大 */
-    transform: scale(9);
+    transform: rotate(0deg) scale(9);
   }
   12% {
     opacity: 1;
@@ -917,10 +919,11 @@ pre {
   68% {
     opacity: 0.72;
   }
-  /* 收到略小于头像边框处消失，看起来是被边缘吞掉 */
+  /* 一边向心收束一边顺时针自转（CSS 正角度 = 顺时针）。
+   * 收到略小于头像边框处消失，看起来是被边缘吞掉。 */
   100% {
     opacity: 0;
-    transform: scale(0.92);
+    transform: rotate(430deg) scale(0.9);
   }
 }
 
