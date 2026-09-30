@@ -720,7 +720,6 @@ pre {
 
   /* —— 动效令牌 —— */
   --stagger: 70ms;
-  --spin: 2.4s;
 
   position: fixed;
   inset: 0;
@@ -743,35 +742,6 @@ pre {
   background: var(--arcade-bg);
   pointer-events: none;
   clip-path: circle(150% at var(--vx, 50%) var(--vy, 50%));
-}
-/* 吸入条纹：中灰色细密放射线（不是黄色）。
- * 用中灰是为了在黑幕上偏亮、在黑幕化掉后的浅色主页上偏暗，
- * 两种底色下都读得出来 —— 这才像"暗物质被抽进去"。 */
-.intro-veil::before {
-  content: '';
-  position: absolute;
-  inset: -60%;
-  background: repeating-conic-gradient(
-    from 0deg at var(--vx, 50%) var(--vy, 50%),
-    rgba(88, 92, 112, 0.5) 0 1.2deg,
-    transparent 1.2deg 11deg
-  );
-  -webkit-mask-image: radial-gradient(
-    circle at var(--vx, 50%) var(--vy, 50%),
-    #000 0,
-    #000 10%,
-    rgba(0, 0, 0, 0.7) 32%,
-    transparent 70%
-  );
-  mask-image: radial-gradient(
-    circle at var(--vx, 50%) var(--vy, 50%),
-    #000 0,
-    #000 10%,
-    rgba(0, 0, 0, 0.7) 32%,
-    transparent 70%
-  );
-  transform-origin: var(--vx, 50%) var(--vy, 50%);
-  animation: intro-spin var(--spin) linear infinite;
 }
 /* 吸积盘：黑色涡流环（原来是白→金→橙的暖色，用户要求改成黑的）。
  * 用不同深浅的黑/深灰做出层次，靠与浅色主页的对比来读，
@@ -803,9 +773,6 @@ pre {
 }
 .intro.is-absorbing .intro-veil {
   animation: intro-absorb 900ms cubic-bezier(0.7, 0, 0.2, 1) forwards;
-}
-.intro.is-absorbing .intro-veil::before {
-  animation: intro-vortex 900ms cubic-bezier(0.7, 0, 0.2, 1) forwards;
 }
 /* 吸积盘点燃：转一整圈并缩进视界 */
 .intro.is-absorbing .intro-bh-disk {
@@ -1308,12 +1275,6 @@ pre {
     opacity: 0;
   }
 }
-@keyframes intro-vortex {
-  0%   { transform: rotate(0deg) scale(1); opacity: 0.8; }
-  60%  { opacity: 0.95; }
-  /* 旋转 620° 并收缩到 0.35 —— 条纹被硬拉进中心 */
-  100% { transform: rotate(620deg) scale(0.35); opacity: 0; }
-}
 @keyframes intro-bh-disk {
   0%   { opacity: 0; transform: rotate(0deg) scale(1.5); }
   22%  { opacity: 1; }
@@ -1326,20 +1287,16 @@ pre {
   /* 收到与头像等大（scale:1 = 正好压在边框上）后停住并保持微亮 */
   100% { opacity: 0.6; transform: scale(1); }
 }
-@keyframes intro-spin {
-  to { transform: rotate(360deg); }
-}
 @keyframes intro-leave {
   to { opacity: 0; visibility: hidden; }
 }
 
-/* ---------- 减少动画：只关掉「漩涡旋转 / 呼吸光」这类点缀，核心行进照常播放 ----------
+/* ---------- 减少动画：只关掉「呼吸光」这类点缀，核心行进照常播放 ----------
  * 必须用 :not(.is-eaten) 精确限定，只关装饰性呼吸。
  * 早前直接写 `.intro-dot-core { animation: none !important }`，
  * 连「被吃掉时消失」的动画一起压掉了：开启「关闭动画效果」的用户
  * 会看到豆子被打上 is-eaten 却依然亮着（用户反馈的正是这个）。
  * 终点头像的「被咬掉」动画同理。 */
-.intro.is-reduced:not(.is-absorbing) .intro-veil::before,
 .intro.is-reduced .intro-dot:not(.is-eaten) .intro-dot-core,
 .intro.is-reduced:not(.is-absorbing) .intro-target-img,
 .intro.is-reduced .intro-caret {
