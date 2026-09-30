@@ -1,34 +1,31 @@
 ---
-// 首页开屏：街机吃豆人（motion-lab 动效 + ui 令牌重构版）
+// 首页开屏：吃豆人沿折线路线行进（motion-lab 动效 + ui 令牌）
 //
-// 动效来源（motion-lab）：
-//   blur-in         舞台与背景从模糊到清晰
-//   svg-dash-animate 霓虹轨道蚂蚁线
-//   stagger-fade    豆子错落浮现
-//   mask-reveal     标题遮罩揭示
-//   typewriter      状态行逐字输入
-//   pulse           能量豆呼吸
-//   scale-in        吃豆人入场
-//   scale-out       吃豆人与终点头像的吞入收束
+// 修正了上一版的两个致命问题：
+//   1) conic-gradient 的 0deg 是「12 点方向」，上一版按「0deg=右」写，导致嘴一直朝上；
+//      现在用 --pac-dir 表达朝向（0=右,90=下,180=左,270=上），嘴永远跟随行进方向。
+//      眼睛不跟随旋转（否则朝左时眼睛会倒立），而是按行进方向换位。
+//   2) 上一版在 prefers-reduced-motion 下把动画整个关掉，用户系统若关闭了动画效果，
+//      就只能看到一只静止的吃豆人。现在无论何种偏好都会播放完整动画，
+//      仅去掉漩涡旋转等非必要特效；随时可按 ESC / 点「跳过」结束。
 //
-// 规范来源（ui）：设计令牌化（无魔法值）、只动画 transform/opacity/box-shadow、
-// 真实 button + 可见焦点 + ESC 可跳过、尊重 prefers-reduced-motion、<420px 不破版。
-//
-// 相对上一版（Canvas）的取舍：改为纯 CSS/DOM，去掉逐帧重绘与粒子数组，
-// 省下大量主线程开销；保留已确认的特性 —— 逐颗吃豆音效、头像吸入侧栏真实头像、
-// 匀速不减速、?intro=1 强制播放。
+// 路线：右下出发 → 向左 → 向上 → 向左咬住侧栏头像，之后漩涡把黑幕吸入头像结束。
+// 豆子按「弧长」等分摆放，吃豆人匀速行进，命中时刻 = 弧长占比，因此豆子必然在
+// 被吃到的瞬间消失（不靠估算、不靠定时器猜）。
 import { site } from '@data/site';
 
 const rawAvatar = site.avatar || '/avatar.jpg';
 const base = import.meta.env.BASE_URL || '/';
 const avatarSrc = base.replace(/\/$/, '') + (rawAvatar.startsWith('/') ? rawAvatar : `/${rawAvatar}`);
 
-const DOT_COUNT = 7;
-const POWER_INDEX = 3; // 第 4 颗为能量豆
+const DOT_COUNT = 9;
 const statusText = 'INSERT COIN TO ENTER';
 ---
 
 <div class="intro" data-intro aria-label="开屏动画：吃豆人进入博客">
+  <!-- 底色 + 漩涡：整个开屏的黑色背景由它承担，层级最低 -->
+  <div class="intro-veil" data-intro-veil aria-hidden="true"></div>
+
   <!-- 记分 HUD -->
   <div class="intro-hud" aria-hidden="true">
     <div class="intro-hud-cell">
@@ -41,46 +38,33 @@ const statusText = 'INSERT COIN TO ENTER';
     </div>
   </div>
 
-  <!-- 舞台：霓虹轨道 + 豆子 + 吃豆人 + 终点头像 -->
-  <div class="intro-field" aria-hidden="true">
-    <svg class="intro-rails" viewBox="0 0 100 20" preserveAspectRatio="none">
-      <line class="intro-rail" x1="0" y1="5" x2="100" y2="5" />
-      <line class="intro-rail" x1="0" y1="15" x2="100" y2="15" />
-    </svg>
+  <!-- 路线层：豆子、吃豆人、终点头像都用视口坐标定位 -->
+  <div class="intro-route" aria-hidden="true">
+    <ol class="intro-dots" data-intro-dots>
+      {Array.from({ length: DOT_COUNT }).map((_, i) => (
+        <li class="intro-dot" data-intro-dot style={`--i:${i}`}>
+          <span class="intro-dot-core" />
+        </li>
+      ))}
+    </ol>
 
-    <div class="intro-track" data-intro-track>
-      <ol class="intro-dots" data-intro-dots>
-        {Array.from({ length: DOT_COUNT }).map((_, i) => (
-          <li class={`intro-dot${i === POWER_INDEX ? ' is-power' : ''}`} data-intro-dot style={`--i:${i}`}>
-            <span class="intro-dot-core" />
-          </li>
-        ))}
-      </ol>
+    <div class="intro-pac" data-intro-pac data-dir="right">
+      <i class="intro-pac-eye" />
+    </div>
 
-      <div class="intro-pac" data-intro-pac>
-        <i class="intro-pac-eye" />
-      </div>
-
-      <div class="intro-target" data-intro-target>
-        <img class="intro-target-img" src={avatarSrc} alt="" />
-        <span class="intro-burst" />
-      </div>
+    <div class="intro-target" data-intro-target>
+      <img class="intro-target-img" src={avatarSrc} alt="" />
+      <span class="intro-burst" />
     </div>
   </div>
 
-  <!-- 字幕区：mask-reveal 标题 + typewriter 状态行 -->
+  <!-- 字幕：mask-reveal 标题 + typewriter 状态行 -->
   <div class="intro-caption">
     <p class="intro-title"><span class="intro-title-inner">READY!</span></p>
     <p class="intro-status">
       <span data-intro-type data-text={statusText}></span><i class="intro-caret" />
     </p>
   </div>
-
-  <!-- 吃到头像后的飞行副本：飞向侧栏真实头像 -->
-  <img class="intro-flyer" data-intro-flyer src={avatarSrc} alt="" aria-hidden="true" />
-
-  <!-- 吸入黑幕：向侧栏头像收束 -->
-  <div class="intro-veil" data-intro-veil aria-hidden="true"></div>
 
   <button type="button" class="intro-skip" data-intro-skip aria-label="跳过开屏动画">
     跳过 <kbd class="intro-kbd">ESC</kbd>
@@ -97,20 +81,17 @@ const statusText = 'INSERT COIN TO ENTER';
     if (!(root instanceof HTMLElement) || root.dataset.bound === '1') return;
     root.dataset.bound = '1';
 
-    // ===== 时间轴（ms）：匀速不减速，豆子按实测几何精确对齐 =====
-    const S = {
-      start: 700, // 吃豆人开始前进
-      travel: 2400, // 匀速前进时长
-      flightStart: 3160, // 头像副本起飞
-      flightDur: 620,
-      absorbStart: 3320, // 黑幕吸入
-      absorbDur: 720,
-      end: 4180, // 整幕结束
+    // ===== 时间轴（ms）=====
+    const T = {
+      enter: 380, // 入场（HUD/字幕/豆子浮现）
+      travel: 3000, // 匀速走完整条路线
+      eatHold: 260, // 咬住头像的停顿
+      vortex: 900, // 漩涡吸入
     };
-    const TRAVEL_DUR_CSS = S.travel + 'ms';
+    const RUN_END = T.enter + T.travel;
 
     // ---- 播放频率 ----
-    const PLAY_EVERY_LOAD = true; // 上线后可改 false：同一天只播一次
+    const PLAY_EVERY_LOAD = true;
     const DAY_KEY = 'intro-last-day';
     const today = new Date().toDateString();
     const force = new URLSearchParams(location.search).get('intro') === '1';
@@ -125,36 +106,43 @@ const statusText = 'INSERT COIN TO ENTER';
     }
 
     const pac = root.querySelector('[data-intro-pac]');
-    const track = root.querySelector('[data-intro-track]');
+    const dotsWrap = root.querySelector('[data-intro-dots]');
+    const dotEls = Array.from(root.querySelectorAll('[data-intro-dot]'));
     const target = root.querySelector('[data-intro-target]');
-    const dots = Array.from(root.querySelectorAll('[data-intro-dot]'));
     const scoreEl = root.querySelector('[data-intro-score]');
     const statusEl = root.querySelector('[data-intro-type]');
-    const flyer = root.querySelector('[data-intro-flyer]');
     const skipBtn = root.querySelector('[data-intro-skip]');
+    const veil = root.querySelector('[data-intro-veil]');
 
-    const timers = [];
-    const rafs = [];
-    const later = (fn, ms) => timers.push(window.setTimeout(fn, ms));
     const clamp01 = (p) => (p < 0 ? 0 : p > 1 ? 1 : p);
-
     let finished = false;
-    let scoreTimer = null;
+    let rafId = 0;
+    const timers = [];
+    const later = (fn, ms) => timers.push(window.setTimeout(fn, ms));
 
     function finish() {
       if (finished) return;
       finished = true;
+      cancelAnimationFrame(rafId);
       timers.forEach((t) => window.clearTimeout(t));
-      rafs.forEach((r) => cancelAnimationFrame(r));
-      if (scoreTimer) window.clearInterval(scoreTimer);
       window.removeEventListener('keydown', onKey);
-      window.removeEventListener('resize', relayout);
+      window.removeEventListener('resize', onResize);
       root.classList.add('is-leaving');
       document.documentElement.classList.remove('intro-active');
       window.setTimeout(() => root.remove(), 520);
     }
 
-    // ---- 音效：Web Audio 合成，无资源文件 ----
+    // 跳过入口必须在任何提前 return 之前注册，否则 finish() 会因 onKey 处于
+    // 暂时性死区而抛错，导致开屏永远无法卸载（上一版就是这个坑）
+    const onKey = (e) => {
+      if (e.key === 'Escape') finish();
+    };
+    window.addEventListener('keydown', onKey);
+    skipBtn?.addEventListener('click', finish, { once: true });
+
+    document.documentElement.classList.add('intro-active');
+
+    // ---- 音效：Web Audio 合成 ----
     let audioCtx = null;
     function ensureAudio() {
       if (!audioCtx) {
@@ -169,14 +157,14 @@ const statusText = 'INSERT COIN TO ENTER';
     window.addEventListener('pointerdown', ensureAudio, { once: true });
     window.addEventListener('keydown', ensureAudio, { once: true });
 
-    function blip(freqFrom, freqTo, dur, vol, type) {
+    function blip(from, to, dur, vol, type) {
       if (!audioCtx || audioCtx.state !== 'running') return;
       const t0 = audioCtx.currentTime;
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = type || 'sine';
-      osc.frequency.setValueAtTime(freqFrom, t0);
-      osc.frequency.exponentialRampToValueAtTime(freqTo, t0 + dur);
+      osc.frequency.setValueAtTime(from, t0);
+      osc.frequency.exponentialRampToValueAtTime(to, t0 + dur);
       gain.gain.setValueAtTime(vol, t0);
       gain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
       osc.connect(gain).connect(audioCtx.destination);
@@ -184,25 +172,25 @@ const statusText = 'INSERT COIN TO ENTER';
       osc.stop(t0 + dur + 0.02);
     }
 
-    // 水漩涡吸入：白噪声低通 + 低频嗡鸣
-    function swirlSound() {
+    // 漩涡吸入：白噪声低通 + 低频嗡鸣
+    function vortexSound() {
       if (!audioCtx || audioCtx.state !== 'running') return;
       const t0 = audioCtx.currentTime;
-      const dur = 0.9;
+      const dur = 0.85;
       const len = Math.floor(audioCtx.sampleRate * dur);
       const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
-      const data = buf.getChannelData(0);
-      for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
       const noise = audioCtx.createBufferSource();
       noise.buffer = buf;
       const lp = audioCtx.createBiquadFilter();
       lp.type = 'lowpass';
-      lp.frequency.setValueAtTime(800, t0);
-      lp.frequency.exponentialRampToValueAtTime(120, t0 + dur);
+      lp.frequency.setValueAtTime(900, t0);
+      lp.frequency.exponentialRampToValueAtTime(110, t0 + dur);
       lp.Q.value = 4;
       const ng = audioCtx.createGain();
       ng.gain.setValueAtTime(0, t0);
-      ng.gain.linearRampToValueAtTime(0.16, t0 + 0.15);
+      ng.gain.linearRampToValueAtTime(0.16, t0 + 0.12);
       ng.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
       noise.connect(lp).connect(ng).connect(audioCtx.destination);
       noise.start(t0);
@@ -210,8 +198,8 @@ const statusText = 'INSERT COIN TO ENTER';
       const osc = audioCtx.createOscillator();
       const og = audioCtx.createGain();
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(110, t0);
-      osc.frequency.exponentialRampToValueAtTime(45, t0 + dur);
+      osc.frequency.setValueAtTime(120, t0);
+      osc.frequency.exponentialRampToValueAtTime(42, t0 + dur);
       og.gain.setValueAtTime(0, t0);
       og.gain.linearRampToValueAtTime(0.07, t0 + 0.2);
       og.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
@@ -220,118 +208,210 @@ const statusText = 'INSERT COIN TO ENTER';
       osc.stop(t0 + dur);
     }
 
-    // ---- 几何测量：把「吃豆人中心到达豆子」换算成精确延迟 ----
-    function measure() {
-      if (!pac || !track || !target) return null;
-      const tr = track.getBoundingClientRect();
-      const pr = pac.getBoundingClientRect();
-      const gr = target.getBoundingClientRect();
-      // 让吃豆人的「中心」正好落到终点头像的「中心」—— 既是"吃到"的画面，
-      // 也保证它一定能越过最后一颗豆子（否则末颗豆子永远吃不到）。
-      const travel = Math.max(0, tr.width - (pr.width + gr.width) / 2);
-      root.style.setProperty('--pac-travel', travel + 'px');
-      root.style.setProperty('--pac-dur', TRAVEL_DUR_CSS);
-
-      const startCenter = pr.width / 2;
-      const schedule = [];
-      dots.forEach((dot) => {
-        const dr = dot.getBoundingClientRect();
-        const center = dr.left + dr.width / 2 - tr.left;
-        const p = travel > 0 ? clamp01((center - startCenter) / travel) : 0;
-        const at = S.start + S.travel * p;
-        dot.style.setProperty('--eat-delay', Math.round(at) + 'ms');
-        schedule.push({ at, power: dot.classList.contains('is-power') });
-      });
-      return schedule;
-    }
-
-    function relayout() {
-      measure();
-    }
-
-    function syncVeilAndFlyer() {
-      // 终点：侧栏真实头像中心（移动端侧栏在顶部，实测即可）
+    // ===== 路线（视口坐标折线）：右下 → 左 → 上 → 左咬住头像 =====
+    function avatarCenter() {
       const side = document.querySelector('.app-aside img');
-      const fr = side ? side.getBoundingClientRect() : null;
-      const trg = target ? target.getBoundingClientRect() : null;
-      const to = fr && fr.width > 0
-        ? { x: fr.left + fr.width / 2, y: fr.top + fr.height / 2, w: fr.width }
-        : { x: window.innerWidth / 2, y: 56, w: 72 };
-      root.style.setProperty('--veil-x', to.x + 'px');
-      root.style.setProperty('--veil-y', to.y + 'px');
+      if (side) {
+        const r = side.getBoundingClientRect();
+        if (r.width > 0) return { x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width };
+      }
+      return { x: 56, y: 56, w: 72 };
+    }
 
-      if (flyer && trg) {
-        const from = { x: trg.left + trg.width / 2, y: trg.top + trg.height / 2, w: trg.width };
-        flyer.style.left = from.x + 'px';
-        flyer.style.top = from.y + 'px';
-        root.style.setProperty('--fly-dx', to.x - from.x + 'px');
-        root.style.setProperty('--fly-dy', to.y - from.y + 'px');
-        root.style.setProperty('--fly-scale', String(Math.max(0.3, to.w / Math.max(from.w, 1))));
+    function buildRoute(t) {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const mobile = vw < 1024;
+      if (mobile) {
+        // 手机：头像在顶部居中，从右下出发 → 左 → 上 → 右（进头像）
+        const lane = vh * 0.7;
+        const col = Math.max(vw * 0.12, Math.min(t.x - vw * 0.28, vw * 0.26));
+        return [
+          { x: vw * 0.84, y: lane },
+          { x: col, y: lane },
+          { x: col, y: t.y },
+          { x: t.x, y: t.y },
+        ];
+      }
+      // 桌面：头像在左上，从右下出发 → 左 → 上 → 左（进头像）
+      const lane = vh * 0.74;
+      const col = Math.max(t.x + 170, vw * 0.34);
+      return [
+        { x: vw * 0.86, y: lane },
+        { x: col, y: lane },
+        { x: col, y: t.y },
+        { x: t.x, y: t.y },
+      ];
+    }
+
+    const segLen = (a, b) => Math.hypot(b.x - a.x, b.y - a.y);
+
+    function pointAt(pts, dist) {
+      let acc = 0;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const a = pts[i];
+        const b = pts[i + 1];
+        const len = segLen(a, b);
+        if (acc + len >= dist || i === pts.length - 2) {
+          const p = len > 0 ? clamp01((dist - acc) / len) : 0;
+          return {
+            x: a.x + (b.x - a.x) * p,
+            y: a.y + (b.y - a.y) * p,
+            // 屏幕角度：0=右, 90=下, 180=左, 270=上
+            dir: (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI,
+          };
+        }
+        acc += len;
+      }
+      const last = pts[pts.length - 1];
+      return { x: last.x, y: last.y, dir: 180 };
+    }
+
+    function dirName(deg) {
+      const d = ((deg % 360) + 360) % 360;
+      if (d < 45 || d >= 315) return 'right';
+      if (d < 135) return 'down';
+      if (d < 225) return 'left';
+      return 'up';
+    }
+
+    // 屏幕角度（0=右, 90=下, 180=左, 270=上）；CSS 里 conic 的 0deg 在 12 点方向，
+    // 所以真正写进 --pac-dir 的角度会由 CSS 再加 90deg 换算。
+    const DIR_ANGLE = { right: '0deg', down: '90deg', left: '180deg', up: '270deg' };
+    function setPacDir(name) {
+      if (!pac) return;
+      pac.dataset.dir = name; // 控制眼睛位置
+      pac.style.setProperty('--pac-dir', DIR_ANGLE[name] || '0deg'); // 控制嘴的朝向
+    }
+
+    // ===== 布点：豆子按弧长等分，位置与「被吃时刻」共用同一条弧长轴 =====
+    let route = [];
+    let total = 0;
+    let dotHit = [];
+
+    function layout() {
+      const t = avatarCenter();
+      route = buildRoute(t);
+      total = 0;
+      for (let i = 0; i < route.length - 1; i++) total += segLen(route[i], route[i + 1]);
+
+      if (target) {
+        target.style.left = t.x + 'px';
+        target.style.top = t.y + 'px';
+      }
+      if (veil) {
+        root.style.setProperty('--vx', t.x + 'px');
+        root.style.setProperty('--vy', t.y + 'px');
+      }
+
+      dotHit = [];
+      dotEls.forEach((el, i) => {
+        const frac = 0.06 + (0.88 * (i + 1)) / (dotEls.length + 1);
+        const d = total * frac;
+        const p = pointAt(route, d);
+        el.style.left = p.x + 'px';
+        el.style.top = p.y + 'px';
+        dotHit.push({ el, d, eaten: false });
+      });
+
+      const p0 = pointAt(route, 0);
+      setPacDir(dirName(p0.dir));
+      // 立刻把吃豆人摆到起点：否则 is-armed 让它显形后、第一帧 rAF 之前，
+      // 它会短暂停在路线层左上角 (0,0) 闪一下
+      if (pac) {
+        const half = pac.getBoundingClientRect().width / 2;
+        pac.style.transform = `translate3d(${p0.x - half}px, ${p0.y - half}px, 0)`;
       }
     }
 
-    document.documentElement.classList.add('intro-active');
-
-    // 跳过入口必须在「减少动画」提前 return 之前就注册好：
-    // finish() 里要 removeEventListener(onKey)，若 onKey 还在暂时性死区，
-    // finish() 会抛 ReferenceError 并且再也无法卸载开屏。
-    const onKey = (e) => {
-      if (e.key === 'Escape') finish();
-    };
-    window.addEventListener('keydown', onKey);
-    skipBtn?.addEventListener('click', finish, { once: true });
-
-    // ---- 尊重减少动画：不做位移动效，静态展示一小段后进入 ----
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) {
-      root.classList.add('is-reduced');
-      if (statusEl) statusEl.textContent = statusEl.getAttribute('data-text') || '';
-      // 静态模式下也要把黑幕定位到侧栏头像，否则收尾时看不到目标点
-      syncVeilAndFlyer();
-      later(finish, 1300);
-      return;
-    }
-
-    const schedule = measure();
-    syncVeilAndFlyer();
-    window.addEventListener('resize', relayout);
-    // 量好几何、写好 --pac-travel / --eat-delay 之后再放行动效，
-    // 否则豆子会因为 --eat-delay 默认 0ms 在首帧就被吃掉
-    root.classList.add('is-armed');
-
-    // ---- 记分：随吃豆进度累加 ----
+    // ===== 行进：匀速（弧长线性），朝向随分段切换 =====
     let score = 0;
-    if (scoreEl) {
-      scoreTimer = window.setInterval(() => {
-        if (score >= 1600) return;
-        score += 100;
-        scoreEl.textContent = String(score).padStart(4, '0');
-      }, 190);
+    function onScore() {
+      score = Math.min(score + 100, 1600);
+      if (scoreEl) scoreEl.textContent = String(score).padStart(4, '0');
     }
 
-    // ---- 逐颗吃豆：到点消失 + 音效（时间与几何严格对齐）----
-    if (schedule) {
-      schedule.forEach((item) => {
-        later(() => {
-          blip(item.power ? 900 : 600, item.power ? 300 : 200, item.power ? 0.14 : 0.08, 0.11, 'sine');
-        }, item.at);
-      });
+    function startRun() {
+      const size = pac ? pac.getBoundingClientRect().width : 56;
+      const half = size / 2;
+      const t0 = performance.now();
+      let lastDir = '';
+
+      const frame = (now) => {
+        const p = clamp01((now - t0) / T.travel);
+        const d = p * total;
+        const pos = pointAt(route, d);
+
+        if (pac) {
+          pac.style.transform = `translate3d(${pos.x - half}px, ${pos.y - half}px, 0)`;
+          const dn = dirName(pos.dir);
+          if (dn !== lastDir) {
+            setPacDir(dn);
+            lastDir = dn;
+          }
+        }
+
+        // 吃豆：弧长一越过就立刻消失（同一 rAF 内判定，不存在延后）
+        for (const h of dotHit) {
+          if (!h.eaten && d >= h.d) {
+            h.eaten = true;
+            h.el.classList.add('is-eaten');
+            blip(620, 210, 0.075, 0.1, 'sine');
+            onScore();
+          }
+        }
+
+        if (p < 1) {
+          rafId = requestAnimationFrame(frame);
+        } else {
+          reachTarget();
+        }
+      };
+      rafId = requestAnimationFrame(frame);
     }
 
-    // ---- 3.16s 吃到头像 ----
-    later(() => {
+    function reachTarget() {
       root.classList.add('is-eaten');
-      blip(400, 80, 0.3, 0.14, 'square');
-    }, S.flightStart);
+      blip(420, 80, 0.28, 0.13, 'square');
+      later(() => {
+        if (pac) pac.classList.add('is-consumed');
+        root.classList.add('is-absorbing');
+        vortexSound();
+      }, T.eatHold);
+      later(finish, T.eatHold + T.vortex);
+    }
 
-    // ---- 头像副本起飞 + 黑幕吸入 ----
-    later(() => {
-      syncVeilAndFlyer();
-      root.classList.add('is-flying');
-      swirlSound();
-    }, S.flightStart + 10);
+    function onResize() {
+      if (finished) return;
+      layout();
+    }
 
-    later(() => root.classList.add('is-absorbing'), S.absorbStart);
-    later(finish, S.end);
+    // ---- 字幕：typewriter ----
+    const fullText = statusEl ? statusEl.getAttribute('data-text') || '' : '';
+
+    function boot() {
+      layout();
+      root.classList.add('is-armed');
+
+      if (statusEl) {
+        let i = 0;
+        const timer = window.setInterval(() => {
+          statusEl.textContent = fullText.slice(0, ++i);
+          if (i >= fullText.length) window.clearInterval(timer);
+        }, 62);
+        timers.push(timer);
+      }
+
+      window.addEventListener('resize', onResize);
+      later(startRun, T.enter);
+    }
+
+    // 无论 reduced-motion 与否都播放完整动画（用户明确要看到它）。
+    // 该偏好只用来关掉漩涡旋转这类非必要特效，见 CSS 的 .is-reduced。
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      root.classList.add('is-reduced');
+    }
+
+    boot();
   })();
 </script>
