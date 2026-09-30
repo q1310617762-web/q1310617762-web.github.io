@@ -1210,11 +1210,30 @@ pre {
   50% { opacity: 0; }
 }
 @keyframes intro-absorb {
-  0%   { clip-path: circle(150% at var(--vx, 50%) var(--vy, 50%)); }
-  /* 关键：收到「头像边框」的半径就停住，而不是收成一个点。
-     半径由 JS 按实测头像尺寸写入，所以正好落在边框上；
-     剩余那块与头像等大的黑色正好被头像盖住，视觉上就是被边框吸走了。 */
-  100% { clip-path: circle(var(--veil-end-r, 32px) at var(--vx, 50%) var(--vy, 50%)); }
+  0% {
+    clip-path: circle(150% at var(--vx, 50%) var(--vy, 50%));
+    opacity: 1;
+  }
+  /* 尾段一边收到「头像边框」半径、一边淡掉。
+     否则收到 188px 这类中途半径时，它仍是一块不透明黑盘，
+     头像只盖住中间、吸积盘只盖住一侧，剩下的黑会以
+     「偏在一旁的黑圆」露出来（用户反馈的正是这个）。
+     最后一丝黑在边框上化掉，不留硬边黑圆。 */
+  60% {
+    opacity: 1;
+  }
+  /* 在收束到小半径「之前」就淡完。
+     实测：收束到 166px 时动画进度约 81%，若此时仍接近不透明，
+     合成色 (1-op)*235 会落到 30 以下，就是肉眼看到的那块黑圆。
+     所以这里让它在 86% 就彻底透明 —— 黑幕在还很大的时候就已经化掉，
+     不会在头像旁边留下硬边黑盘。 */
+  86% {
+    opacity: 0;
+  }
+  100% {
+    clip-path: circle(var(--veil-end-r, 32px) at var(--vx, 50%) var(--vy, 50%));
+    opacity: 0;
+  }
 }
 @keyframes intro-vortex {
   0%   { transform: rotate(0deg) scale(1); opacity: 0.8; }
