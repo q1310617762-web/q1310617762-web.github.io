@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-09-29T21:46:44.622Z",
-  "total": 35,
+  "fetchedAt": "2026-09-30T07:51:07.192Z",
+  "total": 43,
   "days": [
     {
       "date": "9-30",
@@ -11,7 +11,7 @@
         {
           "id": "4809963",
           "title": "李熊猫",
-          "index": "即将更新 第12话",
+          "index": "第12话",
           "time": "09:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/4da2f5633d308fd56c218e43ed31b22099191bf9.png",
           "seasonId": 262397,
@@ -47,6 +47,16 @@
           "seasonId": 298872,
           "url": "https://www.bilibili.com/bangumi/play/ep6291966",
           "delay": ""
+        },
+        {
+          "id": "6394391",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第1话~第4话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394391",
+          "delay": ""
         }
       ]
     },
@@ -64,6 +74,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
           "seasonId": 298872,
           "url": "https://www.bilibili.com/bangumi/play/ep6291967",
+          "delay": ""
+        },
+        {
+          "id": "6394456",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第5话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394456",
           "delay": ""
         },
         {
@@ -142,6 +162,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
           "seasonId": 298872,
           "url": "https://www.bilibili.com/bangumi/play/ep6291968",
+          "delay": ""
+        },
+        {
+          "id": "6394457",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第6话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394457",
           "delay": ""
         },
         {
@@ -230,6 +260,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
           "seasonId": 298872,
           "url": "https://www.bilibili.com/bangumi/play/ep6291969",
+          "delay": ""
+        },
+        {
+          "id": "6394459",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第7话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394459",
           "delay": ""
         },
         {
@@ -331,6 +371,16 @@
           "delay": ""
         },
         {
+          "id": "6394461",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第8话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394461",
+          "delay": ""
+        },
+        {
           "id": "3537949",
           "title": "牧神记",
           "index": "第103话",
@@ -349,6 +399,16 @@
       "isToday": false,
       "episodes": [
         {
+          "id": "6540109",
+          "title": "万古至尊：李云霄传",
+          "index": "第25话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
+          "seasonId": 119017,
+          "url": "https://www.bilibili.com/bangumi/play/ep6540109",
+          "delay": ""
+        },
+        {
           "id": "4875820",
           "title": "成也萧河",
           "index": "第12话",
@@ -366,6 +426,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
           "seasonId": 298872,
           "url": "https://www.bilibili.com/bangumi/play/ep6291971",
+          "delay": ""
+        },
+        {
+          "id": "6394463",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第9话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394463",
           "delay": ""
         }
       ]
@@ -394,6 +464,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
           "seasonId": 298872,
           "url": "https://www.bilibili.com/bangumi/play/ep6291972",
+          "delay": ""
+        },
+        {
+          "id": "6394465",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第10话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394465",
           "delay": ""
         },
         {
