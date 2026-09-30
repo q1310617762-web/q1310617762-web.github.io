@@ -36,6 +36,10 @@ const makeStars = (count, seed, rMin, rMax) =>
 const starsA = makeStars(30, 0, 19, 49);
 const starsB = makeStars(22, 3, 9, 27);
 const starsC = makeStars(20, 7, 52, 92);
+
+// 漩涡波纹：一圈圈同心的暗环错峰收束到头像边框，形成"一波接一波被吸进去"的观感。
+// 5 圈 × 90ms 错峰 + 540ms 时长 = 900ms，正好落在吸幕(900ms)之内。
+const RIPPLES = [0, 90, 180, 270, 360];
 ---
 
 <div class="intro" data-intro aria-label="开屏动画：吃豆人进入博客">
@@ -58,6 +62,12 @@ const starsC = makeStars(20, 7, 52, 92);
     <span class="intro-stars intro-stars-b" aria-hidden="true">
       {starsB.map((s) => (
         <i style={`--a:${s.a}deg;--r:${s.r}vmin;--d:${s.d}ms;--s:${s.s}px;--o:${s.o}`} />
+      ))}
+    </span>
+    <!-- 漩涡波纹：5 圈同心暗环，错峰收束进头像边框 -->
+    <span class="intro-ripples" aria-hidden="true">
+      {RIPPLES.map((d) => (
+        <i style={`--d:${d}ms`} />
       ))}
     </span>
   </div>

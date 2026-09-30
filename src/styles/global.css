@@ -791,8 +791,9 @@ pre {
   border-radius: 50%;
   opacity: 0;
   box-shadow:
-    0 0 0 2px rgba(0, 0, 0, 0.8),
-    0 0 34px 10px rgba(0, 0, 0, 0.5);
+    0 0 0 2.5px rgba(0, 0, 0, 0.85),
+    0 0 0 7px rgba(0, 0, 0, 0.34),
+    0 0 40px 12px rgba(0, 0, 0, 0.5);
 }
 .intro.is-absorbing .intro-veil::after {
   animation: intro-ring 900ms ease-out forwards;
@@ -868,6 +869,58 @@ pre {
   }
   to {
     opacity: 1;
+  }
+}
+
+/* 漩涡波纹：一圈圈同心暗环错峰收束进头像边框。
+ * 原来只有 ::after 一圈环，波纹感很弱；这里扩成 5 圈错峰，
+ * 形成「一波接一波被吸进去」的观感。
+ *
+ * 配色用冷灰而不是纯黑：黑幕本身就是黑的，纯黑环压在黑幕上等于不存在
+ * （第一版就是这么翻车的，像素扫描一圈都测不到）。
+ * 冷灰在黑幕上偏亮、在黑幕化掉后的浅色主页上偏暗，两种底色都读得出来，
+ * 与星星同一套冷色，也和"不要黄色"一致。 */
+.intro-ripples {
+  position: absolute;
+  left: var(--vx, 50%);
+  top: var(--vy, 50%);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.intro-ripples i {
+  position: absolute;
+  left: calc(var(--target-size, 64px) / -2);
+  top: calc(var(--target-size, 64px) / -2);
+  width: var(--target-size, 64px);
+  height: var(--target-size, 64px);
+  border-radius: 50%;
+  opacity: 0;
+  /* 三层叠出波纹的厚度：亮边 + 中间带 + 外晕 */
+  box-shadow:
+    0 0 0 3px rgba(208, 215, 234, 0.72),
+    0 0 0 10px rgba(158, 166, 190, 0.34),
+    0 0 34px 12px rgba(126, 134, 162, 0.36);
+}
+.intro.is-absorbing .intro-ripples i {
+  animation: intro-ripple 540ms cubic-bezier(0.22, 0.62, 0.3, 1) var(--d, 0ms) forwards;
+}
+@keyframes intro-ripple {
+  0% {
+    opacity: 0;
+    /* 从更远处扫进来（scale 9 ≈ 半径 360px），波纹扫过的范围更大 */
+    transform: scale(9);
+  }
+  12% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 0.72;
+  }
+  /* 收到略小于头像边框处消失，看起来是被边缘吞掉 */
+  100% {
+    opacity: 0;
+    transform: scale(0.92);
   }
 }
 
