@@ -153,14 +153,14 @@ const RIPPLES = [0, 90, 180, 270, 360];
     const force = new URLSearchParams(location.search).get('intro') === '1';
     // 开屏是「进入站点」的欢迎动画，不该在站内点「首页」回来时又放一遍。
     // 站点启用了 ClientRouter（客户端路由），点首页是换页而非重新加载。
-    // 两种来源都要挡住：
-    //   a) 本文档已经历过客户端换页（window.__astroSwapped，由 BaseLayout 埋点）
-    //      —— 覆盖「先在子页、再点首页」，那时本组件脚本才第一次加载
-    //   b) 本次窗口已经播过（window.__introPlayedInThisLoad）
-    //      —— 覆盖「首页 → 子页 → 首页」来回
-    // 真正的刷新 / 新开标签页会重置整个窗口，照常播（保持原行为）。
+    // 两道判定，覆盖两种来源，且都不依赖事件派发顺序：
+    //   a) 文档初始路径 ≠ 当前路径 —— 说明首页是被站内导航带出来的
+    //      （覆盖「先落在子页，再点首页」；此时本组件脚本才第一次加载）
+    //   b) 本次窗口已经播过 —— 覆盖「首页 → 子页 → 首页」来回
+    // 真正的整页加载首页 / 刷新 会重置窗口，照常播（保持原行为）。
     const SEEN_KEY = '__introPlayedInThisLoad';
-    const cameFromClientNav = window.__astroSwapped === true;
+    const initialPath = window.__initialPath;
+    const cameFromClientNav = typeof initialPath === 'string' && initialPath !== location.pathname;
     const playedAlready = window[SEEN_KEY] === true;
     if (!force && (cameFromClientNav || playedAlready || (!PLAY_EVERY_LOAD && localStorage.getItem(DAY_KEY) === today))) {
       root.remove();
