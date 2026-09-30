@@ -17,6 +17,7 @@ _cdp-*/
 _*.cjs
 _*.mjs
 _*.png
+_*.txt
 _shot*
 
 logs/
