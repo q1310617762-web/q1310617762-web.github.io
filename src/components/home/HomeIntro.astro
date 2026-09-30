@@ -313,6 +313,12 @@ const statusText = 'INSERT COIN TO ENTER';
         root.style.setProperty('--vy', t.y + 'px');
       }
 
+      // 计分板避让：窄屏（<=1024px）时侧栏会变成顶部整块、头像挪到水平居中，
+      // 而计分板默认也居中，两者会压在一起。这里按「实测头像位置」判断，
+      // 而不是写死断点：头像靠近中线就让计分板左右贴边，给中间让位。
+      const nearCenter = Math.abs(t.x - window.innerWidth / 2) < window.innerWidth * 0.2;
+      root.classList.toggle('hud-edge', nearCenter);
+
       // 每段走廊中点一颗豆子；太短的段跳过，避免贴脸
       const mids = [];
       for (let i = 0; i < route.length - 1; i++) {

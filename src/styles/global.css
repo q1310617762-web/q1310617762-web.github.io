@@ -803,6 +803,18 @@ pre {
   align-items: center;
   gap: 4px;
 }
+/* 头像水平居中时（窄屏侧栏变顶部整块），计分板改为左右贴边，中间让给头像。
+   类名由 JS 按实测头像位置切换，不写死媒体查询断点。 */
+.intro.hud-edge .intro-hud {
+  justify-content: space-between;
+  padding: 0 clamp(14px, 4vw, 40px);
+}
+.intro.hud-edge .intro-hud-cell:first-child {
+  align-items: flex-start;
+}
+.intro.hud-edge .intro-hud-cell:last-child {
+  align-items: flex-end;
+}
 .intro-hud-label {
   color: var(--arcade-danger);
   font-weight: 700;
