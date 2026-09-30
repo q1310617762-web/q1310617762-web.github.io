@@ -124,8 +124,16 @@ const RIPPLES = [0, 90, 180, 270, 360];
 </script>
 
 <script>
-  (function () {
+  // 注意：这里必须是「具名函数 + 注册 astro:page-load」，不能只写 IIFE。
+  // 本站启用了 ClientRouter，打包后的 module 脚本在同一个 URL 下只会求值一次，
+  // 换页时不会重跑 —— 不注册这个监听的话，点「首页」客户端路由回来后
+  // 只有开屏的 HTML 被插进来、脚本永不执行，结果是一块**冻结的黑幕**
+  // 盖住正文（全站其他组件都用了 astro:page-load，只有它漏了）。
+  function initHomeIntro() {
     const root = document.querySelector('[data-intro]');
+    // dataset.bound 是「每个元素只初始化一次」的标记：
+    // 首次加载时 initHomeIntro() 直接调用 + astro:page-load 也会触发一次，
+    // 靠它保证不会对同一个元素跑两遍。
     if (!(root instanceof HTMLElement) || root.dataset.bound === '1') return;
     root.dataset.bound = '1';
 
@@ -143,10 +151,22 @@ const RIPPLES = [0, 90, 180, 270, 360];
     const DAY_KEY = 'intro-last-day';
     const today = new Date().toDateString();
     const force = new URLSearchParams(location.search).get('intro') === '1';
-    if (!force && !PLAY_EVERY_LOAD && localStorage.getItem(DAY_KEY) === today) {
+    // 开屏是「进入站点」的欢迎动画，不该在站内点「首页」回来时又放一遍。
+    // 站点启用了 ClientRouter（客户端路由），点首页是换页而非重新加载。
+    // 两种来源都要挡住：
+    //   a) 本文档已经历过客户端换页（window.__astroSwapped，由 BaseLayout 埋点）
+    //      —— 覆盖「先在子页、再点首页」，那时本组件脚本才第一次加载
+    //   b) 本次窗口已经播过（window.__introPlayedInThisLoad）
+    //      —— 覆盖「首页 → 子页 → 首页」来回
+    // 真正的刷新 / 新开标签页会重置整个窗口，照常播（保持原行为）。
+    const SEEN_KEY = '__introPlayedInThisLoad';
+    const cameFromClientNav = window.__astroSwapped === true;
+    const playedAlready = window[SEEN_KEY] === true;
+    if (!force && (cameFromClientNav || playedAlready || (!PLAY_EVERY_LOAD && localStorage.getItem(DAY_KEY) === today))) {
       root.remove();
       return;
     }
+    window[SEEN_KEY] = true;
     if (!PLAY_EVERY_LOAD) {
       try {
         localStorage.setItem(DAY_KEY, today);
@@ -505,5 +525,11 @@ const RIPPLES = [0, 90, 180, 270, 360];
     }
 
     boot();
-  })();
+  }
+
+  // 首次加载：立即初始化（module 脚本是 deferred，DOM 已就绪）。
+  initHomeIntro();
+  // 客户端路由换页后重新初始化：若本次窗口已经播过开屏，
+  // initHomeIntro 里的窗口标记会直接把它撤掉，不再重播。
+  document.addEventListener('astro:page-load', initHomeIntro);
 </script>

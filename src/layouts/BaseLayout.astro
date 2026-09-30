@@ -75,6 +75,16 @@ const ogImage = new URL(basePath.replace(/\/$/, '') + image, site.url).href;
     <slot name="head" />
     <ClientRouter />
 
+    <!-- 开屏判定用：记录「本文档是否已经历过客户端路由换页」。
+         必须放在布局里（每个页面都会加载），因为首页组件的脚本在
+         「先从子页进入、再点首页」时是换页那一刻才第一次加载的 ——
+         那时 astro:after-swap 已经派发过了，组件内部再注册就来不及。 -->
+    <script is:inline>
+      document.addEventListener('astro:after-swap', function () {
+        window.__astroSwapped = true;
+      });
+    </script>
+
     <!-- 切页后重新应用主题（View Transitions 会覆盖 <html> 属性） -->
     <script>
       function applyThemeClass() {
