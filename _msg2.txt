@@ -1,0 +1,36 @@
+fix(intro): 修复「关闭动画效果」时被吃豆子不消失（!important 误伤）
+
+用户反馈豆子还是没消失。自查发现根因在我自己写的「减少动画」分支：
+
+  .intro.is-reduced .intro-dot-core { animation: none !important; }
+
+本意只想关掉豆子的装饰性呼吸光（intro-pellet-pulse），
+但这条把「被吃掉时消失」的 intro-dot-eaten 一起压掉了。
+于是开启「关闭动画效果」的用户（正是用户的环境）会看到：
+豆子确实被打上了 is-eaten，却永远亮着不消失。
+终点头像的 intro-target-eaten 同理被压掉。
+
+取证（同一份页面，开/关对比）：
+  普通模式      已吃豆子 animationName=intro-dot-eaten  opacity=0
+  关闭动画效果  已吃豆子 animationName=none              opacity=1  <- 现象
+
+两层修复：
+1. 把「减少动画」的禁用范围用 :not(.is-eaten) 精确限定，只关装饰性呼吸：
+     .intro.is-reduced .intro-dot:not(.is-eaten) .intro-dot-core
+     .intro.is-reduced:not(.is-eaten) .intro-target-img
+2. 「消失」改为状态而非仅依赖动画，直接声明 opacity:0 兜底：
+     .intro-dot.is-eaten .intro-dot-core { opacity: 0; animation: ... }
+     .intro.is-eaten .intro-target-img  { opacity: 0; animation: ... }
+   动画运行时关键帧会覆盖该声明，所以弹出/缩小效果不受影响；
+   一旦动画被任何方式禁用（系统设置、用户样式表、扩展），仍然必然看不见。
+
+同时修正我的验收方法：此前只统计 is-eaten 类是否加上，
+从未验证「是否真的不可见」，所以漏掉了这个问题。
+现在改为统计可见豆子数（按 computed opacity）。
+
+验收：
+- 普通模式   可见豆子 7->6->5->4->3->2->1->0，头像 opacity->0
+- 关闭动画   可见豆子 7->6->5->4->3->2->1->0，头像 opacity->0
+- 四方向嘴朝向偏差 +-1 度，弧宽恒 28 度
+- 路线 6 个弯；豆子在嘴尖(36px)处消失，实测 26.7~34.8px
+- 控制台无报错

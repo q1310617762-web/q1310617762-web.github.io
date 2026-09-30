@@ -854,8 +854,13 @@ pre {
   /* motion-lab: pulse */
   animation: intro-pellet-pulse 1.1s ease-in-out infinite alternate;
 }
-/* 被吃到：嘴尖碰到的瞬间就开始消失，不做太长的拖尾 */
+/* 被吃到：嘴尖碰到的瞬间就开始消失。
+ * 「消失」必须是状态而不是仅靠动画：这里直接声明 opacity:0 兜底，
+ * 只要动画被任何方式禁用（系统关闭动画效果、用户样式表、扩展），
+ * 豆子依然必然看不见 —— 否则会出现「加了 is-eaten 却还亮着」。
+ * 动画在运行时，关键帧会覆盖这个声明值，所以弹出效果不受影响。 */
 .intro-dot.is-eaten .intro-dot-core {
+  opacity: 0;
   animation: intro-dot-eaten 0.13s ease-out forwards;
 }
 
@@ -931,7 +936,9 @@ pre {
     0 0 18px rgba(255, 59, 48, 0.4);
   animation: intro-target-idle 1.6s ease-in-out infinite alternate;
 }
+/* 同样：opacity:0 兜底，保证动画被禁用时头像也一定会被「吃掉」 */
 .intro.is-eaten .intro-target-img {
+  opacity: 0;
   animation: intro-target-eaten 0.32s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
 }
 .intro-burst {
@@ -1117,10 +1124,15 @@ pre {
   to { opacity: 0; visibility: hidden; }
 }
 
-/* ---------- 减少动画：只关掉漩涡旋转/呼吸这类点缀，核心行进照常播放 ---------- */
+/* ---------- 减少动画：只关掉「漩涡旋转 / 呼吸光」这类点缀，核心行进照常播放 ----------
+ * 必须用 :not(.is-eaten) 精确限定，只关装饰性呼吸。
+ * 早前直接写 `.intro-dot-core { animation: none !important }`，
+ * 连「被吃掉时消失」的动画一起压掉了：开启「关闭动画效果」的用户
+ * 会看到豆子被打上 is-eaten 却依然亮着（用户反馈的正是这个）。
+ * 终点头像的「被咬掉」动画同理。 */
 .intro.is-reduced .intro-veil::before,
-.intro.is-reduced .intro-dot-core,
-.intro.is-reduced .intro-target-img,
+.intro.is-reduced .intro-dot:not(.is-eaten) .intro-dot-core,
+.intro.is-reduced:not(.is-eaten) .intro-target-img,
 .intro.is-reduced .intro-caret {
   animation: none !important;
 }
