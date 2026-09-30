@@ -218,28 +218,35 @@ const statusText = 'INSERT COIN TO ENTER';
       return { x: 56, y: 56, w: 72 };
     }
 
+    // 折线迷宫路线：左右上下交替，绕几道弯再咬住头像
     function buildRoute(t) {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const mobile = vw < 1024;
       if (mobile) {
-        // 手机：头像在顶部居中，从右下出发 → 左 → 上 → 右（进头像）
-        const lane = vh * 0.7;
-        const col = Math.max(vw * 0.12, Math.min(t.x - vw * 0.28, vw * 0.26));
+        // 手机（窄）：绕 3 道弯 —— 左 → 上 → 右 → 上（进头像）
+        const lane = vh * 0.78;
+        const col = Math.max(vw * 0.16, 54);
+        const row = vh * 0.38;
         return [
-          { x: vw * 0.84, y: lane },
+          { x: vw * 0.86, y: lane },
           { x: col, y: lane },
-          { x: col, y: t.y },
+          { x: col, y: row },
+          { x: t.x, y: row },
           { x: t.x, y: t.y },
         ];
       }
-      // 桌面：头像在左上，从右下出发 → 左 → 上 → 左（进头像）
+      // 桌面（宽）：三级阶梯，绕 6 道弯后再咬住头像
+      // 左 → 上 → 左 → 上 → 左 → 上 → 左
       const lane = vh * 0.74;
-      const col = Math.max(t.x + 170, vw * 0.34);
       return [
-        { x: vw * 0.86, y: lane },
-        { x: col, y: lane },
-        { x: col, y: t.y },
+        { x: vw * 0.9, y: lane },
+        { x: vw * 0.64, y: lane },
+        { x: vw * 0.64, y: vh * 0.55 },
+        { x: vw * 0.44, y: vh * 0.55 },
+        { x: vw * 0.44, y: vh * 0.36 },
+        { x: vw * 0.26, y: vh * 0.36 },
+        { x: vw * 0.26, y: t.y },
         { x: t.x, y: t.y },
       ];
     }
@@ -284,7 +291,7 @@ const statusText = 'INSERT COIN TO ENTER';
       pac.style.setProperty('--pac-dir', DIR_ANGLE[name] || '0deg'); // 控制嘴的朝向
     }
 
-    // ===== 布点：豆子按弧长等分，位置与「被吃时刻」共用同一条弧长轴 =====
+    // ===== 布点：每段走廊中点放一颗，天然不会压在拐角上 =====
     let route = [];
     let total = 0;
     let dotHit = [];
@@ -292,8 +299,10 @@ const statusText = 'INSERT COIN TO ENTER';
     function layout() {
       const t = avatarCenter();
       route = buildRoute(t);
-      total = 0;
-      for (let i = 0; i < route.length - 1; i++) total += segLen(route[i], route[i + 1]);
+      // 累积弧长
+      const cum = [0];
+      for (let i = 0; i < route.length - 1; i++) cum.push(cum[i] + segLen(route[i], route[i + 1]));
+      total = cum[cum.length - 1];
 
       if (target) {
         target.style.left = t.x + 'px';
@@ -304,13 +313,27 @@ const statusText = 'INSERT COIN TO ENTER';
         root.style.setProperty('--vy', t.y + 'px');
       }
 
+      // 每段走廊中点一颗豆子；太短的段跳过，避免贴脸
+      const mids = [];
+      for (let i = 0; i < route.length - 1; i++) {
+        const len = cum[i + 1] - cum[i];
+        if (len < 72) continue;
+        mids.push(cum[i] + len / 2);
+      }
+      const powerAt = Math.floor(mids.length / 2);
+
       dotHit = [];
       dotEls.forEach((el, i) => {
-        const frac = 0.06 + (0.88 * (i + 1)) / (dotEls.length + 1);
-        const d = total * frac;
+        if (i >= mids.length) {
+          el.style.display = 'none';
+          return;
+        }
+        el.style.display = '';
+        const d = mids[i];
         const p = pointAt(route, d);
         el.style.left = p.x + 'px';
         el.style.top = p.y + 'px';
+        el.classList.toggle('is-power', i === powerAt);
         dotHit.push({ el, d, eaten: false });
       });
 
@@ -334,6 +357,12 @@ const statusText = 'INSERT COIN TO ENTER';
     function startRun() {
       const size = pac ? pac.getBoundingClientRect().width : 56;
       const half = size / 2;
+      // 判定用「嘴尖」而不是「身体中心」：豆子在嘴尖碰到它边缘的瞬间就消失。
+      // 若用中心判定，张嘴时豆子会在嘴里亮着，直到被身体盖住才消失（显得不及时）。
+      // 嘴尖碰到豆子边缘 ⇒ 两个中心相距 (吃豆人半径 + 豆子半径)
+      const coreEl = dotEls[0] ? dotEls[0].querySelector('.intro-dot-core') : null;
+      const dotR = coreEl ? parseFloat(getComputedStyle(coreEl).width) / 2 || 5 : 5;
+      const eatLead = half + dotR;
       const t0 = performance.now();
       let lastDir = '';
 
@@ -351,9 +380,9 @@ const statusText = 'INSERT COIN TO ENTER';
           }
         }
 
-        // 吃豆：弧长一越过就立刻消失（同一 rAF 内判定，不存在延后）
+        // 吃豆：嘴尖一碰到就吃掉（同一 rAF 内判定，不存在延后）
         for (const h of dotHit) {
-          if (!h.eaten && d >= h.d) {
+          if (!h.eaten && d + eatLead >= h.d) {
             h.eaten = true;
             h.el.classList.add('is-eaten');
             blip(620, 210, 0.075, 0.1, 'sine');

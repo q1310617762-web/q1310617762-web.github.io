@@ -854,9 +854,9 @@ pre {
   /* motion-lab: pulse */
   animation: intro-pellet-pulse 1.1s ease-in-out infinite alternate;
 }
-/* 被吃到：立刻替换成消失动画（同一属性，后者覆盖前者） */
+/* 被吃到：嘴尖碰到的瞬间就开始消失，不做太长的拖尾 */
 .intro-dot.is-eaten .intro-dot-core {
-  animation: intro-dot-eaten 0.16s ease-out forwards;
+  animation: intro-dot-eaten 0.13s ease-out forwards;
 }
 
 /* ---------- 吃豆人（位置由 JS 写在 transform，朝向写在 --pac-dir） ---------- */
@@ -1070,7 +1070,7 @@ pre {
 }
 @keyframes intro-dot-eaten {
   0%   { transform: scale(1); opacity: 1; }
-  40%  { transform: scale(1.6); opacity: 0.9; }
+  25%  { transform: scale(1.35); opacity: 0.95; }
   100% { transform: scale(0); opacity: 0; }
 }
 @keyframes intro-pac-chomp {
