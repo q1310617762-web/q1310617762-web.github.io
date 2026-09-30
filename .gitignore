@@ -24,3 +24,6 @@ logs/
 
 # 受保护相册的口令配置（绝不提交）
 photo-gate.config.json
+
+# 临时 python 校验脚本（与 _*.mjs/_*.cjs 同一约定）
+_*.py

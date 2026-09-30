@@ -16,7 +16,10 @@ import { site } from '@data/site';
 
 const rawAvatar = site.avatar || '/avatar.jpg';
 const base = import.meta.env.BASE_URL || '/';
-const avatarSrc = base.replace(/\/$/, '') + (rawAvatar.startsWith('/') ? rawAvatar : `/${rawAvatar}`);
+const prefix = base.replace(/\/$/, '');
+const avatarSrc = prefix + (rawAvatar.startsWith('/') ? rawAvatar : `/${rawAvatar}`);
+// 音效素材目录（public/sfx/）。与头像一样走 BASE_URL 拼接，base 不为根路径时也正确。
+const sfxBase = `${prefix}/sfx`;
 
 const DOT_COUNT = 9;
 const statusText = 'INSERT COIN TO ENTER';
@@ -119,8 +122,9 @@ const RIPPLES = [0, 90, 180, 270, 360];
   </button>
 </div>
 
-<script is:inline define:vars={{ avatarSrc }}>
+<script is:inline define:vars={{ avatarSrc, sfxBase }}>
   window.__AVATAR_SRC__ = avatarSrc;
+  window.__SFX_BASE__ = sfxBase;
 </script>
 
 <script>
@@ -225,8 +229,37 @@ const RIPPLES = [0, 90, 180, 270, 360];
 
     document.documentElement.classList.add('intro-active');
 
-    // ---- 音效：Web Audio 合成 ----
+    // ---- 音效 ----
+    // 两个来源，互为补充：
+    //   1) CC0 素材（public/sfx/*.wav，来自 IgnisForge 的公共领域音效包）
+    //   2) 内置 Web Audio 合成作为回落 —— 素材没加载完 / 加载失败时也有声音
+    // 素材**不预加载**：只有音频被用户手势解锁后才去取，且开屏已结束就不取了。
+    // 这样「进来看一眼就走」的访客一点额外流量都不花（总体积仅 42KB）。
     let audioCtx = null;
+    const SFX = {};
+    let sfxPromise = null;
+    const SFX_URLS = () => ({
+      dot: `${window.__SFX_BASE__ || '/sfx'}/dot.wav`,
+      power: `${window.__SFX_BASE__ || '/sfx'}/power.wav`,
+      impact: `${window.__SFX_BASE__ || '/sfx'}/impact.wav`,
+      vortex: `${window.__SFX_BASE__ || '/sfx'}/vortex.wav`,
+    });
+
+    function loadSfx() {
+      if (sfxPromise || !audioCtx) return sfxPromise;
+      sfxPromise = Promise.all(
+        Object.entries(SFX_URLS()).map(async ([key, url]) => {
+          try {
+            const res = await fetch(url, { cache: 'force-cache' });
+            if (!res.ok) return;
+            const raw = await res.arrayBuffer();
+            SFX[key] = await audioCtx.decodeAudioData(raw);
+          } catch {}
+        }),
+      );
+      return sfxPromise;
+    }
+
     function ensureAudio() {
       if (!audioCtx) {
         try {
@@ -236,9 +269,30 @@ const RIPPLES = [0, 90, 180, 270, 360];
         }
       }
       if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+      // 解锁之后才去取素材；开屏已结束就没必要取了
+      if (audioCtx && !finished) loadSfx();
     }
     window.addEventListener('pointerdown', ensureAudio, { once: true });
     window.addEventListener('keydown', ensureAudio, { once: true });
+
+    // 播放素材；返回 false 表示素材还不可用（调用方回落到合成音）
+    function playSample(name, vol, rate) {
+      if (!audioCtx || audioCtx.state !== 'running') return false;
+      const buf = SFX[name];
+      if (!buf) return false;
+      try {
+        const src = audioCtx.createBufferSource();
+        src.buffer = buf;
+        if (rate) src.playbackRate.value = rate;
+        const g = audioCtx.createGain();
+        g.gain.value = vol;
+        src.connect(g).connect(audioCtx.destination);
+        src.start();
+        return true;
+      } catch {
+        return false;
+      }
+    }
 
     function blip(from, to, dur, vol, type) {
       if (!audioCtx || audioCtx.state !== 'running') return;
@@ -428,7 +482,7 @@ const RIPPLES = [0, 90, 180, 270, 360];
         el.style.left = p.x + 'px';
         el.style.top = p.y + 'px';
         el.classList.toggle('is-power', i === powerAt);
-        dotHit.push({ el, d, eaten: false });
+        dotHit.push({ el, d, eaten: false, power: i === powerAt });
       });
 
       const p0 = pointAt(route, 0);
@@ -479,7 +533,12 @@ const RIPPLES = [0, 90, 180, 270, 360];
           if (!h.eaten && d + eatLead >= h.d) {
             h.eaten = true;
             h.el.classList.add('is-eaten');
-            blip(620, 210, 0.075, 0.1, 'sine');
+            // 每次略微变调（playbackRate），避免 7 次同一个音听着发木
+            if (h.power) {
+              if (!playSample('power', 0.6)) blip(760, 1180, 0.16, 0.1, 'triangle');
+            } else if (!playSample('dot', 0.5, 0.94 + Math.random() * 0.14)) {
+              blip(620, 210, 0.075, 0.1, 'sine');
+            }
             onScore();
           }
         }
@@ -497,11 +556,12 @@ const RIPPLES = [0, 90, 180, 270, 360];
       // 撞上头像：吃豆人在这里被销毁（自毁动画），头像只是被撞得弹一下、保持可见
       root.classList.add('is-impact');
       if (pac) pac.classList.add('is-destroyed');
-      blip(420, 80, 0.28, 0.13, 'square');
+      if (!playSample('impact', 0.62)) blip(420, 80, 0.28, 0.13, 'square');
       later(() => {
         // 黑幕漩涡被吸进头像；这一整段里头像必须一直显示
         root.classList.add('is-absorbing');
-        vortexSound();
+        // 放慢到 0.5 倍：素材本身是低频上升扫频，降速后更深更长（0.36s → 0.71s）
+        if (!playSample('vortex', 0.5, 0.5)) vortexSound();
       }, T.impactHold);
       later(finish, T.impactHold + T.vortex);
     }
