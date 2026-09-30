@@ -744,15 +744,15 @@ pre {
   pointer-events: none;
   clip-path: circle(150% at var(--vx, 50%) var(--vy, 50%));
 }
-/* 螺旋臂：绕头像点旋转，形成"被吸进去"的涡流质感 */
+/* 螺旋臂：绕头像点旋转并整体向心收缩，形成"被吸进去"的涡流质感 */
 .intro-veil::before {
   content: '';
   position: absolute;
-  inset: -50%;
+  inset: -60%;
   background: repeating-conic-gradient(
     from 0deg at var(--vx, 50%) var(--vy, 50%),
-    rgba(255, 255, 255, 0.055) 0 5deg,
-    transparent 5deg 13deg
+    rgba(255, 255, 255, 0.075) 0 2.5deg,
+    transparent 2.5deg 14deg
   );
   transform-origin: var(--vx, 50%) var(--vy, 50%);
   animation: intro-spin var(--spin) linear infinite;
@@ -763,15 +763,16 @@ pre {
 .intro.is-absorbing .intro-veil::before {
   animation: intro-vortex 900ms cubic-bezier(0.7, 0, 0.2, 1) forwards;
 }
-/* 收束到一点的亮环 */
+/* 亮环：从外圈一路收到「头像边框」上，最后停在边框处微微发亮，
+ * 明确告诉眼睛：黑幕是被这圈边框吸进去的。 */
 .intro-veil::after {
   content: '';
   position: absolute;
   left: var(--vx, 50%);
   top: var(--vy, 50%);
-  width: 46px;
-  height: 46px;
-  margin: -23px 0 0 -23px;
+  width: var(--target-size, 64px);
+  height: var(--target-size, 64px);
+  margin: calc(var(--target-size, 64px) / -2) 0 0 calc(var(--target-size, 64px) / -2);
   border-radius: 50%;
   opacity: 0;
   box-shadow:
@@ -954,6 +955,11 @@ pre {
 .intro.is-impact .intro-target-img {
   animation: intro-target-recoil 0.52s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
+/* 吸黑幕时头像边框发亮 —— 强调"是这一圈边框在把黑幕喝进去"。
+ * 只改 box-shadow，不碰 opacity，所以头像始终可见。 */
+.intro.is-absorbing .intro-target-img {
+  animation: intro-rim-drink 900ms ease-out forwards;
+}
 /* 吸黑幕期间：计分板与字幕淡出，把画面让给头像和漩涡。
  * 注意不能淡出 .intro-route —— 头像就在里面，淡掉头像就看不见了。 */
 .intro.is-absorbing .intro-hud,
@@ -1114,6 +1120,27 @@ pre {
   26%  { scale: 1.18; filter: brightness(1.6); }
   100% { scale: 1;    filter: brightness(1); }
 }
+/* 边框把黑幕"喝"进去：光圈从外收紧到边框并回落到常态。
+ * 只动画 box-shadow，头像本体始终 opacity:1。 */
+@keyframes intro-rim-drink {
+  0% {
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.14),
+      0 0 18px rgba(255, 59, 48, 0.4);
+  }
+  38% {
+    box-shadow:
+      0 0 0 5px rgba(255, 255, 255, 0.9),
+      0 0 44px 12px rgba(255, 214, 0, 0.8),
+      0 0 110px 40px rgba(255, 150, 60, 0.45);
+  }
+  100% {
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.6),
+      0 0 26px 6px rgba(255, 214, 0, 0.45),
+      0 0 18px rgba(255, 59, 48, 0.4);
+  }
+}
 /* 吃豆人自毁：闪白 → 放大 → 旋转塌缩到无 */
 @keyframes intro-pac-destroy {
   0%   { scale: 1;    rotate: 0deg;   opacity: 1;   filter: drop-shadow(0 0 10px rgba(255, 214, 0, 0.45)) brightness(1.8) saturate(1.3); }
@@ -1134,16 +1161,21 @@ pre {
 }
 @keyframes intro-absorb {
   0%   { clip-path: circle(150% at var(--vx, 50%) var(--vy, 50%)); }
-  100% { clip-path: circle(0% at var(--vx, 50%) var(--vy, 50%)); }
+  /* 关键：收到「头像边框」的半径就停住，而不是收成一个点。
+     半径由 JS 按实测头像尺寸写入，所以正好落在边框上；
+     剩余那块与头像等大的黑色正好被头像盖住，视觉上就是被边框吸走了。 */
+  100% { clip-path: circle(var(--veil-end-r, 32px) at var(--vx, 50%) var(--vy, 50%)); }
 }
 @keyframes intro-vortex {
-  0%   { transform: rotate(0deg) scale(1); opacity: 1; }
-  100% { transform: rotate(540deg) scale(0.04); opacity: 0; }
+  0%   { transform: rotate(0deg) scale(1); opacity: 0.9; }
+  70%  { opacity: 0.9; }
+  100% { transform: rotate(540deg) scale(0.55); opacity: 0; }
 }
 @keyframes intro-ring {
-  0%   { opacity: 0; transform: scale(1.7); }
-  35%  { opacity: 0.85; }
-  100% { opacity: 0; transform: scale(0.05); }
+  0%   { opacity: 0; transform: scale(2.9); }
+  28%  { opacity: 0.9; }
+  /* 收到与头像等大（scale:1 = 正好压在边框上）后停住并保持微亮 */
+  100% { opacity: 0.55; transform: scale(1); }
 }
 @keyframes intro-spin {
   to { transform: rotate(360deg); }
@@ -1158,9 +1190,9 @@ pre {
  * 连「被吃掉时消失」的动画一起压掉了：开启「关闭动画效果」的用户
  * 会看到豆子被打上 is-eaten 却依然亮着（用户反馈的正是这个）。
  * 终点头像的「被咬掉」动画同理。 */
-.intro.is-reduced .intro-veil::before,
+.intro.is-reduced:not(.is-absorbing) .intro-veil::before,
 .intro.is-reduced .intro-dot:not(.is-eaten) .intro-dot-core,
-.intro.is-reduced .intro-target-img,
+.intro.is-reduced:not(.is-absorbing) .intro-target-img,
 .intro.is-reduced .intro-caret {
   animation: none !important;
 }

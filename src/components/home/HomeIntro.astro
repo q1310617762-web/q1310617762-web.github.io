@@ -308,6 +308,11 @@ const statusText = 'INSERT COIN TO ENTER';
         target.style.left = t.x + 'px';
         target.style.top = t.y + 'px';
       }
+      // 让终点头像与侧栏真实头像「同尺寸」——否则边框对不上，
+      // 黑幕收束到边框时会与真实头像错开一圈（真实头像 h-20 w-20 = 80px）。
+      // --veil-end-r 就是黑幕最终收束的半径：收到头像边框而不是收成一个点。
+      root.style.setProperty('--target-size', t.w + 'px');
+      root.style.setProperty('--veil-end-r', t.w / 2 + 'px');
       if (veil) {
         root.style.setProperty('--vx', t.x + 'px');
         root.style.setProperty('--vy', t.y + 'px');
