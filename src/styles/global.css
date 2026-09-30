@@ -720,6 +720,8 @@ pre {
 
   /* —— 动效令牌 —— */
   --stagger: 70ms;
+  /* 波纹起始倍数：窄屏调小，避免波纹大半跑出屏幕 */
+  --ripple-from: 9;
 
   position: fixed;
   inset: 0;
@@ -872,6 +874,12 @@ pre {
   }
 }
 
+/* 窄屏把波纹起始倍数调小，让同心感保住（见 --ripple-from 注释） */
+@media (max-width: 600px) {
+  .intro {
+    --ripple-from: 6.5;
+  }
+}
 /* 漩涡波纹：一圈圈同心暗环错峰收束进头像边框。
  * 原来只有 ::after 一圈环，波纹感很弱；这里扩成 5 圈错峰，
  * 形成「一波接一波被吸进去」的观感。
@@ -910,8 +918,10 @@ pre {
 @keyframes intro-ripple {
   0% {
     opacity: 0;
-    /* 从更远处扫进来（scale 9 ≈ 半径 360px），波纹扫过的范围更大 */
-    transform: rotate(0deg) scale(9);
+    /* 从更远处扫进来。起始倍数按屏幕宽度自适应（见 --ripple-from）：
+     * 桌面 9 倍 ≈ 直径 850px 很合适，但同样的值放到 360px 手机上
+     * 直径 850px = 屏宽 2.3 倍，波纹大半在屏幕外，同心感会丢。 */
+    transform: rotate(0deg) scale(var(--ripple-from, 9));
   }
   12% {
     opacity: 1;
@@ -1217,6 +1227,20 @@ pre {
   outline: 3px solid color-mix(in srgb, var(--arcade-text) 55%, transparent);
   outline-offset: 3px;
 }
+/* 触屏适配：手机没有 ESC 键，提示键要收起来；
+ * 点击区提到 44px（触屏最小可点尺寸）。
+ * 站点 viewport 没写 viewport-fit=cover，env() 恒为 0，
+ * 浏览器已自动避开 Home 指示条，所以这里保留一个固定间距即可。 */
+@media (max-width: 1024px), (pointer: coarse) {
+  .intro-skip {
+    min-height: 44px;
+    padding: 0 18px;
+    font-size: 13px;
+  }
+  .intro-kbd {
+    display: none;
+  }
+}
 .intro-kbd {
   padding: 1px 6px;
   border: 1px solid rgba(255, 204, 0, 0.4);
@@ -1383,7 +1407,11 @@ pre {
   .intro-skip {
     right: 12px;
     bottom: 12px;
-    min-height: 30px;
+    /* 触屏最小可点尺寸 44px。原来这里压到 30px，
+     * 偏偏最小的手机点击区最小 —— 是适得其反的。
+     * （站点 viewport 未用 viewport-fit=cover，浏览器已自动把内容
+     *   避开 Home 指示条，所以 12px 安全，不需要 env()。） */
+    min-height: 44px;
     padding: 0 11px;
     font-size: 11px;
   }
