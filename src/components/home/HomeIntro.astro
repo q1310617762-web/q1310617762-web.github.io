@@ -20,6 +20,20 @@ const avatarSrc = base.replace(/\/$/, '') + (rawAvatar.startsWith('/') ? rawAvat
 
 const DOT_COUNT = 9;
 const statusText = 'INSERT COIN TO ENTER';
+
+// 星辰粒子：两层反向旋转，各自绕头像点螺旋收缩。
+// 用确定性公式生成（不用随机），保证每次构建结果一致。
+// a=起始角度(黄金角分布) r=初始半径(vmin，随视口缩放) d=闪烁延迟 s=粒径 o=基础亮度
+const makeStars = (count, seed, rMin, rMax) =>
+  Array.from({ length: count }, (_, i) => ({
+    a: Math.round((i * 137.508 + seed * 41) % 360),
+    r: Math.round(rMin + ((i * 37 + seed * 13) % Math.max(1, rMax - rMin))),
+    d: ((i * 53 + seed * 17) % 8) * 55,
+    s: 2 + ((i + seed * 5) % 3),
+    o: +(0.45 + ((i * 29 + seed * 11) % 5) * 0.12).toFixed(2),
+  }));
+const starsA = makeStars(28, 0, 19, 49);
+const starsB = makeStars(20, 3, 9, 27);
 ---
 
 <div class="intro" data-intro aria-label="开屏动画：吃豆人进入博客">
@@ -28,6 +42,17 @@ const statusText = 'INSERT COIN TO ENTER';
        被收进头像边框里（由头像边缘吸收）。 -->
   <div class="intro-veil" data-intro-veil aria-hidden="true">
     <span class="intro-bh-disk" aria-hidden="true"></span>
+    <!-- 星辰：两层反向旋转，被吸入头像边框 -->
+    <span class="intro-stars intro-stars-a" aria-hidden="true">
+      {starsA.map((s) => (
+        <i style={`--a:${s.a}deg;--r:${s.r}vmin;--d:${s.d}ms;--s:${s.s}px;--o:${s.o}`} />
+      ))}
+    </span>
+    <span class="intro-stars intro-stars-b" aria-hidden="true">
+      {starsB.map((s) => (
+        <i style={`--a:${s.a}deg;--r:${s.r}vmin;--d:${s.d}ms;--s:${s.s}px;--o:${s.o}`} />
+      ))}
+    </span>
   </div>
 
   <!-- 记分 HUD -->

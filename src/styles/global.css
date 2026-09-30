@@ -831,6 +831,72 @@ pre {
   animation: intro-ring 900ms ease-out forwards;
 }
 
+/* 星辰粒子：以头像为中心，两层反向旋转 + 向心收缩 = 螺旋被吸入。
+ * 每层只是一个容器在做 transform，内部粒子位置是静态的，
+ * 所以整层可以被合成器当一层处理，开销很小（不用 canvas）。 */
+.intro-stars {
+  position: absolute;
+  left: var(--vx, 50%);
+  top: var(--vy, 50%);
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.intro-stars i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--s, 3px);
+  height: var(--s, 3px);
+  margin: calc(var(--s, 3px) / -2) 0 0 calc(var(--s, 3px) / -2);
+  border-radius: 50%;
+  background: #fff;
+  /* 冷白星光（用户要求吸收段不要黄色） */
+  box-shadow: 0 0 6px 1px rgba(186, 214, 255, 0.85);
+  /* 沿 --a 方向推出 --r 距离；粒子是圆点，自身朝向无所谓 */
+  transform: rotate(var(--a, 0deg)) translateX(var(--r, 30vmin));
+}
+/* 星辰在「吃豆人撞毁」那一刻就点亮并开始螺旋，一直转到黑幕收束完。
+ * 若从 is-absorbing 才开始，只有约 1/3 时间处在黑底上，白点一闪就没了；
+ * 提前到 is-impact 后，星辰在整块黑幕上转 1.2 秒再被吸进头像边框。
+ * 时长须与「撞毁(320ms) + 吸幕(900ms)」对齐。 */
+.intro.is-impact .intro-stars {
+  animation: intro-star-spiral 1220ms cubic-bezier(0.6, 0, 0.25, 1) forwards;
+}
+.intro.is-impact .intro-stars-b {
+  --to: -640deg;
+  animation-delay: 90ms;
+}
+.intro.is-impact .intro-stars i {
+  animation: intro-star-twinkle 240ms ease-in-out var(--d, 0ms) infinite alternate;
+}
+@keyframes intro-star-spiral {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg) scale(1.15);
+  }
+  11% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  /* 转到 --to 并缩到几乎为零，粒子被压进头像边框 */
+  100% {
+    opacity: 0;
+    transform: rotate(var(--to, 560deg)) scale(0.05);
+  }
+}
+@keyframes intro-star-twinkle {
+  from {
+    opacity: var(--o, 0.7);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* ---------- HUD ---------- */
 .intro-hud {
   position: absolute;
