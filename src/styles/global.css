@@ -831,9 +831,9 @@ pre {
   animation: intro-ring 900ms ease-out forwards;
 }
 
-/* 星辰粒子：以头像为中心，两层反向旋转 + 向心收缩 = 螺旋被吸入。
- * 每层只是一个容器在做 transform，内部粒子位置是静态的，
- * 所以整层可以被合成器当一层处理，开销很小（不用 canvas）。 */
+/* 星空常驻：开屏一开始黑底上就是一片闪烁的星野，不再等到撞毁才出现。
+ * 每层只是一个容器在做 transform，内部粒子位置静态，
+ * 所以整层可被合成器当一层处理，开销很小（不用 canvas）。 */
 .intro-stars {
   position: absolute;
   left: var(--vx, 50%);
@@ -857,27 +857,34 @@ pre {
   /* 沿 --a 方向推出 --r 距离；粒子是圆点，自身朝向无所谓 */
   transform: rotate(var(--a, 0deg)) translateX(var(--r, 30vmin));
 }
-/* 星辰在「吃豆人撞毁」那一刻就点亮并开始螺旋，一直转到黑幕收束完。
- * 若从 is-absorbing 才开始，只有约 1/3 时间处在黑底上，白点一闪就没了；
- * 提前到 is-impact 后，星辰在整块黑幕上转 1.2 秒再被吸进头像边框。
- * 时长须与「撞毁(320ms) + 吸幕(900ms)」对齐。 */
+/* 量好头像坐标后（is-armed）星空淡入，并开始各自错峰闪烁 */
+.intro.is-armed .intro-stars {
+  opacity: 1;
+  transition: opacity 700ms ease 150ms;
+}
+.intro.is-armed .intro-stars i {
+  animation: intro-star-twinkle 240ms ease-in-out var(--d, 0ms) infinite alternate;
+}
+/* 撞毁那一刻：整片星空开始螺旋吸入。
+ * 起始 scale 必须与静态状态一致(1)，否则会跳一下。 */
 .intro.is-impact .intro-stars {
+  transition: none;
   animation: intro-star-spiral 1220ms cubic-bezier(0.6, 0, 0.25, 1) forwards;
 }
 .intro.is-impact .intro-stars-b {
-  --to: -640deg;
   animation-delay: 90ms;
 }
-.intro.is-impact .intro-stars i {
-  animation: intro-star-twinkle 240ms ease-in-out var(--d, 0ms) infinite alternate;
+.intro.is-impact .intro-stars-c {
+  animation-delay: 40ms;
 }
+/* 三层不同转向/圈数，避免看起来是同一片刚体在转 */
+.intro-stars-a { --to: 560deg; }
+.intro-stars-b { --to: -640deg; }
+.intro-stars-c { --to: 300deg; }
 @keyframes intro-star-spiral {
   0% {
-    opacity: 0;
-    transform: rotate(0deg) scale(1.15);
-  }
-  11% {
     opacity: 1;
+    transform: rotate(0deg) scale(1);
   }
   80% {
     opacity: 0.9;
