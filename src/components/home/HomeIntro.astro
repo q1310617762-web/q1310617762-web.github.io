@@ -44,7 +44,7 @@ const starsC = makeStars(26, 7, 44, 104);
 const RIPPLES = [0, 90, 180, 270, 360];
 ---
 
-<div class="intro" data-intro aria-label="开屏动画：吃豆人进入博客">
+<div class="intro intro-guard" data-intro aria-label="开屏动画：吃豆人进入博客">
   <!-- 底色 + 黑洞：整个开屏的黑色背景由它承担，层级最低。
        被漩涡吸入的所有层都放在它内部，因此会随它的 clip-path 一起
        被收进头像边框里（由头像边缘吸收）。 -->
@@ -480,6 +480,8 @@ const RIPPLES = [0, 90, 180, 270, 360];
     const fullText = statusEl ? statusEl.getAttribute('data-text') || '' : '';
 
     function boot() {
+      // 脚本确实跑起来了 —— 撤掉「无 JS 兜底」的自动让路（见 .intro-guard）。
+      root.classList.remove('intro-guard');
       layout();
       root.classList.add('is-armed');
 

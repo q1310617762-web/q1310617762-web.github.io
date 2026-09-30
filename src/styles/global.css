@@ -1209,10 +1209,21 @@ pre {
   cursor: pointer;
   backdrop-filter: blur(6px);
   transition:
+    opacity 0.35s ease 0.15s,
     border-color 0.15s ease,
     color 0.15s ease,
     box-shadow 0.15s ease,
     transform 0.15s ease;
+  /* 脚本挂载前先不显示：否则会出现一个「点了没反应」的死按钮
+   * （实测按钮出现在 ~75ms、而 click 监听是脚本挂载后才绑上，
+   *   这中间点它不会有任何反应）。用 visibility 而非仅 opacity，
+   * 顺带把它移出 Tab 焦点顺序。 */
+  opacity: 0;
+  visibility: hidden;
+}
+.intro.is-armed .intro-skip {
+  opacity: 1;
+  visibility: visible;
 }
 .intro-skip:hover {
   border-color: var(--arcade-text);
@@ -1414,6 +1425,22 @@ pre {
     min-height: 44px;
     padding: 0 11px;
     font-size: 11px;
+  }
+}
+
+/* ---------- 无 JS / 脚本失败的兜底 ----------
+ * 开屏是一层盖满全屏的不透明黑幕，它只靠脚本自己移除。
+ * 如果脚本没跑起来（移动端网络失败、被拦截、JS 被禁用），
+ * 访客会被永久困在一块黑屏上、连正文都看不到 —— 全站也没有 noscript。
+ * 所以这里给一条纯 CSS 的保险：7 秒后自动让路。
+ * 脚本一旦启动就会移除 .intro-guard，正常流程不受影响。 */
+.intro.intro-guard {
+  animation: intro-guard 0.6s ease 7s forwards;
+}
+@keyframes intro-guard {
+  to {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 
