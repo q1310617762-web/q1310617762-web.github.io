@@ -85,8 +85,8 @@ const statusText = 'INSERT COIN TO ENTER';
     const T = {
       enter: 380, // 入场（HUD/字幕/豆子浮现）
       travel: 3000, // 匀速走完整条路线
-      eatHold: 260, // 咬住头像的停顿
-      vortex: 900, // 漩涡吸入
+      impactHold: 320, // 撞上头像：吃豆人自毁 + 头像被撞得弹一下
+      vortex: 900, // 黑幕漩涡吸入头像（此期间头像一直显示）
     };
     const RUN_END = T.enter + T.travel;
 
@@ -406,14 +406,16 @@ const statusText = 'INSERT COIN TO ENTER';
     }
 
     function reachTarget() {
-      root.classList.add('is-eaten');
+      // 撞上头像：吃豆人在这里被销毁（自毁动画），头像只是被撞得弹一下、保持可见
+      root.classList.add('is-impact');
+      if (pac) pac.classList.add('is-destroyed');
       blip(420, 80, 0.28, 0.13, 'square');
       later(() => {
-        if (pac) pac.classList.add('is-consumed');
+        // 黑幕漩涡被吸进头像；这一整段里头像必须一直显示
         root.classList.add('is-absorbing');
         vortexSound();
-      }, T.eatHold);
-      later(finish, T.eatHold + T.vortex);
+      }, T.impactHold);
+      later(finish, T.impactHold + T.vortex);
     }
 
     function onResize() {
