@@ -23,8 +23,12 @@ const statusText = 'INSERT COIN TO ENTER';
 ---
 
 <div class="intro" data-intro aria-label="开屏动画：吃豆人进入博客">
-  <!-- 底色 + 漩涡：整个开屏的黑色背景由它承担，层级最低 -->
-  <div class="intro-veil" data-intro-veil aria-hidden="true"></div>
+  <!-- 底色 + 黑洞：整个开屏的黑色背景由它承担，层级最低。
+       被漩涡吸入的所有层都放在它内部，因此会随它的 clip-path 一起
+       被收进头像边框里（由头像边缘吸收）。 -->
+  <div class="intro-veil" data-intro-veil aria-hidden="true">
+    <span class="intro-bh-disk" aria-hidden="true"></span>
+  </div>
 
   <!-- 记分 HUD -->
   <div class="intro-hud" aria-hidden="true">
