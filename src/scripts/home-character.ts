@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 主页 3D 角色：加载游戏模型 → 程序化走路循环 → 沿页面底部巡逻
  *
  * 设计要点：
@@ -13,6 +13,7 @@ const MODEL_PATH = 'character/model.fbx';
 const TEX_BASE = 'character/tex/';
 
 // 材质名（去掉前缀）→ 贴图文件
+// 全部 14 个材质都有映射。之前漏了 __DEFAULT（眼睛那块发黑就是它没贴图）。
 const TEX_MAP: Record<string, string> = {
   Mat_Hair: 'Hair_Diffuse.webp',
   Mat_Body: 'Body_Diffuse.webp',
@@ -22,12 +23,17 @@ const TEX_MAP: Record<string, string> = {
   Mat_Brow: 'Face_Diffuse.webp',
   Mat_Pupil: 'Pupil01_Diffuse.webp',
   Mat_Shell: 'Shell_Diffuse.webp',
-  Mat_Crystal: 'Shell_Diffuse.webp',
-  Mat_Crystal01: 'Shell_Diffuse.webp',
-  Mat_Crystal02: 'Shell_Diffuse.webp',
+  Mat_Crystal: 'Crystal_Diffuse.webp',
+  Mat_Crystal01: 'Crystal_Diffuse.webp',
+  Mat_Crystal02: 'Crystal_Diffuse.webp',
   Mat_Gauze: 'Dress_Diffuse.webp',
   Mat_Gauze01: 'Dress_Diffuse.webp',
+  __DEFAULT: 'EyeHighlight_Diffuse.webp',
 };
+
+// 注意：不要给冰晶/纱料加 transparent —— 多层布料叠加时深度排序必然错乱，
+// 实测会出现一大坨黑块。保持不透明反而正常。
+const TRANSLUCENT: Record<string, number> = {};
 
 export type CharacterOptions = {
   base: string;
@@ -47,13 +53,8 @@ export async function initHomeCharacter({ base, canvas, stage }: CharacterOption
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const scene = new THREE.Scene();
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x9fb0c4, 2.1));
-  const key = new THREE.DirectionalLight(0xffffff, 2.4);
-  key.position.set(1.4, 2.6, 3.2);
-  scene.add(key);
-  const fill = new THREE.DirectionalLight(0xdce8ff, 1.1);
-  fill.position.set(-2.6, 1.2, -1.6);
-  scene.add(fill);
+  // 不加任何光源：游戏 Diffuse 贴图里已经烘焙好明暗，
+  // 再叠光照只会把颜色冲淡发灰（实测对照过 Toon 各方案，都不如不加）。
   const camera = new THREE.PerspectiveCamera(26, W / H, 0.01, 100);
 
   const texLoader = new THREE.TextureLoader();
@@ -87,10 +88,11 @@ export async function initHomeCharacter({ base, canvas, stage }: CharacterOption
       const built = mats.map((m: any) => {
         const short = String(m.name || '').replace('Avatar_Lady_Bow_Anastasya_', '');
         const file = TEX_MAP[short];
-        return new THREE.MeshToonMaterial({
+        return new THREE.MeshBasicMaterial({
           color: 0xffffff,
           map: file ? getTex(file) : null,
-          side: THREE.DoubleSide,
+          // 必须 FrontSide：DoubleSide 会把裙摆/披风的内表面也画出来，渲染成一坨黑
+          side: THREE.FrontSide,
         });
       });
       o.material = Array.isArray(o.material) ? built : built[0];
@@ -103,7 +105,7 @@ export async function initHomeCharacter({ base, canvas, stage }: CharacterOption
   const box = new THREE.Box3().setFromObject(fbx);
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
-  camera.position.set(center.x, center.y + size.y * 0.03, center.z + size.y * 1.55);
+  camera.position.set(center.x, center.y + size.y * 0.02, center.z + size.y * 2.35);
   camera.lookAt(center.x, center.y, center.z);
   camera.updateProjectionMatrix();
 
@@ -163,20 +165,28 @@ export async function initHomeCharacter({ base, canvas, stage }: CharacterOption
     const s2 = Math.sin(phase + Math.PI);
     const amp = roam ? 1 : 0;
 
-    // 腿：Z 轴前后摆；小腿只向后弯（膝盖不会反折）
-    setRot('Bip001_L_Thigh', 'z', 0.40 * amp * s);
-    setRot('Bip001_R_Thigh', 'z', 0.40 * amp * s2);
-    setRot('Bip001_L_Calf', 'z', -0.50 * amp * Math.max(0, -s));
-    setRot('Bip001_R_Calf', 'z', -0.50 * amp * Math.max(0, -s2));
-    // 手臂：与同侧腿反相
-    setRot('Bip001_L_UpperArm', 'z', -0.26 * amp * s);
-    setRot('Bip001_R_UpperArm', 'z', -0.26 * amp * s2);
-    setRot('Bip001_L_Forearm', 'z', -0.18 * amp * Math.max(0, s));
-    setRot('Bip001_R_Forearm', 'z', -0.18 * amp * Math.max(0, s2));
-    // 躯干：走路时轻微起伏与侧倾
+    // 走路时：腿用局部 Z，臂用局部 X —— 这两条是侧视角逐轴实测出来的，别凭直觉改：
+    //   上臂绕 Z 会把手臂往上举（错），绕 X 才是前后摆（对）
+    //   大腿绕 Y 是大劈叉（错），绕 Z 才是前后迈（对）
+    //   小腿绕 Z 正值是膝盖向后弯（对），负值会反折
+    const swing = 0.45 * amp; // 26°
+    const knee = 0.73 * amp; // 42°
+    const arm = -0.35 * amp; // -20°
+    const elbow = -0.28 * amp; // -16°
+    const cosP = Math.cos(phase);
+    const cosP2 = Math.cos(phase + Math.PI);
+
+    setRot('Bip001_L_Thigh', 'z', swing * s);
+    setRot('Bip001_R_Thigh', 'z', swing * s2);
+    setRot('Bip001_L_Calf', 'z', knee * Math.max(0, -cosP));
+    setRot('Bip001_R_Calf', 'z', knee * Math.max(0, -cosP2));
+    setRot('Bip001_L_UpperArm', 'x', arm * s);
+    setRot('Bip001_R_UpperArm', 'x', arm * s2);
+    setRot('Bip001_L_Forearm', 'x', elbow * Math.max(0, s));
+    setRot('Bip001_R_Forearm', 'x', elbow * Math.max(0, s2));
+    // 躯干：走路时轻微起伏
     const bob = roam ? Math.abs(Math.sin(phase)) * 0.018 : Math.sin(phase) * 0.006;
     fbx.position.y = -footY + bob;
-    setRot('Bip001_Spine1', 'z', (roam ? 0.04 : 0.01) * Math.sin(phase * 2));
 
     // 朝向：走路时侧身面向行进方向
     const targetY = roam ? dir * Math.PI * 0.5 : 0;
@@ -205,3 +215,4 @@ export async function initHomeCharacter({ base, canvas, stage }: CharacterOption
     },
   };
 }
+
