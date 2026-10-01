@@ -97,6 +97,8 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
 
 <script>
   const OFF_KEY = 'live2d-character-off';
+  // 舞台底部为模型预留的透明余量，measure() 需要用它换算角色底边位置
+  let PAD_BOTTOM = 0;
 
   async function boot() {
     const host = document.querySelector<HTMLElement>('[data-live2d]');
@@ -136,8 +138,27 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
 
       const fitScale = () => (small ? 0.2 : Math.max(0.16, Math.min(0.3, window.innerHeight / 3000)));
 
+      // oh-my-live2d 的舞台宽高默认【自适应模型宽高】，canvas 又始终等于舞台，
+      // 所以画布会严丝合缝地贴着模型 —— 冠冕顶端被画布上沿裁掉就是这个原因。
+      // 解法：把舞台做大一圈留出余量，再把模型在画布内往下挪一点。
+      // 模型内部画布是 1024，舞台尺寸 = 1024 × scale，故留白按这个基数换算。
+      const s0 = fitScale();
+      const base = Math.round(1024 * s0);
+      const padX = Math.round(base * 0.05);
+      const padTop = Math.round(base * 0.09);
+      const padBottom = Math.round(base * 0.14);
+      PAD_BOTTOM = padBottom;
+
       loadOml2d({
-        models: [{ path: host.dataset.model, scale: fitScale(), position: [0, 0] }],
+        models: [{
+          path: host.dataset.model,
+          scale: s0,
+          position: [padX, padTop],
+          stageStyle: {
+            width: base + padX * 2 + 'px',
+            height: base + padTop + padBottom + 'px',
+          },
+        }],
         menus: { items: [] },
         tips: { style: { display: 'none' } },
         statusBar: { style: { display: 'none' } },
@@ -162,7 +183,9 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
         const r = slot.getBoundingClientRect();
         const w = stage.offsetWidth || 320;
         stage.style.setProperty('left', Math.max(0, Math.round(r.left + (r.width - w) / 2)) + 'px', 'important');
-        stage.style.setProperty('bottom', Math.max(0, Math.round(window.innerHeight - r.bottom)) + 'px', 'important');
+        // 舞台比模型高：底部多出 padBottom 的透明余量，所以要把舞台再往下压 padBottom，
+        // 才是让【角色本人】的底边对齐槽位底部（否则角色会整体偏高）。
+        stage.style.setProperty('bottom', Math.max(0, Math.round(window.innerHeight - r.bottom - PAD_BOTTOM)) + 'px', 'important');
         if (closeBtn) {
           closeBtn.style.left = Math.round(r.left + r.width - 24) + 'px';
           closeBtn.style.top = Math.round(r.top + 4) + 'px';
@@ -215,5 +238,7 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
   document.addEventListener('astro:page-load', boot);
   boot();
 </script>
+
+
 
 
