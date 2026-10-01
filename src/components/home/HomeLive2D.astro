@@ -1,10 +1,15 @@
 ﻿---
-// 主页 Live2D 角色（替代原 3D 版）
+// 主页 Live2D 角色 —— 取代原来的「新番更新」卡片，站在 hero 右列的位置
 // 模型来源：单张立绘 → See-Through 拆 18 图层 → psd2live 自动绑骨
-// 体积：整包 327 KB（贴图已转 WebP，省 91%）
+// 体积：整包约 327 KB（贴图已转 WebP，省 91%）
 const prefix = import.meta.env.BASE_URL.replace(/\/$/, '');
 const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
 ---
+
+<!-- 占位槽：保持 hero 的两栏结构不变，角色以固定定位覆盖在这一列上 -->
+<div class="l2d-slot" data-l2d-slot aria-hidden="true">
+  <span class="l2d-slot-hint">✦ 角色加载中…</span>
+</div>
 
 <div
   class="l2d-host"
@@ -21,12 +26,33 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
 </button>
 
 <style>
-  /* oh-my-live2d 会把 #oml2d-stage 直接挂到 body 上，所以这里用全局选择器接管它的定位与层级 */
+  .l2d-slot {
+    min-height: 330px;
+    border-radius: 16px;
+    border: 1px dashed var(--color-border);
+    display: grid;
+    place-items: center;
+  }
+  .l2d-slot.is-filled {
+    border-color: transparent;
+  }
+  .l2d-slot-hint {
+    font-size: 11.5px;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+  .l2d-slot.is-filled .l2d-slot-hint {
+    display: none;
+  }
+
+  /* oh-my-live2d 会把 #oml2d-stage 直接挂到 body 上，这里用全局选择器接管它的定位与层级。
+     垂直位置改用固定定位的 left/bottom 决定（由脚本按 hero 右列的位置算），
+     所以把它的 transform 留给巡逻位移使用。 */
   :global(#oml2d-stage) {
     z-index: 40 !important;
-    bottom: 0 !important;
     left: 0 !important;
     right: auto !important;
+    bottom: 0 !important;
     pointer-events: none !important;
     will-change: transform;
   }
@@ -38,9 +64,11 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
   :global(#oml2d-statusBar) {
     display: none !important;
   }
+
   .l2d-host {
     display: none;
   }
+
   .l2d-close {
     position: fixed;
     right: 14px;
@@ -65,9 +93,6 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
     opacity: 1 !important;
     color: var(--color-primary-strong);
   }
-  :global(body:hover) .l2d-close.is-on {
-    opacity: 0.55;
-  }
 </style>
 
 <script>
@@ -75,12 +100,16 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
 
   async function boot() {
     const host = document.querySelector<HTMLElement>('[data-live2d]');
+    const slot = document.querySelector<HTMLElement>('[data-l2d-slot]');
     const closeBtn = document.querySelector<HTMLElement>('[data-l2d-close]');
     if (!host || host.dataset.l2dInit === '1') return;
     host.dataset.l2dInit = '1';
 
     try {
-      if (localStorage.getItem(OFF_KEY) === '1') return;
+      if (localStorage.getItem(OFF_KEY) === '1') {
+        slot?.classList.add('is-filled');
+        return;
+      }
     } catch {}
 
     closeBtn?.addEventListener('click', () => {
@@ -88,6 +117,7 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
       closeBtn.classList.remove('is-on');
       const st = document.getElementById('oml2d-stage');
       if (st) st.style.display = 'none';
+      slot?.classList.remove('is-filled');
     });
 
     // 等开屏动画结束，避免抢注意力
@@ -98,13 +128,13 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
     if (!document.body.contains(host)) return;
 
     try {
-      // 注意：oh-my-live2d 是【具名导出】loadOml2d，没有 default 导出。import 打包引入时 window.OML2D 也不存在。
+      // oh-my-live2d 是【具名导出】loadOml2d，没有 default 导出。
       const { loadOml2d } = await import('oh-my-live2d');
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const small = window.matchMedia('(max-width: 768px)').matches;
+      const small = window.matchMedia('(max-width: 1023px)').matches;
       const roam = !reduced && !small;
 
-      const fitScale = () => Math.max(0.16, Math.min(0.36, window.innerHeight / 2400));
+      const fitScale = () => (small ? 0.2 : Math.max(0.16, Math.min(0.3, window.innerHeight / 3000)));
 
       loadOml2d({
         models: [{ path: host.dataset.model, scale: fitScale(), position: [0, 0] }],
@@ -116,66 +146,68 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
       });
 
       closeBtn?.classList.add('is-on');
+      slot?.classList.add('is-filled');
 
-      // —— 走动：移动 oh-my-live2d 自己挂到 body 上的 #oml2d-stage ——
-      // 它原本用 transform: translateY(...) 做垂直偏移，必须先读出这个值再拼进新 transform，
-      // 否则会把它自己的偏移覆盖掉、角色会跳位。
+      // —— 定位到 hero 右列 ——
+      // oh-my-live2d 自己用 transform: translateY(...) 做垂直偏移；我们改用固定定位的
+      // left/bottom 决定落点，把 transform 的 Y 归零，只留给巡逻的 X 使用。
       let stage: HTMLElement | null = null;
-      let yOffset = 0;
+      let drift = 0;
       let dir = 1;
-      let x = 0;
-      let raf = 0;
       let last = performance.now();
 
-      const speed = 26; // px/s，很小很慢，不打扰阅读
-      const margin = 10;
-      // 桌面端左侧有固定侧栏，角色从侧栏右侧开始活动，避免压住音乐播放器等卡片
-      const minX = () => (window.innerWidth > 1024 ? 226 : margin);
+      const measure = () => {
+        if (!stage || !slot) return;
+        const r = slot.getBoundingClientRect();
+        const w = stage.offsetWidth || 320;
+        stage.style.setProperty('left', Math.max(0, Math.round(r.left + (r.width - w) / 2)) + 'px', 'important');
+        stage.style.setProperty('bottom', Math.max(0, Math.round(window.innerHeight - r.bottom)) + 'px', 'important');
+        if (closeBtn) {
+          closeBtn.style.left = Math.round(r.left + r.width - 24) + 'px';
+          closeBtn.style.top = Math.round(r.top + 4) + 'px';
+          closeBtn.style.right = 'auto';
+          closeBtn.style.bottom = 'auto';
+        }
+      };
+
+      const speed = 16;              // px/s，非常慢
+      const range = small ? 0 : 54;  // 巡逻半径，只在卡片附近小幅移动
 
       const tick = (now: number) => {
         const dt = Math.min((now - last) / 1000, 0.05);
         last = now;
         if (!stage) {
           stage = document.getElementById('oml2d-stage');
-          if (stage) {
-            const m = /translateY\(([-\d.]+)px\)/.exec(stage.style.transform || '');
-            yOffset = m ? parseFloat(m[1]) : 0;
-          }
+          if (stage) measure();
         }
         if (stage) {
-          const w = stage.offsetWidth || 320;
-          const lo = minX();
-          const maxX = Math.max(lo, window.innerWidth - w - margin);
-          if (roam) {
-            x += dir * speed * dt;
-            if (x > maxX) { x = maxX; dir = -1; }
-            if (x < lo) { x = lo; dir = 1; }
-          } else if (x === 0) {
-            x = maxX; // 不动时贴右边
+          if (roam && range > 0) {
+            drift += dir * speed * dt;
+            if (drift > range) { drift = range; dir = -1; }
+            if (drift < -range) { drift = -range; dir = 1; }
           }
-          if (x < lo) x = lo;
-          stage.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(yOffset)}px, 0)`;
+          stage.style.transform = `translate3d(${Math.round(drift)}px, 0, 0)`;
         }
-        raf = requestAnimationFrame(tick);
+        requestAnimationFrame(tick);
       };
-      raf = requestAnimationFrame(tick);
+      requestAnimationFrame(tick);
 
       window.addEventListener('resize', () => {
+        measure();
         const m = (window as any).OML2D?.models?.[0];
         if (m?.scale?.set) m.scale.set(fitScale());
       });
-
-      window.addEventListener('character:destroy', () => cancelAnimationFrame(raf), { once: true });
+      // 字体加载完布局会微调，重新量一次
+      setTimeout(measure, 1200);
     } catch (err) {
       console.error('[live2d] 加载失败', err);
       host.remove();
       closeBtn?.remove();
+      slot?.classList.remove('is-filled');
     }
   }
 
   document.addEventListener('astro:page-load', boot);
   boot();
 </script>
-
-
 

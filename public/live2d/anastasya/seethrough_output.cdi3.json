@@ -174,16 +174,20 @@
 			"Name": "front hair"
 		},
 		{
-			"Id": "ArtMeshEarwear",
-			"Name": "earwear"
-		},
-		{
-			"Id": "ArtMeshIrides",
-			"Name": "irides"
+			"Id": "ArtMeshHeadwear",
+			"Name": "headwear"
 		},
 		{
 			"Id": "ArtMeshHandwear",
 			"Name": "handwear"
+		},
+		{
+			"Id": "ArtMeshEyebrow",
+			"Name": "eyebrow"
+		},
+		{
+			"Id": "ArtMeshIrides",
+			"Name": "irides"
 		},
 		{
 			"Id": "ArtMeshEyewhite",
@@ -214,16 +218,24 @@
 			"Name": "face"
 		},
 		{
-			"Id": "ArtMeshEars",
-			"Name": "ears"
-		},
-		{
 			"Id": "ArtMeshNeck",
 			"Name": "neck"
 		},
 		{
-			"Id": "ArtMeshEyebrow",
-			"Name": "eyebrow"
+			"Id": "ArtMeshEars",
+			"Name": "ears"
+		},
+		{
+			"Id": "ArtMeshEarwear",
+			"Name": "earwear"
+		},
+		{
+			"Id": "ArtMeshTopwear",
+			"Name": "topwear"
+		},
+		{
+			"Id": "ArtMeshBottomwear",
+			"Name": "bottomwear"
 		},
 		{
 			"Id": "ArtMeshFootwear",
@@ -232,18 +244,6 @@
 		{
 			"Id": "ArtMeshLegwear",
 			"Name": "legwear"
-		},
-		{
-			"Id": "ArtMeshTopwear",
-			"Name": "topwear"
-		},
-		{
-			"Id": "ArtMeshHeadwear",
-			"Name": "headwear"
-		},
-		{
-			"Id": "ArtMeshBottomwear",
-			"Name": "bottomwear"
 		},
 		{
 			"Id": "ArtMeshBackHair",
