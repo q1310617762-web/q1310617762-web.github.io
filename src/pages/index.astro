@@ -9,6 +9,7 @@ import ImageStrip from '@components/blog/ImageStrip.astro';
 import AnimeUpdates from '@components/blog/AnimeUpdates.astro';
 import WeChat from '@components/ui/WeChat.astro';
 import HomeIntro from '@components/home/HomeIntro.astro';
+import HomeCharacter from '@components/home/HomeCharacter.astro';
 
 const posts = await getAllPosts();
 const tags = await getAllTags();
@@ -27,6 +28,7 @@ const greeting =
 ---
 <BaseLayout activeNav="/">
   <HomeIntro />
+<HomeCharacter />
   <div class="home-page mx-auto max-w-5xl px-6 py-10 sm:px-10 sm:py-14">
     <!-- Hero：左侧文案 + 右上角新番更新 -->
     <header class="mb-14 lg:grid lg:grid-cols-[minmax(0,1fr)_330px] lg:items-start lg:gap-10">
