@@ -244,10 +244,6 @@
 		{
 			"Id": "ArtMeshLegwear",
 			"Name": "legwear"
-		},
-		{
-			"Id": "ArtMeshBackHair",
-			"Name": "back hair"
 		}
 	]
 }
