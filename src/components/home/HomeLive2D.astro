@@ -154,6 +154,7 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
       let stage: HTMLElement | null = null;
       let drift = 0;
       let dir = 1;
+      let frame = 0;
       let last = performance.now();
 
       const measure = () => {
@@ -180,6 +181,10 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
           stage = document.getElementById('oml2d-stage');
           if (stage) measure();
         }
+        // 周期性重新定位：oh-my-live2d 会在模型加载完成、窗口变化等时机重写自己的
+        // 定位样式，只在首次 measure 一次会被它覆盖（线上加载慢时就会踩到）。
+        if (stage && frame % 15 === 0) measure();
+        frame++;
         if (stage) {
           if (roam && range > 0) {
             drift += dir * speed * dt;
@@ -210,4 +215,5 @@ const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
   document.addEventListener('astro:page-load', boot);
   boot();
 </script>
+
 
