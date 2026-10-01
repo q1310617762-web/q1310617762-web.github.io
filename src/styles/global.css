@@ -937,6 +937,69 @@ pre {
   }
 }
 
+/* 「开启声音」按钮
+ * 为什么必须有它：浏览器要求每个文档都要有一次新手势才能出声，而开屏只有
+ * 4.6 秒 —— 用户读完字去点时动画早播完了，刷新又会重置解锁状态。
+ * 没有这个显式入口，PC 上的实际体验就是「永远静音」（用户实测反馈）。
+ * 只在「脚本就绪 + 音频尚未解锁」时出现，解锁后立即消失。 */
+.intro-sound {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 204, 0, 0.42);
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.46);
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  /* 默认不可见也不可点，避免出现「点了没反应」的死按钮 */
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+.intro-sound-icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+/* 就绪且未解锁时出现；一旦 is-audio-on 就不再出现 */
+.intro.is-armed:not(.is-audio-on) .intro-sound {
+  opacity: 1;
+  visibility: visible;
+}
+/* 轻微呼吸，提示可以点 —— 这是唯一一个需要用户主动操作的元素 */
+.intro.is-armed:not(.is-audio-on) .intro-sound-icon {
+  animation: intro-sound-pulse 1.4s ease-in-out infinite alternate;
+}
+.intro-sound:hover {
+  border-color: var(--arcade-text);
+  color: #fff;
+}
+.intro-sound:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--arcade-text) 55%, transparent);
+  outline-offset: 3px;
+}
+@keyframes intro-sound-pulse {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* ---------- HUD ---------- */
 .intro-hud {
   position: absolute;
