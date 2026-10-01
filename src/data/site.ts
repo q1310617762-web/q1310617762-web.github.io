@@ -154,9 +154,11 @@ export const music = [
   { title: '晚祷的铃歌 Dzwony na nieszpory', artist: 'HOYO-MiX · 挪德卡莱', src: '/music/vespers-bells.mp3' },
   { title: '柔月下的暗鸦 Raven Beneath the Tender Moon', artist: 'HOYO-MiX · 挪德卡莱', src: '/music/raven-tender-moon.mp3' },
   { title: '至冬 Snezhnaya', artist: 'HOYO-MiX · 原神（至冬主题曲）', src: '/music/snezhnaya-theme.m4a' },
-  // 注意：你要的是「自由颂 人声版」，但本机 E:\bgm 全库都没有这首的任何版本，
-  // 这里先用仓库里原有的**巴扬版**顶上并如实标注；拿到人声版后替换 src 即可。
-  { title: '自由颂 Ode to Liberty（巴扬版·待人声版替换）', artist: 'HOYO-MiX · 列车总站', src: '/music/snezhnaya-liberty.m4a' },
+  // 人声版。来源：你缓存的 bilibili《科洛列夫茨基剧场2 自由颂 Ode to Liberty》
+  // （ID 41868002286）。缓存文件前 9 字节是 bilibili 的填充，已去掉后无损重封装为 m4a。
+  // 另外两首同曲已交叉比对：仓库原有的《(巴扬版|Bayan Version)》与 bilibili 的巴扬版
+  // 相似度 0.996（同一录音），确认是巴扬版，故未采用。
+  { title: '自由颂 Ode to Liberty', artist: 'HOYO-MiX · 挪德卡莱（科洛列夫茨基剧场）', src: '/music/ode-to-liberty.m4a' },
 ] as const;
 
 // 评论系统（Giscus）配置
