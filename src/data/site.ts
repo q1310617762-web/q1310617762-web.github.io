@@ -119,6 +119,7 @@ export const gallery = albums.flatMap((a) => a.items);
 
 // 友情链接（在 /friends 页展示）
 export const friends = [
+  { name: 'AMU LIVE STYLE', url: 'https://bokezero.amuspaces.top/', desc: '一个人的长期档案' },
   { name: 'Astro', url: 'https://astro.build', desc: '内容驱动的 Web 框架' },
   { name: 'Tailwind CSS', url: 'https://tailwindcss.com', desc: 'Utility-first CSS 框架' },
   { name: 'GitHub', url: 'https://github.com', desc: '全球最大的代码托管平台' },
