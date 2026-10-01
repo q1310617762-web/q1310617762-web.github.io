@@ -69,7 +69,16 @@ export async function initHomeCharacter({ base, canvas, stage }: CharacterOption
     return t;
   };
 
-  const fbx = await new FBXLoader().loadAsync(`${base}/${MODEL_PATH}`);
+  const fbx = await (async () => {
+    // FBX 内部引用的是游戏原始贴图路径（Avatar_..._Diffuse.png 等），站点上并不存在。
+    // 我们用自己的 WebP 贴图重建材质，所以这里把这些请求改写成一张 1×1 透明图，
+    // 否则每次加载首页都会白白产生近 20 个 404。
+    const BLANK =
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+    const manager = new THREE.LoadingManager();
+    manager.setURLModifier((url: string) => (/\.(png|jpg|jpeg|tga|bmp)(\?|$)/i.test(url) ? BLANK : url));
+    return new FBXLoader(manager).loadAsync(`${base}/${MODEL_PATH}`);
+  })();
 
   const rest = new Map<string, import('three').Quaternion>();
   fbx.traverse((o: any) => {
