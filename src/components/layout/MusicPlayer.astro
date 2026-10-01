@@ -344,6 +344,63 @@ const hasMusic = tracks.length > 0;
       window.addEventListener('resize', followBtn);
 
       /**
+       * 打开页面自动播放第一首。
+       *
+       * 三个现实约束决定了这里必须绕一下：
+       *  1) 浏览器策略：没有用户交互时 play() 会抛 NotAllowedError。
+       *     所以先直接试一次，被拒就挂一次性手势监听，等用户第一次点击/按键再放。
+       *  2) 开屏动画正在播时不要抢 —— 否则开屏音效（吃豆/撞毁/漩涡）会和音乐叠在一起，
+       *     听起来很吵。所以等 [data-intro] 被移除后再开始。
+       *  3) 小窗（曲目按钮的 data-src 来源）是每次切页重建的，
+       *     必须等 __musicBindPopup 跑完再调，否则拿不到曲目列表。
+       */
+      let autostartTried = false;
+      const autostartFirstTrack = () => {
+        if (autostartTried) return;
+        autostartTried = true;
+
+        let started = false;
+
+        const armGesture = () => {
+          const onGesture = () => {
+            window.removeEventListener('pointerdown', onGesture);
+            window.removeEventListener('keydown', onGesture);
+            begin();
+          };
+          window.addEventListener('pointerdown', onGesture, { once: true });
+          window.addEventListener('keydown', onGesture, { once: true });
+        };
+
+        const begin = () => {
+          if (started) return;
+          const list = getTracks();
+          if (!list.length) return;
+          if (!audio.src) load(0, false); // 只选曲不自动播，播放在下面显式处理
+          audio
+            .play()
+            .then(() => {
+              started = true;
+            })
+            .catch(armGesture);
+        };
+
+        // 开屏还在就等它结束（最多等 10s，避免异常时永远不播）
+        if (!document.querySelector('[data-intro]')) {
+          begin();
+          return;
+        }
+        let waited = 0;
+        const timer = window.setInterval(() => {
+          waited += 200;
+          if (!document.querySelector('[data-intro]') || waited > 10000) {
+            window.clearInterval(timer);
+            begin();
+          }
+        }, 200);
+      };
+      player.__musicAutostart = autostartFirstTrack;
+
+      /**
        * 绑定当前页面上的小窗。
        * 用「节点是否变化」做幂等判断：同一节点重复调用不会重复挂监听，
        * 切页后节点变了才会重新绑定。
@@ -373,6 +430,8 @@ const hasMusic = tracks.length > 0;
 
     // 每次页面加载（含客户端路由切页）都重新绑定小窗
     player.__musicBindPopup?.();
+    // 自动播放只在整个文档里尝试一次（跨页切页时音乐本就继续播，不该重来）
+    player.__musicAutostart?.();
   }
   initMusic();
   document.addEventListener('astro:page-load', initMusic);

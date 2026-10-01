@@ -148,12 +148,15 @@ export const hero = {
 // 音乐播放器曲单
 // src 可以是站内文件（如 /music/song.mp3，放入 public/music/）或外部音频地址。
 // 留空数组则不显示播放器。
+// 顺序 = 播放顺序，且**第一首就是打开页面默认自动播放的那首**（见 MusicPlayer）。
 export const music = [
+  { title: '夜诞的花冠', artist: 'HOYO-MiX · 挪德卡莱（纳塔）', src: '/music/nights-crown.mp3' },
+  { title: '晚祷的铃歌 Dzwony na nieszpory', artist: 'HOYO-MiX · 挪德卡莱', src: '/music/vespers-bells.mp3' },
+  { title: '柔月下的暗鸦 Raven Beneath the Tender Moon', artist: 'HOYO-MiX · 挪德卡莱', src: '/music/raven-tender-moon.mp3' },
   { title: '至冬 Snezhnaya', artist: 'HOYO-MiX · 原神（至冬主题曲）', src: '/music/snezhnaya-theme.m4a' },
-  { title: '零露漙然 Heavy Is the Dew', artist: 'HOYO-MiX · 至冬堡（白天）', src: '/music/snezhnaya-day1.m4a' },
-  { title: '黑雪鹄的夜梦 Dream of the Black Snow Swan', artist: 'HOYO-MiX · 至冬堡（夜晚）', src: '/music/snezhnaya-night1.m4a' },
-  { title: '自由颂 Ode to Liberty（巴扬版）', artist: 'HOYO-MiX · 列车总站', src: '/music/snezhnaya-liberty.m4a' },
-  { title: '冰湖的凯旋礼 Triumph on the Ice', artist: 'HOYO-MiX · 至冬（战斗）', src: '/music/snezhnaya-battle.m4a' },
+  // 注意：你要的是「自由颂 人声版」，但本机 E:\bgm 全库都没有这首的任何版本，
+  // 这里先用仓库里原有的**巴扬版**顶上并如实标注；拿到人声版后替换 src 即可。
+  { title: '自由颂 Ode to Liberty（巴扬版·待人声版替换）', artist: 'HOYO-MiX · 列车总站', src: '/music/snezhnaya-liberty.m4a' },
 ] as const;
 
 // 评论系统（Giscus）配置
