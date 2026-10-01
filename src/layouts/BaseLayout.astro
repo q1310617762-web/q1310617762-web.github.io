@@ -25,7 +25,11 @@ const pageTitle = title ? `${title} · ${site.title}` : site.title;
 
 // 子路径前缀（GitHub Pages 项目页会用到）；BASE_URL 形如 "/" 或 "/my-blog/"
 const basePath = import.meta.env.BASE_URL || '/';
-const ogImage = new URL(basePath.replace(/\/$/, '') + image, site.url).href;
+// 用 Astro 解析出的真实站点地址（来自 astro.config 的 site），
+// 不要用 site.ts 里的 site.url —— 那是展示用文案，仍是 example.com 占位符，
+// 拿它拼 og:image 会让社交平台抓到 404。
+const origin = Astro.site?.origin || new URL(Astro.url).origin;
+const ogImage = new URL(basePath.replace(/\/$/, '') + image, origin).href;
 ---
 <!doctype html>
 <html lang={site.lang} data-theme="day">
