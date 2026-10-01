@@ -6,9 +6,11 @@ import { getAllPosts, getAllTags, getAllCategories, postUrl, formatDate } from '
 import PostList from '@components/blog/PostList.astro';
 import TagCloud from '@components/blog/TagCloud.astro';
 import ImageStrip from '@components/blog/ImageStrip.astro';
+import AnimeUpdates from '@components/blog/AnimeUpdates.astro';
 import WeChat from '@components/ui/WeChat.astro';
 import HomeIntro from '@components/home/HomeIntro.astro';
-import HomeCharacter from '@components/home/HomeLive2D.astro';
+// Live2D 角色先撤下（组件与模型都保留在仓库里，想切回只需把下面一行换成
+// import HomeCharacter from '@components/home/HomeLive2D.astro'; 并把卡片位换成 <HomeCharacter />）
 
 const posts = await getAllPosts();
 const tags = await getAllTags();
@@ -50,9 +52,9 @@ const greeting =
         </div>
       </div>
 
-      <!-- 角色槽位：Live2D 角色覆盖在这一列上（原「新番更新」卡片位置） -->
+      <!-- 新番更新列表 -->
       <div class="mt-10 lg:mt-0">
-        <HomeCharacter />
+        <AnimeUpdates />
       </div>
     </header>
 

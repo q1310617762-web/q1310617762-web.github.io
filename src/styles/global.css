@@ -152,6 +152,39 @@ body::before {
   opacity: var(--wallpaper-opacity);
   pointer-events: none;
   transition: opacity 0.4s ease;
+  /* 循环壁纸：缓慢呼吸式缩放 + 轻微漂移。
+     缩放基准取 1.04（不是 1），避免位移/缩放时露出边缘；
+     0% 与 100% 完全一致，所以循环处不会有跳变。
+     只动 transform，交给合成器，不触发重排。 */
+  transform-origin: center;
+  animation: wallpaper-drift 54s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes wallpaper-drift {
+  0% {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  25% {
+    transform: scale(1.075) translate3d(-0.9%, -0.5%, 0);
+  }
+  50% {
+    transform: scale(1.10) translate3d(0.6%, -1.1%, 0);
+  }
+  75% {
+    transform: scale(1.075) translate3d(0.9%, 0.4%, 0);
+  }
+  100% {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+}
+
+/* 尊重系统的减弱动效设置：壁纸静止 */
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+    transform: scale(1.04);
+  }
 }
 
 /* 内容层浮在壁纸之上 */
