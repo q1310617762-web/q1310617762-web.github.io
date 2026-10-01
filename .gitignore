@@ -27,3 +27,6 @@ photo-gate.config.json
 
 # 临时 python 校验脚本（与 _*.mjs/_*.cjs 同一约定）
 _*.py
+
+# 临时产物（立绘/截图等中间文件），不进仓库
+_*.webp
