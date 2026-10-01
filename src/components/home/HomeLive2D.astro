@@ -1,0 +1,181 @@
+﻿---
+// 主页 Live2D 角色（替代原 3D 版）
+// 模型来源：单张立绘 → See-Through 拆 18 图层 → psd2live 自动绑骨
+// 体积：整包 327 KB（贴图已转 WebP，省 91%）
+const prefix = import.meta.env.BASE_URL.replace(/\/$/, '');
+const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
+---
+
+<div
+  class="l2d-host"
+  data-live2d
+  data-model={modelPath}
+  data-roam-desktop="true"
+  aria-hidden="true"
+></div>
+
+<button class="l2d-close" type="button" data-l2d-close title="隐藏角色" aria-label="隐藏角色">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" class="h-3.5 w-3.5">
+    <path d="M6 6l12 12M18 6L6 18" />
+  </svg>
+</button>
+
+<style>
+  /* oh-my-live2d 会把 #oml2d-stage 直接挂到 body 上，所以这里用全局选择器接管它的定位与层级 */
+  :global(#oml2d-stage) {
+    z-index: 40 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    pointer-events: none !important;
+    will-change: transform;
+  }
+  :global(#oml2d-canvas) {
+    pointer-events: auto !important;
+  }
+  :global(#oml2d-menus),
+  :global(#oml2d-tips),
+  :global(#oml2d-statusBar) {
+    display: none !important;
+  }
+  .l2d-host {
+    display: none;
+  }
+  .l2d-close {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: 41;
+    display: none;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-muted);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.25s ease, color 0.2s ease;
+  }
+  .l2d-close.is-on {
+    display: grid;
+  }
+  .l2d-close:hover {
+    opacity: 1 !important;
+    color: var(--color-primary-strong);
+  }
+  :global(body:hover) .l2d-close.is-on {
+    opacity: 0.55;
+  }
+</style>
+
+<script>
+  const OFF_KEY = 'live2d-character-off';
+
+  async function boot() {
+    const host = document.querySelector<HTMLElement>('[data-live2d]');
+    const closeBtn = document.querySelector<HTMLElement>('[data-l2d-close]');
+    if (!host || host.dataset.l2dInit === '1') return;
+    host.dataset.l2dInit = '1';
+
+    try {
+      if (localStorage.getItem(OFF_KEY) === '1') return;
+    } catch {}
+
+    closeBtn?.addEventListener('click', () => {
+      try { localStorage.setItem(OFF_KEY, '1'); } catch {}
+      closeBtn.classList.remove('is-on');
+      const st = document.getElementById('oml2d-stage');
+      if (st) st.style.display = 'none';
+    });
+
+    // 等开屏动画结束，避免抢注意力
+    for (let i = 0; i < 60; i++) {
+      if (!document.querySelector('[data-intro]')) break;
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    if (!document.body.contains(host)) return;
+
+    try {
+      // 注意：oh-my-live2d 是【具名导出】loadOml2d，没有 default 导出。import 打包引入时 window.OML2D 也不存在。
+      const { loadOml2d } = await import('oh-my-live2d');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const small = window.matchMedia('(max-width: 768px)').matches;
+      const roam = !reduced && !small;
+
+      const fitScale = () => Math.max(0.16, Math.min(0.36, window.innerHeight / 2400));
+
+      loadOml2d({
+        models: [{ path: host.dataset.model, scale: fitScale(), position: [0, 0] }],
+        menus: { items: [] },
+        tips: { style: { display: 'none' } },
+        statusBar: { style: { display: 'none' } },
+        mobileDisplay: true,
+        transitionTime: 0,
+      });
+
+      closeBtn?.classList.add('is-on');
+
+      // —— 走动：移动 oh-my-live2d 自己挂到 body 上的 #oml2d-stage ——
+      // 它原本用 transform: translateY(...) 做垂直偏移，必须先读出这个值再拼进新 transform，
+      // 否则会把它自己的偏移覆盖掉、角色会跳位。
+      let stage: HTMLElement | null = null;
+      let yOffset = 0;
+      let dir = 1;
+      let x = 0;
+      let raf = 0;
+      let last = performance.now();
+
+      const speed = 26; // px/s，很小很慢，不打扰阅读
+      const margin = 10;
+      // 桌面端左侧有固定侧栏，角色从侧栏右侧开始活动，避免压住音乐播放器等卡片
+      const minX = () => (window.innerWidth > 1024 ? 226 : margin);
+
+      const tick = (now: number) => {
+        const dt = Math.min((now - last) / 1000, 0.05);
+        last = now;
+        if (!stage) {
+          stage = document.getElementById('oml2d-stage');
+          if (stage) {
+            const m = /translateY\(([-\d.]+)px\)/.exec(stage.style.transform || '');
+            yOffset = m ? parseFloat(m[1]) : 0;
+          }
+        }
+        if (stage) {
+          const w = stage.offsetWidth || 320;
+          const lo = minX();
+          const maxX = Math.max(lo, window.innerWidth - w - margin);
+          if (roam) {
+            x += dir * speed * dt;
+            if (x > maxX) { x = maxX; dir = -1; }
+            if (x < lo) { x = lo; dir = 1; }
+          } else if (x === 0) {
+            x = maxX; // 不动时贴右边
+          }
+          if (x < lo) x = lo;
+          stage.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(yOffset)}px, 0)`;
+        }
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+
+      window.addEventListener('resize', () => {
+        const m = (window as any).OML2D?.models?.[0];
+        if (m?.scale?.set) m.scale.set(fitScale());
+      });
+
+      window.addEventListener('character:destroy', () => cancelAnimationFrame(raf), { once: true });
+    } catch (err) {
+      console.error('[live2d] 加载失败', err);
+      host.remove();
+      closeBtn?.remove();
+    }
+  }
+
+  document.addEventListener('astro:page-load', boot);
+  boot();
+</script>
+
+
+

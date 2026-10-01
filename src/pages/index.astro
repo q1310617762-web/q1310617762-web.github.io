@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Button from '@components/ui/Button.astro';
 import { hero, site, contacts } from '@data/site';
@@ -9,7 +9,7 @@ import ImageStrip from '@components/blog/ImageStrip.astro';
 import AnimeUpdates from '@components/blog/AnimeUpdates.astro';
 import WeChat from '@components/ui/WeChat.astro';
 import HomeIntro from '@components/home/HomeIntro.astro';
-import HomeCharacter from '@components/home/HomeCharacter.astro';
+import HomeCharacter from '@components/home/HomeLive2D.astro';
 
 const posts = await getAllPosts();
 const tags = await getAllTags();
@@ -155,3 +155,4 @@ const greeting =
     }
   </div>
 </BaseLayout>
+
