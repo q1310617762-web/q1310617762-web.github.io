@@ -1,110 +1,12 @@
 {
-  "fetchedAt": "2026-10-03T14:31:19.610Z",
-  "total": 45,
+  "fetchedAt": "2026-10-03T20:30:35.455Z",
+  "total": 43,
   "days": [
-    {
-      "date": "10-3",
-      "dateTs": 1790956800,
-      "weekday": "六",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6427821",
-          "title": "万古至尊：李云霄传",
-          "index": "第24话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
-          "seasonId": 119017,
-          "url": "https://www.bilibili.com/bangumi/play/ep6427821",
-          "delay": ""
-        },
-        {
-          "id": "6518819",
-          "title": "气运世界杯，我能复制所有球星技能",
-          "index": "第16话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f6920c0319f78939fb6e419fe718ea7d9b60b474.jpg",
-          "seasonId": 263605,
-          "url": "https://www.bilibili.com/bangumi/play/ep6518819",
-          "delay": ""
-        },
-        {
-          "id": "6291969",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第12话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291969",
-          "delay": ""
-        },
-        {
-          "id": "6394459",
-          "title": "小车队大救援：安全先锋队",
-          "index": "第7话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
-          "seasonId": 298877,
-          "url": "https://www.bilibili.com/bangumi/play/ep6394459",
-          "delay": ""
-        },
-        {
-          "id": "3854818",
-          "title": "凡人修仙传",
-          "index": "第194话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
-          "seasonId": 28747,
-          "url": "https://www.bilibili.com/bangumi/play/ep3854818",
-          "delay": ""
-        },
-        {
-          "id": "6520098",
-          "title": "无良系统变向导，我被四个哨兵拿捏了",
-          "index": "第13话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/748726fd8faf7c11a6898a4b37c129c526e09e61.jpg",
-          "seasonId": 285345,
-          "url": "https://www.bilibili.com/bangumi/play/ep6520098",
-          "delay": ""
-        },
-        {
-          "id": "6504016",
-          "title": "我是不白吃",
-          "index": "第1087话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep6504016",
-          "delay": ""
-        },
-        {
-          "id": "6569393",
-          "title": "名侦探柯南",
-          "index": "第1275话",
-          "time": "19:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8d4dad96d5eef87c1ef985c29f42d4189992f84.png",
-          "seasonId": 33378,
-          "url": "https://www.bilibili.com/bangumi/play/ep6569393",
-          "delay": ""
-        },
-        {
-          "id": "6569392",
-          "title": "名侦探柯南（中配）",
-          "index": "第1275话",
-          "time": "19:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d106f458bb63f0dc78c49886ec27b1a137b14e96.png",
-          "seasonId": 33415,
-          "url": "https://www.bilibili.com/bangumi/play/ep6569392",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-4",
       "dateTs": 1791043200,
       "weekday": "日",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "4883711",
@@ -504,6 +406,84 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/4766bd4a732abb2d2408eb0187a9c648f76d4176.jpg",
           "seasonId": 284272,
           "url": "https://www.bilibili.com/bangumi/play/ep6519248",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-10",
+      "dateTs": 1791561600,
+      "weekday": "六",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6547976",
+          "title": "万古至尊：李云霄传",
+          "index": "第26话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
+          "seasonId": 119017,
+          "url": "https://www.bilibili.com/bangumi/play/ep6547976",
+          "delay": ""
+        },
+        {
+          "id": "6518820",
+          "title": "气运世界杯，我能复制所有球星技能",
+          "index": "第17话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f6920c0319f78939fb6e419fe718ea7d9b60b474.jpg",
+          "seasonId": 263605,
+          "url": "https://www.bilibili.com/bangumi/play/ep6518820",
+          "delay": ""
+        },
+        {
+          "id": "6291976",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第19话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291976",
+          "delay": ""
+        },
+        {
+          "id": "6394472",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第14话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394472",
+          "delay": ""
+        },
+        {
+          "id": "3854819",
+          "title": "凡人修仙传",
+          "index": "第195话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
+          "seasonId": 28747,
+          "url": "https://www.bilibili.com/bangumi/play/ep3854819",
+          "delay": ""
+        },
+        {
+          "id": "6520099",
+          "title": "无良系统变向导，我被四个哨兵拿捏了",
+          "index": "第14话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/748726fd8faf7c11a6898a4b37c129c526e09e61.jpg",
+          "seasonId": 285345,
+          "url": "https://www.bilibili.com/bangumi/play/ep6520099",
+          "delay": ""
+        },
+        {
+          "id": "6504019",
+          "title": "我是不白吃",
+          "index": "第1090话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep6504019",
           "delay": ""
         }
       ]
