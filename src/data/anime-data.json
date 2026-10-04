@@ -1,100 +1,12 @@
 {
-  "fetchedAt": "2026-10-04T15:05:55.140Z",
-  "total": 43,
+  "fetchedAt": "2026-10-04T20:47:33.170Z",
+  "total": 39,
   "days": [
-    {
-      "date": "10-4",
-      "dateTs": 1791043200,
-      "weekday": "日",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "4883711",
-          "title": "财神窦占龙",
-          "index": "第10话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
-          "seasonId": 264970,
-          "url": "https://www.bilibili.com/bangumi/play/ep4883711",
-          "delay": ""
-        },
-        {
-          "id": "6514448",
-          "title": "肥志百科",
-          "index": "第170话~第171话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/30c124c6f85df11a8a830df5810c2196c95880c7.jpg",
-          "seasonId": 34569,
-          "url": "https://www.bilibili.com/bangumi/play/ep6514448",
-          "delay": ""
-        },
-        {
-          "id": "6332427",
-          "title": "千金归来：我清算了枕边人",
-          "index": "第14话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/bea37a11f5fa2f3f8e33cd7ad666104b9234f5a9.jpg",
-          "seasonId": 269798,
-          "url": "https://www.bilibili.com/bangumi/play/ep6332427",
-          "delay": ""
-        },
-        {
-          "id": "6332197",
-          "title": "当上神明后，我带着信徒干翻了废土",
-          "index": "第15话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e54803cb8bfb45c8dc968a16d05110dfcd07cc40.jpg",
-          "seasonId": 269837,
-          "url": "https://www.bilibili.com/bangumi/play/ep6332197",
-          "delay": ""
-        },
-        {
-          "id": "6332518",
-          "title": "孟婆辞职，阎王哭着求我回来上班",
-          "index": "第12话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/ea0368a93a78ba6f88b94aa50bacb3224ad1a927.jpg",
-          "seasonId": 283583,
-          "url": "https://www.bilibili.com/bangumi/play/ep6332518",
-          "delay": ""
-        },
-        {
-          "id": "6291970",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第13话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291970",
-          "delay": ""
-        },
-        {
-          "id": "6394461",
-          "title": "小车队大救援：安全先锋队",
-          "index": "第8话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
-          "seasonId": 298877,
-          "url": "https://www.bilibili.com/bangumi/play/ep6394461",
-          "delay": ""
-        },
-        {
-          "id": "3537949",
-          "title": "牧神记",
-          "index": "第103话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
-          "seasonId": 45969,
-          "url": "https://www.bilibili.com/bangumi/play/ep3537949",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-5",
       "dateTs": 1791129600,
       "weekday": "一",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "6540109",
@@ -484,6 +396,54 @@
           "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
           "seasonId": 34149,
           "url": "https://www.bilibili.com/bangumi/play/ep6504019",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-11",
+      "dateTs": 1791648000,
+      "weekday": "日",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "4883712",
+          "title": "财神窦占龙",
+          "index": "第11话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
+          "seasonId": 264970,
+          "url": "https://www.bilibili.com/bangumi/play/ep4883712",
+          "delay": ""
+        },
+        {
+          "id": "6291977",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第20话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291977",
+          "delay": ""
+        },
+        {
+          "id": "6394474",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第15话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394474",
+          "delay": ""
+        },
+        {
+          "id": "3537950",
+          "title": "牧神记",
+          "index": "第104话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
+          "seasonId": 45969,
+          "url": "https://www.bilibili.com/bangumi/play/ep3537950",
           "delay": ""
         }
       ]
