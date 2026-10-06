@@ -1,9 +1,89 @@
 {
-  "updatedAt": "2026-10-06T16:01:35.903Z",
+  "updatedAt": "2026-10-06T16:36:31.716Z",
   "source": "C:/Users/VOS-User/Pictures/Saved Pictures",
-  "count": 31,
-  "total": 31,
+  "count": 41,
+  "total": 41,
   "items": [
+    {
+      "hash": "48f6c1d38a85",
+      "src": "/photos/48f6c1d38a85.webp",
+      "title": "videoframe_3903",
+      "date": "2026-10-07",
+      "desc": "2026-10-07",
+      "source": "videoframe_3903.png"
+    },
+    {
+      "hash": "490b2380b210",
+      "src": "/photos/490b2380b210.webp",
+      "title": "008tQs9lly1i9o4d0l4blj31041nk7wh",
+      "date": "2026-10-07",
+      "desc": "2026-10-07",
+      "source": "竖屏图集/008tQs9lly1i9o4d0l4blj31041nk7wh.jpg"
+    },
+    {
+      "hash": "e09681216e8d",
+      "src": "/photos/e09681216e8d.webp",
+      "title": "008tQs9lly1i95t91i4saj316e1kw7rp",
+      "date": "2026-10-07",
+      "desc": "2026-10-07",
+      "source": "竖屏图集/008tQs9lly1i95t91i4saj316e1kw7rp.jpg"
+    },
+    {
+      "hash": "0aa9365f23a1",
+      "src": "/photos/0aa9365f23a1.webp",
+      "title": "008tQs9lly1i93iq6kf3mj31ot2iae82",
+      "date": "2026-10-07",
+      "desc": "2026-10-07",
+      "source": "竖屏图集/008tQs9lly1i93iq6kf3mj31ot2iae82.jpg"
+    },
+    {
+      "hash": "16e17750ef1a",
+      "src": "/photos/16e17750ef1a.webp",
+      "title": "008tQs9lly1i934hcxcpij31dl28lhdw",
+      "date": "2026-10-07",
+      "desc": "2026-10-07",
+      "source": "竖屏图集/008tQs9lly1i934hcxcpij31dl28lhdw.jpg"
+    },
+    {
+      "hash": "fe40761251ce",
+      "src": "/photos/fe40761251ce.webp",
+      "title": "008tQs9lly1i9329zyj1mj312d1xanev",
+      "date": "2026-10-07",
+      "desc": "2026-10-07",
+      "source": "竖屏图集/008tQs9lly1i9329zyj1mj312d1xanev.jpg"
+    },
+    {
+      "hash": "119fdd8ad6ae",
+      "src": "/photos/119fdd8ad6ae.webp",
+      "title": "008tQs9lly1i931sfplqaj317s1rwb2b",
+      "date": "2026-10-07",
+      "desc": "2026-10-07",
+      "source": "竖屏图集/008tQs9lly1i931sfplqaj317s1rwb2b.jpg"
+    },
+    {
+      "hash": "1e1e6e33aa62",
+      "src": "/photos/1e1e6e33aa62.webp",
+      "title": "008tQs9lly1i8ttq0s0amj31e02bcdto",
+      "date": "2026-10-07",
+      "desc": "2026-10-07",
+      "source": "竖屏图集/008tQs9lly1i8ttq0s0amj31e02bcdto.jpg"
+    },
+    {
+      "hash": "64a916330c0f",
+      "src": "/photos/64a916330c0f.webp",
+      "title": "008tQs9lly1i8ttpzfltkj313i1z4u0x",
+      "date": "2026-10-07",
+      "desc": "2026-10-07",
+      "source": "竖屏图集/008tQs9lly1i8ttpzfltkj313i1z4u0x.jpg"
+    },
+    {
+      "hash": "9bae97d1c2dc",
+      "src": "/photos/9bae97d1c2dc.webp",
+      "title": "008tQs9lly1i8tst2p3ekj30xc1c1tjm",
+      "date": "2026-10-07",
+      "desc": "2026-10-07",
+      "source": "竖屏图集/008tQs9lly1i8tst2p3ekj30xc1c1tjm.jpg"
+    },
     {
       "hash": "0621547bba79",
       "src": "/photos/0621547bba79.webp",
@@ -314,6 +394,11 @@
       14520,
       "eebecbdc8779"
     ],
+    "videoframe_3903.png": [
+      1791303594613.6272,
+      1130919,
+      "48f6c1d38a85"
+    ],
     "原神旅行的记忆/挪德卡莱.png": [
       1791298773461.8254,
       4717480,
@@ -408,6 +493,51 @@
       1759381560000,
       4136734,
       "b857f3d880ee"
+    ],
+    "竖屏图集/008tQs9lly1i8tst2p3ekj30xc1c1tjm.jpg": [
+      1791302882070.4795,
+      231850,
+      "9bae97d1c2dc"
+    ],
+    "竖屏图集/008tQs9lly1i8ttpzfltkj313i1z4u0x.jpg": [
+      1791302902358.137,
+      563911,
+      "64a916330c0f"
+    ],
+    "竖屏图集/008tQs9lly1i8ttq0s0amj31e02bcdto.jpg": [
+      1791302910203.202,
+      127267,
+      "1e1e6e33aa62"
+    ],
+    "竖屏图集/008tQs9lly1i931sfplqaj317s1rwb2b.jpg": [
+      1791302931587.781,
+      393037,
+      "119fdd8ad6ae"
+    ],
+    "竖屏图集/008tQs9lly1i9329zyj1mj312d1xanev.jpg": [
+      1791302980274.791,
+      198402,
+      "fe40761251ce"
+    ],
+    "竖屏图集/008tQs9lly1i934hcxcpij31dl28lhdw.jpg": [
+      1791303003013.1672,
+      435439,
+      "16e17750ef1a"
+    ],
+    "竖屏图集/008tQs9lly1i93iq6kf3mj31ot2iae82.jpg": [
+      1791303064814.2358,
+      430316,
+      "0aa9365f23a1"
+    ],
+    "竖屏图集/008tQs9lly1i95t91i4saj316e1kw7rp.jpg": [
+      1791303087182.9644,
+      325113,
+      "e09681216e8d"
+    ],
+    "竖屏图集/008tQs9lly1i9o4d0l4blj31041nk7wh.jpg": [
+      1791303109508.4333,
+      448027,
+      "490b2380b210"
     ]
   },
   "gated": {
