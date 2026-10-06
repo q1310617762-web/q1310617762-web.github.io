@@ -1,9 +1,17 @@
 {
-  "updatedAt": "2026-10-06T15:36:30.915Z",
+  "updatedAt": "2026-10-06T16:01:35.903Z",
   "source": "C:/Users/VOS-User/Pictures/Saved Pictures",
-  "count": 37,
-  "total": 37,
+  "count": 31,
+  "total": 31,
   "items": [
+    {
+      "hash": "0621547bba79",
+      "src": "/photos/0621547bba79.webp",
+      "title": "璃月",
+      "date": "2026-10-06",
+      "desc": "2026-10-06",
+      "source": "原神旅行的记忆/璃月.png"
+    },
     {
       "hash": "c505f8866718",
       "src": "/photos/c505f8866718.webp",
@@ -75,62 +83,6 @@
       "date": "2026-10-06",
       "desc": "2026-10-06",
       "source": "原神旅行的记忆/须弥奥摩斯港.png"
-    },
-    {
-      "hash": "75f1a6769ab5",
-      "src": "/photos/75f1a6769ab5.webp",
-      "title": "682fcbea14634a1990802885e76a1bcb_0_visib",
-      "date": "2026-10-02",
-      "desc": "2026-10-02",
-      "source": "截图/抠图：中间人物去背景_files/682fcbea14634a1990802885e76a1bcb_0_visibleWatermark.png"
-    },
-    {
-      "hash": "7ef343381d43",
-      "src": "/photos/7ef343381d43.webp",
-      "title": "80aa5d0418cd4737b326af212787b5e7_o_17909",
-      "date": "2026-10-02",
-      "desc": "2026-10-02",
-      "source": "截图/抠图：中间人物去背景_files/80aa5d0418cd4737b326af212787b5e7_o_1790932554533-c.png"
-    },
-    {
-      "hash": "959ce446c376",
-      "src": "/photos/959ce446c376.webp",
-      "title": "play-day.831d96bc",
-      "date": "2026-10-02",
-      "desc": "2026-10-02",
-      "source": "截图/抠图：中间人物去背景_files/play-day.831d96bc.png"
-    },
-    {
-      "hash": "59c111dd4d99",
-      "src": "/photos/59c111dd4d99.webp",
-      "title": "load-day.954112db",
-      "date": "2026-10-02",
-      "desc": "2026-10-02",
-      "source": "截图/抠图：中间人物去背景_files/load-day.954112db.png"
-    },
-    {
-      "hash": "0fce536e9bed",
-      "src": "/photos/0fce536e9bed.webp",
-      "title": "bcd40931154c40059a363aa4d580b1f1_0_visib",
-      "date": "2026-10-02",
-      "desc": "2026-10-02",
-      "source": "截图/抠图：中间人物去背景_files/bcd40931154c40059a363aa4d580b1f1_0_visibleWatermark.png"
-    },
-    {
-      "hash": "daf23b91ec21",
-      "src": "/photos/daf23b91ec21.webp",
-      "title": "4ccbdfa7b5cb4dea9740c19c70b11a3d_o_17909",
-      "date": "2026-10-02",
-      "desc": "2026-10-02",
-      "source": "截图/抠图：中间人物去背景_files/4ccbdfa7b5cb4dea9740c19c70b11a3d_o_1790932477025-c.jpg"
-    },
-    {
-      "hash": "3366a3441aa4",
-      "src": "/photos/3366a3441aa4.webp",
-      "title": "2026-10-02",
-      "date": "2026-10-02",
-      "desc": "2026-10-02",
-      "source": "截图/抠图：中间人物去背景_files/62e72cec2abbcd3fae0eb84271be2bc6.jpg"
     },
     {
       "hash": "5f03650da623",
@@ -377,6 +329,11 @@
       4100774,
       "50971b5182d9"
     ],
+    "原神旅行的记忆/璃月.png": [
+      1791299514659.4358,
+      5092205,
+      "0621547bba79"
+    ],
     "原神旅行的记忆/稻妻.png": [
       1791297495329.8132,
       4463558,
@@ -451,41 +408,6 @@
       1759381560000,
       4136734,
       "b857f3d880ee"
-    ],
-    "截图/抠图：中间人物去背景_files/4ccbdfa7b5cb4dea9740c19c70b11a3d_o_1790932477025-c.jpg": [
-      1790932698120.1565,
-      317865,
-      "daf23b91ec21"
-    ],
-    "截图/抠图：中间人物去背景_files/62e72cec2abbcd3fae0eb84271be2bc6.jpg": [
-      1790932698040.1868,
-      1099,
-      "3366a3441aa4"
-    ],
-    "截图/抠图：中间人物去背景_files/682fcbea14634a1990802885e76a1bcb_0_visibleWatermark.png": [
-      1790932698568.9502,
-      1078537,
-      "75f1a6769ab5"
-    ],
-    "截图/抠图：中间人物去背景_files/80aa5d0418cd4737b326af212787b5e7_o_1790932554533-c.png": [
-      1790932698479.0344,
-      1546140,
-      "7ef343381d43"
-    ],
-    "截图/抠图：中间人物去背景_files/bcd40931154c40059a363aa4d580b1f1_0_visibleWatermark.png": [
-      1790932698206.7632,
-      1252639,
-      "0fce536e9bed"
-    ],
-    "截图/抠图：中间人物去背景_files/load-day.954112db.png": [
-      1790932698294.4207,
-      25197,
-      "59c111dd4d99"
-    ],
-    "截图/抠图：中间人物去背景_files/play-day.831d96bc.png": [
-      1790932698387.3853,
-      24372,
-      "959ce446c376"
     ]
   },
   "gated": {
