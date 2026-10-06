@@ -1,7 +1,7 @@
-﻿---
-// 主页 Live2D 悬浮助手（右下角常驻）
-// 两个 Cubism4 模型：布洛妮娅（bronya，先加载，1.6MB）/ 夜兰（yelan，切换时加载，6.2MB）
-// 贴图已 4096 PNG → 2048 WebP（约 -92%）。运行时 oh-my-live2d（内置 Cubism Core）。
+---
+// 主页 Live2D 助手 —— 默认不加载，点「召唤角色」才载入（省流量/提速）
+// 两个 Cubism4 模型：布洛妮娅（先）/ 夜兰（切换时载入）。贴图 1024 WebP。
+// 运行时 oh-my-live2d（内置 Cubism Core）。
 const prefix = import.meta.env.BASE_URL.replace(/\/$/, '');
 const MODELS = [
   { name: 'bronya', label: '布洛妮娅', path: `${prefix}/live2d/bronya/bronya.model3.json` },
@@ -12,9 +12,11 @@ const modelsJson = JSON.stringify(MODELS);
 
 <div class="l2d-host" data-live2d data-models={modelsJson} aria-hidden="true"></div>
 
-<div class="l2d-loading" data-l2d-loading aria-hidden="true">
-  <span class="l2d-loading-dot"></span>角色加载中…
-</div>
+<!-- 召唤按钮：默认显示；鼠标移上去就开始预热，点击才真正加载 -->
+<button class="l2d-summon" type="button" data-l2d-summon aria-label="召唤 Live2D 角色">
+  <span class="l2d-summon-dot"></span>
+  <span data-l2d-summon-text>召唤角色</span>
+</button>
 
 <div class="l2d-dock" data-l2d-dock aria-hidden="true">
   <button class="l2d-btn" type="button" data-l2d-switch title="切换角色" aria-label="切换角色">
@@ -37,15 +39,10 @@ const modelsJson = JSON.stringify(MODELS);
   :global(#oml2d-statusBar) {
     display: none !important;
   }
-  :global(#oml2d-stage) {
-    z-index: 40 !important;
-  }
-  /* 舞台与 canvas 都不吃事件：模型作纯装饰，避免巨幅透明画布挡住页面与右下角按钮
-     （模型本身没有动作/交互资源，戳它也不会有反应，无损失）。 */
+  /* 舞台与 canvas 都不吃事件；舞台降 z-index、抬高到控制按钮之上 */
   :global(#oml2d-stage) {
     z-index: 40 !important;
     pointer-events: none !important;
-    /* 抬高到控制按钮之上，避免角色挡住「切换/隐藏」 */
     bottom: 52px !important;
   }
   :global(#oml2d-canvas) {
@@ -56,59 +53,14 @@ const modelsJson = JSON.stringify(MODELS);
     display: none;
   }
 
-  /* 加载中提示：右下角小胶囊 */
-  .l2d-loading {
-    position: fixed;
-    right: 16px;
-    bottom: 16px;
-    z-index: 100000;
-    display: none;
-    align-items: center;
-    gap: 7px;
-    min-height: 30px;
-    padding: 0 12px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-pill);
-    background: color-mix(in srgb, var(--color-surface) 82%, transparent);
-    color: var(--color-muted);
-    font-size: 11.5px;
-    letter-spacing: 0.04em;
-    backdrop-filter: blur(6px);
-  }
-  .l2d-loading.is-on {
-    display: inline-flex;
-  }
-  .l2d-loading-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--color-primary);
-    animation: l2d-blink 1s ease-in-out infinite alternate;
-  }
-  @keyframes l2d-blink {
-    from { opacity: 0.25; }
-    to { opacity: 1; }
-  }
-
-  /* 右下角控制簇：换角色 + 隐藏 */
-  .l2d-dock {
-    position: fixed;
-    right: 16px;
-    bottom: 16px;
-    z-index: 100000;
-    display: none;
-    align-items: center;
-    gap: 8px;
-  }
-  .l2d-dock.is-on {
-    display: flex;
-  }
+  /* 共用的小胶囊外观：召唤按钮 / 切换 / 隐藏 */
+  .l2d-summon,
   .l2d-btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     min-height: 34px;
-    padding: 0 12px;
+    padding: 0 13px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-pill);
     background: color-mix(in srgb, var(--color-surface) 86%, transparent);
@@ -119,19 +71,66 @@ const modelsJson = JSON.stringify(MODELS);
     backdrop-filter: blur(6px);
     transition: color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
   }
+  .l2d-summon {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 100;
+  }
+  .l2d-summon:hover,
   .l2d-btn:hover {
     color: var(--color-primary-strong);
     border-color: var(--color-primary);
     box-shadow: 0 0 14px color-mix(in srgb, var(--color-primary) 30%, transparent);
   }
+  .l2d-summon:focus-visible,
   .l2d-btn:focus-visible {
     outline: 3px solid color-mix(in srgb, var(--color-primary) 55%, transparent);
     outline-offset: 2px;
+  }
+  .l2d-summon:disabled {
+    cursor: progress;
+    color: var(--color-muted);
+  }
+  .l2d-summon-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    opacity: 0.55;
+  }
+  .l2d-summon:not(:disabled) .l2d-summon-dot {
+    animation: l2d-blink 1.6s ease-in-out infinite alternate;
+  }
+  .l2d-summon:disabled .l2d-summon-dot {
+    animation: l2d-pulse 0.9s ease-in-out infinite alternate;
+  }
+  @keyframes l2d-blink {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+  }
+  @keyframes l2d-pulse {
+    from { transform: scale(0.7); opacity: 0.4; }
+    to { transform: scale(1.15); opacity: 1; }
+  }
+
+  .l2d-dock {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  .l2d-dock.is-on {
+    display: flex;
   }
   .l2d-btn-icon {
     padding: 0 10px;
   }
   @media (max-width: 420px) {
+    .l2d-summon,
     .l2d-dock {
       right: 12px;
       bottom: 12px;
@@ -140,21 +139,16 @@ const modelsJson = JSON.stringify(MODELS);
 </style>
 
 <script>
-  const OFF_KEY = 'live2d-character-off';
-
   async function boot() {
     const host = document.querySelector<HTMLElement>('[data-live2d]');
+    const summon = document.querySelector<HTMLButtonElement>('[data-l2d-summon]');
+    const summonText = document.querySelector<HTMLElement>('[data-l2d-summon-text]');
     const dock = document.querySelector<HTMLElement>('[data-l2d-dock]');
     const switchBtn = document.querySelector<HTMLElement>('[data-l2d-switch]');
     const nameEl = document.querySelector<HTMLElement>('[data-l2d-name]');
     const closeBtn = document.querySelector<HTMLElement>('[data-l2d-close]');
-    if (!host || host.dataset.l2dInit === '1') return;
+    if (!host || !summon || host.dataset.l2dInit === '1') return;
     host.dataset.l2dInit = '1';
-
-    // 用户主动隐藏过就不再自动出现
-    try {
-      if (localStorage.getItem(OFF_KEY) === '1') return;
-    } catch {}
 
     let models: Array<{ name: string; label: string; path: string }> = [];
     try {
@@ -162,58 +156,57 @@ const modelsJson = JSON.stringify(MODELS);
     } catch {}
     if (!models.length) return;
 
-    // 省流/极慢网络下不加载（角色是重资源，别拖垮首页）
-    try {
-      const conn = (navigator as any).connection;
-      if (conn && (conn.saveData || /slow-2g|2g/.test(conn.effectiveType || ''))) return;
-    } catch {}
+    // 热身：把运行时 chunk 与首个模型资源提前拉进缓存（鼠标悬停/点击时触发）
+    let libPromise: Promise<any> | null = null;
+    let prefetched = false;
+    const warmup = () => {
+      if (!libPromise) libPromise = import('oh-my-live2d');
+      if (prefetched) return;
+      prefetched = true;
+      (async () => {
+        try {
+          const res = await fetch(models[0].path, { cache: 'force-cache' });
+          if (!res.ok) return;
+          const j = await res.json();
+          const base = models[0].path.slice(0, models[0].path.lastIndexOf('/') + 1);
+          const fr = j.FileReferences || {};
+          [fr.Moc, ...(fr.Textures || []), fr.Physics, fr.DisplayInfo]
+            .filter(Boolean)
+            .forEach((f: string) => fetch(base + f, { cache: 'force-cache' }).catch(() => {}));
+        } catch {}
+      })();
+    };
 
-    const loading = document.querySelector<HTMLElement>('[data-l2d-loading]');
-    const showLoading = () => loading?.classList.add('is-on');
-    const hideLoading = () => loading?.classList.remove('is-on');
+    let oml: any = null;
+    let idx = 0;
+    let loaded = false;
 
-    // ---- 提前并行预热（关键提速）----
-    // 以前是「等开屏结束才开始下载」，开屏那 ~5s 网络完全空着；
-    // 这里把「运行时 chunk」和「首个模型资源」立刻拉起来，和开屏并行下载，
-    // 等开屏结束时它们多半已经在缓存里了。
-    const libPromise = import('oh-my-live2d');
+    const syncName = () => {
+      if (nameEl) nameEl.textContent = models[idx % models.length].label;
+    };
 
-    async function prefetchModel(url: string) {
-      try {
-        const res = await fetch(url, { cache: 'force-cache' });
-        if (!res.ok) return;
-        const j = await res.json();
-        const base = url.slice(0, url.lastIndexOf('/') + 1);
-        const fr = j.FileReferences || {};
-        const files: string[] = [fr.Moc, ...(fr.Textures || []), fr.Physics, fr.DisplayInfo].filter(Boolean);
-        files.forEach((f) => fetch(base + f, { cache: 'force-cache' }).catch(() => {}));
-      } catch {}
-    }
-    prefetchModel(models[0].path);
+    const reveal = () => {
+      const st = document.getElementById('oml2d-stage');
+      if (st) st.style.display = '';
+      dock?.classList.add('is-on');
+      if (summon) summon.style.display = 'none';
+    };
+    const conceal = () => {
+      const st = document.getElementById('oml2d-stage');
+      if (st) st.style.display = 'none';
+      dock?.classList.remove('is-on');
+      if (summon) summon.style.display = '';
+    };
 
-    // 等开屏动画结束再出现，不抢注意力
-    for (let i = 0; i < 80; i++) {
-      if (!document.querySelector('[data-intro]')) break;
-      await new Promise((r) => setTimeout(r, 200));
-    }
-    if (!document.body.contains(host)) return;
-
-    // 开屏已让位：此刻还没加载完才显示「加载中」提示
-    showLoading();
-
-    try {
-      // oh-my-live2d 是【具名导出】loadOml2d，无 default。
-      const { loadOml2d } = await libPromise;
+    function mount(loadOml2d: (o: any) => any) {
       const small = window.matchMedia('(max-width: 1023px)').matches;
-      // 两个模型的 Cubism 画布基准高度都是 6000（4000×6000）。舞台宽高 = 画布 × scale，
-      // 所以直接按「目标显示高度 / 6000」定 scale —— 比事后 setModelScale 可靠
-      // （实测 setModelScale 不改舞台尺寸）。
+      // 两个模型 Cubism 画布基准高都是 6000；舞台尺寸 = 画布 × scale
       const BASE_H = 6000;
       const wantH = () =>
         small ? Math.min(window.innerHeight * 0.42, 360) : Math.min(window.innerHeight * 0.58, 520);
       const fitScale = () => wantH() / BASE_H;
 
-      const oml = loadOml2d({
+      oml = loadOml2d({
         dockedPosition: 'right',
         mobileDisplay: true,
         sayHello: false,
@@ -231,19 +224,20 @@ const modelsJson = JSON.stringify(MODELS);
         statusBar: { style: { display: 'none' } },
       });
 
-      let idx = 0;
-      const syncName = () => {
-        if (nameEl) nameEl.textContent = models[idx % models.length].label;
-      };
-      syncName();
-
-      oml.onLoad((status) => {
+      oml.onLoad((status: string) => {
         if (status === 'success') {
-          hideLoading();
-          dock?.classList.add('is-on');
+          loaded = true;
+          if (summon) {
+            summon.disabled = false;
+            if (summonText) summonText.textContent = '召唤角色';
+          }
+          reveal();
           syncName();
         } else if (status === 'fail') {
-          hideLoading();
+          if (summon) {
+            summon.disabled = false;
+            if (summonText) summonText.textContent = '召唤失败，重试';
+          }
         }
       });
 
@@ -252,30 +246,38 @@ const modelsJson = JSON.stringify(MODELS);
         try {
           await oml.loadModelByIndex(idx);
         } catch {
-          /* 加载失败静默：保持当前模型 */
+          /* 切换失败保持当前模型 */
         }
         syncName();
       });
 
-      closeBtn?.addEventListener('click', () => {
-        try {
-          localStorage.setItem(OFF_KEY, '1');
-        } catch {}
-        dock?.classList.remove('is-on');
-        const st = document.getElementById('oml2d-stage');
-        if (st) st.style.display = 'none';
-      });
+      closeBtn?.addEventListener('click', () => conceal());
 
-      window.addEventListener('resize', () => {
-        // 重新加载当前模型以套用新缩放（setModelScale 不改舞台尺寸，只能走重载）
-        oml.reloadModel().catch(() => {});
-      });
-    } catch (err) {
-      console.error('[live2d] 加载失败', err);
-      hideLoading();
-      host.remove();
-      dock?.remove();
+      window.addEventListener('resize', () => oml.reloadModel().catch(() => {}));
     }
+
+    // 悬停预热（不加载）
+    summon.addEventListener('pointerenter', warmup);
+    summon.addEventListener('focus', warmup);
+
+    // 点击才真正加载
+    summon.addEventListener('click', async () => {
+      if (loaded) {
+        reveal();
+        return;
+      }
+      summon.disabled = true;
+      if (summonText) summonText.textContent = '加载中…';
+      warmup();
+      try {
+        const mod: any = await (libPromise as Promise<any>);
+        if (!oml) mount(mod.loadOml2d);
+      } catch (err) {
+        console.error('[live2d] 加载失败', err);
+        summon.disabled = false;
+        if (summonText) summonText.textContent = '召唤失败，重试';
+      }
+    });
   }
 
   document.addEventListener('astro:page-load', boot);
