@@ -109,6 +109,9 @@ const RIPPLES = [0, 90, 180, 270, 360];
     </div>
   </div>
 
+  <!-- 粒子层：吃豆迸溅火花 / 能量豆冲击环 / 漩涡水珠（位置由 JS 写在 left/top） -->
+  <div class="intro-fx" data-intro-fx aria-hidden="true"></div>
+
   <!-- 字幕：mask-reveal 标题 + typewriter 状态行 -->
   <div class="intro-caption">
     <p class="intro-title"><span class="intro-title-inner">READY!</span></p>
@@ -211,6 +214,55 @@ const RIPPLES = [0, 90, 180, 270, 360];
     const skipBtn = root.querySelector('[data-intro-skip]');
     const soundBtn = root.querySelector('[data-intro-sound]');
     const veil = root.querySelector('[data-intro-veil]');
+    const fx = root.querySelector('[data-intro-fx]');
+
+    // ---- 粒子特效（吃豆迸溅 / 能量豆冲击环 / 漩涡水珠） ----
+    // 全部走 DOM + CSS 变换（transform/opacity），与既有实现同一套约束，
+    // 动画结束即自删，不累积节点。
+    function spawnSparks(cx, cy, power) {
+      if (!fx) return;
+      const n = power ? 8 : 4;
+      for (let i = 0; i < n; i++) {
+        const el = document.createElement('span');
+        el.className = 'intro-spark';
+        const ang = (360 / n) * i + Math.random() * 26;
+        el.style.setProperty('--px', `${cx}px`);
+        el.style.setProperty('--py', `${cy}px`);
+        el.style.setProperty('--ang', `${ang.toFixed(1)}deg`);
+        el.style.setProperty('--dist', `${(power ? 26 : 16) + Math.random() * (power ? 14 : 8)}px`);
+        el.style.setProperty('--r', `${power ? 4 : (2 + Math.random() * 2).toFixed(1)}px`);
+        if (power) el.style.setProperty('--c', 'var(--arcade-power)');
+        el.addEventListener('animationend', () => el.remove(), { once: true });
+        fx.appendChild(el);
+      }
+      if (power) {
+        const ring = document.createElement('span');
+        ring.className = 'intro-shock';
+        ring.style.setProperty('--px', `${cx}px`);
+        ring.style.setProperty('--py', `${cy}px`);
+        ring.addEventListener('animationend', () => ring.remove(), { once: true });
+        fx.appendChild(ring);
+      }
+    }
+
+    // 漩涡水珠：围绕头像一圈随机方向，从远处被卷进边框（冷色，与星空同色系）
+    function spawnDrops(cx, cy, radius) {
+      if (!fx) return;
+      const n = 22;
+      for (let i = 0; i < n; i++) {
+        const el = document.createElement('span');
+        el.className = 'intro-drop';
+        const ang = (360 / n) * i + Math.random() * 18;
+        el.style.setProperty('--px', `${cx}px`);
+        el.style.setProperty('--py', `${cy}px`);
+        el.style.setProperty('--ang', `${ang.toFixed(1)}deg`);
+        el.style.setProperty('--from', `${(radius * (0.7 + Math.random() * 0.5)).toFixed(0)}px`);
+        el.style.setProperty('--r', `${(2 + Math.random() * 3).toFixed(1)}px`);
+        el.style.setProperty('--d', `${(Math.random() * 260).toFixed(0)}ms`);
+        el.addEventListener('animationend', () => el.remove(), { once: true });
+        fx.appendChild(el);
+      }
+    }
 
     const clamp01 = (p) => (p < 0 ? 0 : p > 1 ? 1 : p);
     let finished = false;
@@ -553,6 +605,9 @@ const RIPPLES = [0, 90, 180, 270, 360];
           if (!h.eaten && d + eatLead >= h.d) {
             h.eaten = true;
             h.el.classList.add('is-eaten');
+            // 迸溅火花（能量豆额外打一圈冲击环）
+            const r = h.el.getBoundingClientRect();
+            spawnSparks(r.left + r.width / 2, r.top + r.height / 2, !!h.power);
             // 每次略微变调（playbackRate），避免 7 次同一个音听着发木
             if (h.power) {
               if (!playSample('power', 0.78)) blip(760, 1180, 0.16, 0.12, 'triangle');
@@ -575,11 +630,17 @@ const RIPPLES = [0, 90, 180, 270, 360];
     function reachTarget() {
       // 撞上头像：吃豆人在这里被销毁（自毁动画），头像只是被撞得弹一下、保持可见
       root.classList.add('is-impact');
+      // 打击感：整条路线层轻震一下（短促，不影响后续漩涡）
+      root.classList.add('is-shake');
+      later(() => root.classList.remove('is-shake'), 320);
       if (pac) pac.classList.add('is-destroyed');
       if (!playSample('impact', 0.8)) blip(420, 80, 0.28, 0.15, 'square');
       later(() => {
         // 黑幕漩涡被吸进头像；这一整段里头像必须一直显示
         root.classList.add('is-absorbing');
+        // 漩涡水珠：从四周被卷进头像边框（冷色，呼应星空）
+        const tc = avatarCenter();
+        spawnDrops(tc.x, tc.y, Math.min(window.innerWidth, window.innerHeight) * 0.46);
         // 0.75 倍速：实测素材在 0.5 倍速时 98.6% 的能量会掉到 300Hz 以下，
         // 而普通 PC/笔记本扬声器在那一段几乎发不出声 —— 0.75 倍速只有 0.7% 在低频。
         if (!playSample('vortex', 0.8, 0.75)) vortexSound();
