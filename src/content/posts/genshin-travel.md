@@ -24,6 +24,8 @@ featured: true
 
 ## 璃月 · 开始的契约
 
+![璃月](/posts/genshin-travel/liyue.webp)
+
 在这里，我签下了开始的契约。
 
 ## 稻妻 · 无想的一刀
