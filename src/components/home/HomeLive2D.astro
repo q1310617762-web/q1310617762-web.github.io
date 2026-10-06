@@ -12,6 +12,10 @@ const modelsJson = JSON.stringify(MODELS);
 
 <div class="l2d-host" data-live2d data-models={modelsJson} aria-hidden="true"></div>
 
+<div class="l2d-loading" data-l2d-loading aria-hidden="true">
+  <span class="l2d-loading-dot"></span>角色加载中…
+</div>
+
 <div class="l2d-dock" data-l2d-dock aria-hidden="true">
   <button class="l2d-btn" type="button" data-l2d-switch title="切换角色" aria-label="切换角色">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5">
@@ -50,6 +54,40 @@ const modelsJson = JSON.stringify(MODELS);
 
   .l2d-host {
     display: none;
+  }
+
+  /* 加载中提示：右下角小胶囊 */
+  .l2d-loading {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 100000;
+    display: none;
+    align-items: center;
+    gap: 7px;
+    min-height: 30px;
+    padding: 0 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--color-surface) 82%, transparent);
+    color: var(--color-muted);
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    backdrop-filter: blur(6px);
+  }
+  .l2d-loading.is-on {
+    display: inline-flex;
+  }
+  .l2d-loading-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    animation: l2d-blink 1s ease-in-out infinite alternate;
+  }
+  @keyframes l2d-blink {
+    from { opacity: 0.25; }
+    to { opacity: 1; }
   }
 
   /* 右下角控制簇：换角色 + 隐藏 */
@@ -124,6 +162,35 @@ const modelsJson = JSON.stringify(MODELS);
     } catch {}
     if (!models.length) return;
 
+    // 省流/极慢网络下不加载（角色是重资源，别拖垮首页）
+    try {
+      const conn = (navigator as any).connection;
+      if (conn && (conn.saveData || /slow-2g|2g/.test(conn.effectiveType || ''))) return;
+    } catch {}
+
+    const loading = document.querySelector<HTMLElement>('[data-l2d-loading]');
+    const showLoading = () => loading?.classList.add('is-on');
+    const hideLoading = () => loading?.classList.remove('is-on');
+
+    // ---- 提前并行预热（关键提速）----
+    // 以前是「等开屏结束才开始下载」，开屏那 ~5s 网络完全空着；
+    // 这里把「运行时 chunk」和「首个模型资源」立刻拉起来，和开屏并行下载，
+    // 等开屏结束时它们多半已经在缓存里了。
+    const libPromise = import('oh-my-live2d');
+
+    async function prefetchModel(url: string) {
+      try {
+        const res = await fetch(url, { cache: 'force-cache' });
+        if (!res.ok) return;
+        const j = await res.json();
+        const base = url.slice(0, url.lastIndexOf('/') + 1);
+        const fr = j.FileReferences || {};
+        const files: string[] = [fr.Moc, ...(fr.Textures || []), fr.Physics, fr.DisplayInfo].filter(Boolean);
+        files.forEach((f) => fetch(base + f, { cache: 'force-cache' }).catch(() => {}));
+      } catch {}
+    }
+    prefetchModel(models[0].path);
+
     // 等开屏动画结束再出现，不抢注意力
     for (let i = 0; i < 80; i++) {
       if (!document.querySelector('[data-intro]')) break;
@@ -131,9 +198,12 @@ const modelsJson = JSON.stringify(MODELS);
     }
     if (!document.body.contains(host)) return;
 
+    // 开屏已让位：此刻还没加载完才显示「加载中」提示
+    showLoading();
+
     try {
       // oh-my-live2d 是【具名导出】loadOml2d，无 default。
-      const { loadOml2d } = await import('oh-my-live2d');
+      const { loadOml2d } = await libPromise;
       const small = window.matchMedia('(max-width: 1023px)').matches;
       // 两个模型的 Cubism 画布基准高度都是 6000（4000×6000）。舞台宽高 = 画布 × scale，
       // 所以直接按「目标显示高度 / 6000」定 scale —— 比事后 setModelScale 可靠
@@ -168,9 +238,13 @@ const modelsJson = JSON.stringify(MODELS);
       syncName();
 
       oml.onLoad((status) => {
-        if (status !== 'success') return;
-        dock?.classList.add('is-on');
-        syncName();
+        if (status === 'success') {
+          hideLoading();
+          dock?.classList.add('is-on');
+          syncName();
+        } else if (status === 'fail') {
+          hideLoading();
+        }
       });
 
       switchBtn?.addEventListener('click', async () => {
@@ -198,6 +272,7 @@ const modelsJson = JSON.stringify(MODELS);
       });
     } catch (err) {
       console.error('[live2d] 加载失败', err);
+      hideLoading();
       host.remove();
       dock?.remove();
     }
