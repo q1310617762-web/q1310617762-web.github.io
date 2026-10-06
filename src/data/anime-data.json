@@ -1,60 +1,12 @@
 {
-  "fetchedAt": "2026-10-06T08:28:20.214Z",
-  "total": 38,
+  "fetchedAt": "2026-10-06T16:27:27.473Z",
+  "total": 37,
   "days": [
-    {
-      "date": "10-6",
-      "dateTs": 1791216000,
-      "weekday": "二",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "5096204",
-          "title": "掌门低调点",
-          "index": "第34话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
-          "seasonId": 272443,
-          "url": "https://www.bilibili.com/bangumi/play/ep5096204",
-          "delay": ""
-        },
-        {
-          "id": "6291972",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第15话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291972",
-          "delay": ""
-        },
-        {
-          "id": "6394465",
-          "title": "小车队大救援：安全先锋队",
-          "index": "第10话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
-          "seasonId": 298877,
-          "url": "https://www.bilibili.com/bangumi/play/ep6394465",
-          "delay": ""
-        },
-        {
-          "id": "6504017",
-          "title": "我是不白吃",
-          "index": "即将更新 第1088话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep6504017",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-7",
       "dateTs": 1791302400,
       "weekday": "三",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "4809964",
@@ -434,6 +386,44 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
           "seasonId": 298877,
           "url": "https://www.bilibili.com/bangumi/play/ep6394476",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-13",
+      "dateTs": 1791820800,
+      "weekday": "二",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "5096206",
+          "title": "掌门低调点",
+          "index": "第36话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
+          "seasonId": 272443,
+          "url": "https://www.bilibili.com/bangumi/play/ep5096206",
+          "delay": ""
+        },
+        {
+          "id": "6291979",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第22话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291979",
+          "delay": ""
+        },
+        {
+          "id": "6394478",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第17话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394478",
           "delay": ""
         }
       ]
