@@ -7,7 +7,15 @@
 			"textures/texture_01.webp"
 		],
 		"Physics": "yelan.physics3.json",
-		"DisplayInfo": "yelan.cdi3.json"
+		"DisplayInfo": "yelan.cdi3.json",
+    "Motions": {
+      "Idle": [ { "File": "motions/idle.motion3.json" } ],
+      "Blink": [ { "File": "motions/blink.motion3.json" } ],
+      "Nod": [ { "File": "motions/nod.motion3.json" } ],
+      "Shake": [ { "File": "motions/shake.motion3.json" } ]
+    }
 	},
-	"Groups": []
+	"Groups": [
+		{ "Target": "Parameter", "Name": "EyeBlink", "Ids": ["ParamEyeLOpen", "ParamEyeROpen"] }
+	]
 }

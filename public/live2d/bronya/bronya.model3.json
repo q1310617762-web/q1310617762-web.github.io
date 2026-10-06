@@ -7,7 +7,13 @@
 			"textures/texture_01.webp"
 		],
 		"Physics": "bronya.physics3.json",
-		"DisplayInfo": "bronya.cdi3.json"
+		"DisplayInfo": "bronya.cdi3.json",
+    "Motions": {
+      "Idle": [ { "File": "motions/idle.motion3.json" } ],
+      "Blink": [ { "File": "motions/blink.motion3.json" } ],
+      "Nod": [ { "File": "motions/nod.motion3.json" } ],
+      "Shake": [ { "File": "motions/shake.motion3.json" } ]
+    }
 	},
 	"Groups": [
 		{ "Target": "Parameter", "Name": "EyeBlink", "Ids": ["ParamEyeLOpen", "ParamEyeROpen"] },
