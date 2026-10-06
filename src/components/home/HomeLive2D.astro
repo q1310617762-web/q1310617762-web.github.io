@@ -1,244 +1,208 @@
 ﻿---
-// 主页 Live2D 角色 —— 取代原来的「新番更新」卡片，站在 hero 右列的位置
-// 模型来源：单张立绘 → See-Through 拆 18 图层 → psd2live 自动绑骨
-// 体积：整包约 327 KB（贴图已转 WebP，省 91%）
+// 主页 Live2D 悬浮助手（右下角常驻）
+// 两个 Cubism4 模型：布洛妮娅（bronya，先加载，1.6MB）/ 夜兰（yelan，切换时加载，6.2MB）
+// 贴图已 4096 PNG → 2048 WebP（约 -92%）。运行时 oh-my-live2d（内置 Cubism Core）。
 const prefix = import.meta.env.BASE_URL.replace(/\/$/, '');
-const modelPath = `${prefix}/live2d/anastasya/seethrough_output.model3.json`;
+const MODELS = [
+  { name: 'bronya', label: '布洛妮娅', path: `${prefix}/live2d/bronya/bronya.model3.json` },
+  { name: 'yelan', label: '夜兰', path: `${prefix}/live2d/yelan/yelan.model3.json` },
+];
+const modelsJson = JSON.stringify(MODELS);
 ---
 
-<!-- 占位槽：保持 hero 的两栏结构不变，角色以固定定位覆盖在这一列上 -->
-<div class="l2d-slot" data-l2d-slot aria-hidden="true">
-  <span class="l2d-slot-hint">✦ 角色加载中…</span>
+<div class="l2d-host" data-live2d data-models={modelsJson} aria-hidden="true"></div>
+
+<div class="l2d-dock" data-l2d-dock aria-hidden="true">
+  <button class="l2d-btn" type="button" data-l2d-switch title="切换角色" aria-label="切换角色">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5">
+      <path d="M4 8h13l-3-3M20 16H7l3 3" />
+    </svg>
+    <span data-l2d-name>角色</span>
+  </button>
+  <button class="l2d-btn l2d-btn-icon" type="button" data-l2d-close title="隐藏角色" aria-label="隐藏角色">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="h-3.5 w-3.5">
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  </button>
 </div>
 
-<div
-  class="l2d-host"
-  data-live2d
-  data-model={modelPath}
-  data-roam-desktop="true"
-  aria-hidden="true"
-></div>
-
-<button class="l2d-close" type="button" data-l2d-close title="隐藏角色" aria-label="隐藏角色">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" class="h-3.5 w-3.5">
-    <path d="M6 6l12 12M18 6L6 18" />
-  </svg>
-</button>
-
 <style>
-  .l2d-slot {
-    min-height: 330px;
-    border-radius: 16px;
-    border: 1px dashed var(--color-border);
-    display: grid;
-    place-items: center;
-  }
-  .l2d-slot.is-filled {
-    border-color: transparent;
-  }
-  .l2d-slot-hint {
-    font-size: 11.5px;
-    color: var(--color-muted);
-    letter-spacing: 0.04em;
-  }
-  .l2d-slot.is-filled .l2d-slot-hint {
-    display: none;
-  }
-
-  /* oh-my-live2d 会把 #oml2d-stage 直接挂到 body 上，这里用全局选择器接管它的定位与层级。
-     垂直位置改用固定定位的 left/bottom 决定（由脚本按 hero 右列的位置算），
-     所以把它的 transform 留给巡逻位移使用。 */
-  :global(#oml2d-stage) {
-    z-index: 40 !important;
-    left: 0 !important;
-    right: auto !important;
-    bottom: 0 !important;
-    pointer-events: none !important;
-    will-change: transform;
-  }
-  :global(#oml2d-canvas) {
-    pointer-events: auto !important;
-  }
+  /* oh-my-live2d 自带菜单/提示/状态条全部隐藏，只留模型本体 */
   :global(#oml2d-menus),
   :global(#oml2d-tips),
   :global(#oml2d-statusBar) {
     display: none !important;
+  }
+  :global(#oml2d-stage) {
+    z-index: 40 !important;
+  }
+  /* 舞台与 canvas 都不吃事件：模型作纯装饰，避免巨幅透明画布挡住页面与右下角按钮
+     （模型本身没有动作/交互资源，戳它也不会有反应，无损失）。 */
+  :global(#oml2d-stage) {
+    z-index: 40 !important;
+    pointer-events: none !important;
+    /* 抬高到控制按钮之上，避免角色挡住「切换/隐藏」 */
+    bottom: 52px !important;
+  }
+  :global(#oml2d-canvas) {
+    pointer-events: none !important;
   }
 
   .l2d-host {
     display: none;
   }
 
-  .l2d-close {
+  /* 右下角控制簇：换角色 + 隐藏 */
+  .l2d-dock {
     position: fixed;
-    right: 14px;
-    bottom: 14px;
-    z-index: 41;
+    right: 16px;
+    bottom: 16px;
+    z-index: 100000;
     display: none;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
+    align-items: center;
+    gap: 8px;
+  }
+  .l2d-dock.is-on {
+    display: flex;
+  }
+  .l2d-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 12px;
     border: 1px solid var(--color-border);
-    background: var(--color-surface);
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--color-surface) 86%, transparent);
     color: var(--color-muted);
+    font-size: 12px;
+    letter-spacing: 0.04em;
     cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.25s ease, color 0.2s ease;
+    backdrop-filter: blur(6px);
+    transition: color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
   }
-  .l2d-close.is-on {
-    display: grid;
-  }
-  .l2d-close:hover {
-    opacity: 1 !important;
+  .l2d-btn:hover {
     color: var(--color-primary-strong);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--color-primary) 30%, transparent);
+  }
+  .l2d-btn:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-primary) 55%, transparent);
+    outline-offset: 2px;
+  }
+  .l2d-btn-icon {
+    padding: 0 10px;
+  }
+  @media (max-width: 420px) {
+    .l2d-dock {
+      right: 12px;
+      bottom: 12px;
+    }
   }
 </style>
 
 <script>
   const OFF_KEY = 'live2d-character-off';
-  // 舞台底部为模型预留的透明余量，measure() 需要用它换算角色底边位置
-  let PAD_BOTTOM = 0;
 
   async function boot() {
     const host = document.querySelector<HTMLElement>('[data-live2d]');
-    const slot = document.querySelector<HTMLElement>('[data-l2d-slot]');
+    const dock = document.querySelector<HTMLElement>('[data-l2d-dock]');
+    const switchBtn = document.querySelector<HTMLElement>('[data-l2d-switch]');
+    const nameEl = document.querySelector<HTMLElement>('[data-l2d-name]');
     const closeBtn = document.querySelector<HTMLElement>('[data-l2d-close]');
     if (!host || host.dataset.l2dInit === '1') return;
     host.dataset.l2dInit = '1';
 
+    // 用户主动隐藏过就不再自动出现
     try {
-      if (localStorage.getItem(OFF_KEY) === '1') {
-        slot?.classList.add('is-filled');
-        return;
-      }
+      if (localStorage.getItem(OFF_KEY) === '1') return;
     } catch {}
 
-    closeBtn?.addEventListener('click', () => {
-      try { localStorage.setItem(OFF_KEY, '1'); } catch {}
-      closeBtn.classList.remove('is-on');
-      const st = document.getElementById('oml2d-stage');
-      if (st) st.style.display = 'none';
-      slot?.classList.remove('is-filled');
-    });
+    let models: Array<{ name: string; label: string; path: string }> = [];
+    try {
+      models = JSON.parse(host.dataset.models || '[]');
+    } catch {}
+    if (!models.length) return;
 
-    // 等开屏动画结束，避免抢注意力
-    for (let i = 0; i < 60; i++) {
+    // 等开屏动画结束再出现，不抢注意力
+    for (let i = 0; i < 80; i++) {
       if (!document.querySelector('[data-intro]')) break;
       await new Promise((r) => setTimeout(r, 200));
     }
     if (!document.body.contains(host)) return;
 
     try {
-      // oh-my-live2d 是【具名导出】loadOml2d，没有 default 导出。
+      // oh-my-live2d 是【具名导出】loadOml2d，无 default。
       const { loadOml2d } = await import('oh-my-live2d');
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const small = window.matchMedia('(max-width: 1023px)').matches;
-      const roam = !reduced && !small;
+      // 两个模型的 Cubism 画布基准高度都是 6000（4000×6000）。舞台宽高 = 画布 × scale，
+      // 所以直接按「目标显示高度 / 6000」定 scale —— 比事后 setModelScale 可靠
+      // （实测 setModelScale 不改舞台尺寸）。
+      const BASE_H = 6000;
+      const wantH = () =>
+        small ? Math.min(window.innerHeight * 0.42, 360) : Math.min(window.innerHeight * 0.58, 520);
+      const fitScale = () => wantH() / BASE_H;
 
-      const fitScale = () => (small ? 0.2 : Math.max(0.16, Math.min(0.3, window.innerHeight / 3000)));
-
-      // oh-my-live2d 的舞台宽高默认【自适应模型宽高】，canvas 又始终等于舞台，
-      // 所以画布会严丝合缝地贴着模型 —— 冠冕顶端被画布上沿裁掉就是这个原因。
-      // 解法：把舞台做大一圈留出余量，再把模型在画布内往下挪一点。
-      // 模型内部画布是 1024，舞台尺寸 = 1024 × scale，故留白按这个基数换算。
-      const s0 = fitScale();
-      const base = Math.round(1024 * s0);
-      const padX = Math.round(base * 0.05);
-      const padTop = Math.round(base * 0.09);
-      const padBottom = Math.round(base * 0.14);
-      PAD_BOTTOM = padBottom;
-
-      loadOml2d({
-        models: [{
-          path: host.dataset.model,
-          scale: s0,
-          position: [padX, padTop],
-          stageStyle: {
-            width: base + padX * 2 + 'px',
-            height: base + padTop + padBottom + 'px',
-          },
-        }],
+      const oml = loadOml2d({
+        dockedPosition: 'right',
+        mobileDisplay: true,
+        sayHello: false,
+        transitionTime: 400,
+        primaryColor: '#7aa2ff',
+        models: models.map((m) => ({
+          name: m.name,
+          path: m.path,
+          scale: fitScale(),
+          mobileScale: fitScale(),
+          motionPreloadStrategy: 'NONE',
+        })),
         menus: { items: [] },
         tips: { style: { display: 'none' } },
         statusBar: { style: { display: 'none' } },
-        mobileDisplay: true,
-        transitionTime: 0,
       });
 
-      closeBtn?.classList.add('is-on');
-      slot?.classList.add('is-filled');
-
-      // —— 定位到 hero 右列 ——
-      // oh-my-live2d 自己用 transform: translateY(...) 做垂直偏移；我们改用固定定位的
-      // left/bottom 决定落点，把 transform 的 Y 归零，只留给巡逻的 X 使用。
-      let stage: HTMLElement | null = null;
-      let drift = 0;
-      let dir = 1;
-      let frame = 0;
-      let last = performance.now();
-
-      const measure = () => {
-        if (!stage || !slot) return;
-        const r = slot.getBoundingClientRect();
-        const w = stage.offsetWidth || 320;
-        stage.style.setProperty('left', Math.max(0, Math.round(r.left + (r.width - w) / 2)) + 'px', 'important');
-        // 舞台比模型高：底部多出 padBottom 的透明余量，所以要把舞台再往下压 padBottom，
-        // 才是让【角色本人】的底边对齐槽位底部（否则角色会整体偏高）。
-        stage.style.setProperty('bottom', Math.max(0, Math.round(window.innerHeight - r.bottom - PAD_BOTTOM)) + 'px', 'important');
-        if (closeBtn) {
-          closeBtn.style.left = Math.round(r.left + r.width - 24) + 'px';
-          closeBtn.style.top = Math.round(r.top + 4) + 'px';
-          closeBtn.style.right = 'auto';
-          closeBtn.style.bottom = 'auto';
-        }
+      let idx = 0;
+      const syncName = () => {
+        if (nameEl) nameEl.textContent = models[idx % models.length].label;
       };
+      syncName();
 
-      const speed = 16;              // px/s，非常慢
-      const range = small ? 0 : 54;  // 巡逻半径，只在卡片附近小幅移动
+      oml.onLoad((status) => {
+        if (status !== 'success') return;
+        dock?.classList.add('is-on');
+        syncName();
+      });
 
-      const tick = (now: number) => {
-        const dt = Math.min((now - last) / 1000, 0.05);
-        last = now;
-        if (!stage) {
-          stage = document.getElementById('oml2d-stage');
-          if (stage) measure();
+      switchBtn?.addEventListener('click', async () => {
+        idx = (idx + 1) % models.length;
+        try {
+          await oml.loadModelByIndex(idx);
+        } catch {
+          /* 加载失败静默：保持当前模型 */
         }
-        // 周期性重新定位：oh-my-live2d 会在模型加载完成、窗口变化等时机重写自己的
-        // 定位样式，只在首次 measure 一次会被它覆盖（线上加载慢时就会踩到）。
-        if (stage && frame % 15 === 0) measure();
-        frame++;
-        if (stage) {
-          if (roam && range > 0) {
-            drift += dir * speed * dt;
-            if (drift > range) { drift = range; dir = -1; }
-            if (drift < -range) { drift = -range; dir = 1; }
-          }
-          stage.style.transform = `translate3d(${Math.round(drift)}px, 0, 0)`;
-        }
-        requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
+        syncName();
+      });
+
+      closeBtn?.addEventListener('click', () => {
+        try {
+          localStorage.setItem(OFF_KEY, '1');
+        } catch {}
+        dock?.classList.remove('is-on');
+        const st = document.getElementById('oml2d-stage');
+        if (st) st.style.display = 'none';
+      });
 
       window.addEventListener('resize', () => {
-        measure();
-        const m = (window as any).OML2D?.models?.[0];
-        if (m?.scale?.set) m.scale.set(fitScale());
+        // 重新加载当前模型以套用新缩放（setModelScale 不改舞台尺寸，只能走重载）
+        oml.reloadModel().catch(() => {});
       });
-      // 字体加载完布局会微调，重新量一次
-      setTimeout(measure, 1200);
     } catch (err) {
       console.error('[live2d] 加载失败', err);
       host.remove();
-      closeBtn?.remove();
-      slot?.classList.remove('is-filled');
+      dock?.remove();
     }
   }
 
   document.addEventListener('astro:page-load', boot);
   boot();
 </script>
-
-
-
-

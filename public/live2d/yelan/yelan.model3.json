@@ -1,0 +1,13 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "yelan.moc3",
+		"Textures": [
+			"textures/texture_00.webp",
+			"textures/texture_01.webp"
+		],
+		"Physics": "yelan.physics3.json",
+		"DisplayInfo": "yelan.cdi3.json"
+	},
+	"Groups": []
+}

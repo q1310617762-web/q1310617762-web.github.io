@@ -1420,7 +1420,8 @@ pre {
 @keyframes intro-drop {
   0%   { opacity: 0; transform: rotate(var(--ang, 0deg)) translateX(var(--from, 220px)) scale(1); }
   16%  { opacity: 0.95; }
-  100% { opacity: 0; transform: rotate(var(--ang, 0deg)) translateX(3px) scale(0.25); }
+  /* 收敛过程中额外旋转 70°：水珠沿弧线卷进去，而不是直线撞进来 */
+  100% { opacity: 0; transform: rotate(calc(var(--ang, 0deg) + 70deg)) translateX(3px) scale(0.25); }
 }
 /* 撞击轻震：只震路线层（它此刻已无其他 transform 动画占用） */
 .intro.is-shake .intro-route {

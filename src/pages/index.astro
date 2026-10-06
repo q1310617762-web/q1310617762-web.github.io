@@ -9,8 +9,8 @@ import ImageStrip from '@components/blog/ImageStrip.astro';
 import AnimeUpdates from '@components/blog/AnimeUpdates.astro';
 import WeChat from '@components/ui/WeChat.astro';
 import HomeIntro from '@components/home/HomeIntro.astro';
-// Live2D 角色先撤下（组件与模型都保留在仓库里，想切回只需把下面一行换成
-// import HomeCharacter from '@components/home/HomeLive2D.astro'; 并把卡片位换成 <HomeCharacter />）
+// Live2D 悬浮助手（右下角常驻，可换角色/隐藏）。组件自定位为 fixed，不占正文版面。
+import HomeLive2D from '@components/home/HomeLive2D.astro';
 
 const posts = await getAllPosts();
 const tags = await getAllTags();
@@ -29,6 +29,7 @@ const greeting =
 ---
 <BaseLayout activeNav="/">
   <HomeIntro />
+  <HomeLive2D />
   <div class="home-page mx-auto max-w-5xl px-6 py-10 sm:px-10 sm:py-14">
     <!-- Hero：左侧文案 + 右上角新番更新 -->
     <header class="mb-14 lg:grid lg:grid-cols-[minmax(0,1fr)_330px] lg:items-start lg:gap-10">

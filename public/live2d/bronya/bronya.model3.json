@@ -1,0 +1,16 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "bronya.moc3",
+		"Textures": [
+			"textures/texture_00.webp",
+			"textures/texture_01.webp"
+		],
+		"Physics": "bronya.physics3.json",
+		"DisplayInfo": "bronya.cdi3.json"
+	},
+	"Groups": [
+		{ "Target": "Parameter", "Name": "EyeBlink", "Ids": ["ParamEyeLOpen", "ParamEyeROpen"] },
+		{ "Target": "Parameter", "Name": "LipSync", "Ids": ["ParamMouthForm", "ParamMouthOpenY"] }
+	]
+}
