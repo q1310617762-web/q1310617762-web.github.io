@@ -131,12 +131,13 @@ function loadGateConfig() {
         continue;
       }
       hash = crypto.createHash('sha1').update(buf).digest('hex').slice(0, 12);
-      const outName = `${hash}.jpg`;
+      const outName = `${hash}.webp`;
       if (!fs.existsSync(path.join(OUT_DIR, outName))) {
         try {
           await sharp(buf)
+            .rotate()
             .resize({ width: MAX_WIDTH, withoutEnlargement: true })
-            .jpeg({ quality: 80, mozjpeg: true })
+            .webp({ quality: 80, effort: 5 })
             .toFile(path.join(OUT_DIR, outName));
           converted++;
         } catch (e) {
@@ -153,7 +154,7 @@ function loadGateConfig() {
     const date = fmtDate(stat.mtime);
     items.push({
       hash,
-      src: `/photos/${hash}.jpg`,
+      src: `/photos/${hash}.webp`,
       title: looksLikeHash(base) ? date : base.slice(0, 40),
       date,
       desc: date,
@@ -216,8 +217,9 @@ function loadGateConfig() {
     let plain;
     try {
       plain = await sharp(buf)
+        .rotate()
         .resize({ width: MAX_WIDTH, withoutEnlargement: true })
-        .jpeg({ quality: 82 })
+        .webp({ quality: 82, effort: 5 })
         .toBuffer();
     } catch (e) {
       console.log('  跳过（无法解析）: ' + path.basename(f) + ' — ' + e.message);
@@ -260,8 +262,9 @@ function loadGateConfig() {
 
   let removed = 0;
   for (const f of fs.readdirSync(OUT_DIR)) {
-    if (!f.endsWith('.jpg')) continue;
-    const m = f.match(/^([0-9a-f]{12})\.jpg$/);
+    // 清理不再需要的产物：新产物是 .webp，同时清掉历史的 .jpg
+    if (!f.endsWith('.jpg') && !f.endsWith('.webp')) continue;
+    const m = f.match(/^([0-9a-f]{12})\.(?:jpg|webp)$/);
     if (m && !keptHashes.has(m[1])) {
       fs.unlinkSync(path.join(OUT_DIR, f));
       removed++;
@@ -306,7 +309,7 @@ function loadGateConfig() {
   fs.writeFileSync(DATA_FILE, JSON.stringify(payload, null, 2), 'utf8');
 
   // ---------- 4) 输出摘要 ----------
-  const pubSize = fs.readdirSync(OUT_DIR).filter((f) => f.endsWith('.jpg')).reduce((s, f) => s + fs.statSync(path.join(OUT_DIR, f)).size, 0);
+  const pubSize = fs.readdirSync(OUT_DIR).filter((f) => f.endsWith('.webp')).reduce((s, f) => s + fs.statSync(path.join(OUT_DIR, f)).size, 0);
   const encSize = fs.readdirSync(ENC_DIR).reduce((s, f) => s + fs.statSync(path.join(ENC_DIR, f)).size, 0);
 
   if (!gate && gatedFiles.length > 0) {

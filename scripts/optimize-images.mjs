@@ -21,8 +21,8 @@ const THUMBS = path.join(PUBLIC, 'thumbs');
 
 // 需要生成的档位（宽度）与质量
 const SIZES = [
-  { w: 480, quality: 76 },
-  { w: 960, quality: 78 },
+  { w: 480, quality: 70 },
+  { w: 960, quality: 72 },
 ];
 
 // 要处理的来源目录（相对 public/）
