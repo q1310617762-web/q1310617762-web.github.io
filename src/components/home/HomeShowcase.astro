@@ -1,32 +1,18 @@
 ---
-// 首页卡片展示（替换原「新番更新」）
-// 竖屏图集：每 20 秒随机切换一张；悬停 3D 倾斜；点击放大看大图。
+// 首页竖屏图集（极简：只有图片）
+// 每 20 秒随机切换；鼠标悬停 3D 偏转；点击放大。
 const prefix = import.meta.env.BASE_URL.replace(/\/$/, '');
 const CARDS = Array.from({ length: 9 }, (_, i) => `${prefix}/cards/card-${i + 1}.webp`);
 const cardsJson = JSON.stringify(CARDS);
 ---
 
-<section class="showcase soft-card" data-showcase data-cards={cardsJson}>
-  <div class="showcase-head">
-    <h2 class="showcase-title">
-      <span class="primary-gradient showcase-bar" aria-hidden="true"></span>竖屏图集
-    </h2>
-    <span class="showcase-hint" data-showcase-hint>每 20 秒随机切换</span>
-  </div>
-
-  <div class="showcase-stage" data-showcase-stage>
-    <button class="showcase-card" type="button" data-showcase-card aria-label="点击放大当前图片">
-      <span class="showcase-inner" data-showcase-inner>
-        <img class="showcase-img" data-showcase-img alt="" decoding="async" />
-        <span class="showcase-sheen" aria-hidden="true"></span>
-      </span>
-    </button>
-  </div>
-
-  <div class="showcase-foot">
-    <span class="showcase-count"><b data-showcase-index>1</b> / <span data-showcase-total>9</span></span>
-    <button class="showcase-next" type="button" data-showcase-next aria-label="换一张">换一张</button>
-  </div>
+<section class="showcase" data-showcase data-cards={cardsJson} aria-label="竖屏图集">
+  <button class="showcase-card" type="button" data-showcase-card aria-label="查看大图">
+    <span class="showcase-inner" data-showcase-inner>
+      <img class="showcase-img" data-showcase-img alt="" decoding="async" />
+      <span class="showcase-sheen" aria-hidden="true"></span>
+    </span>
+  </button>
 </section>
 
 <div class="showcase-lb" data-showcase-lb hidden>
@@ -35,38 +21,8 @@ const cardsJson = JSON.stringify(CARDS);
 </div>
 
 <style>
+  /* 只有图片：无外框、无文字 */
   .showcase {
-    padding: 16px;
-  }
-  .showcase-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
-  }
-  .showcase-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--color-text-strong);
-  }
-  .showcase-bar {
-    display: inline-block;
-    width: 4px;
-    height: 14px;
-    border-radius: 999px;
-  }
-  .showcase-hint {
-    flex: none;
-    font-size: 11px;
-    color: var(--color-muted);
-    opacity: 0.75;
-  }
-
-  .showcase-stage {
-    margin-top: 12px;
     perspective: 1000px;
   }
   .showcase-card {
@@ -82,15 +38,11 @@ const cardsJson = JSON.stringify(CARDS);
     display: block;
     width: 100%;
     aspect-ratio: 3 / 4;
-    border-radius: var(--radius-card);
-    transform-style: preserve-3d;
+    border-radius: 14px;
+    overflow: hidden;
     transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    box-shadow: var(--shadow-card);
+    transition: transform 0.25s ease;
     will-change: transform;
-  }
-  .showcase-card:hover .showcase-inner {
-    box-shadow: var(--shadow-card-hover);
   }
   .showcase-img {
     position: absolute;
@@ -98,19 +50,16 @@ const cardsJson = JSON.stringify(CARDS);
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: var(--radius-card);
-    backface-visibility: hidden;
     transition: transform 0.36s ease, opacity 0.36s ease;
   }
   .showcase-inner.is-flip .showcase-img {
     transform: rotateY(90deg);
     opacity: 0.15;
   }
-  /* 3D 玻璃高光：随鼠标位置移动 */
+  /* 悬停时跟随鼠标的玻璃高光 */
   .showcase-sheen {
     position: absolute;
     inset: 0;
-    border-radius: var(--radius-card);
     background: radial-gradient(
       circle at var(--mx, 50%) var(--my, 50%),
       rgba(255, 255, 255, 0.35),
@@ -122,33 +71,6 @@ const cardsJson = JSON.stringify(CARDS);
   }
   .showcase-card:hover .showcase-sheen {
     opacity: 1;
-  }
-
-  .showcase-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 12px;
-    font-size: 12px;
-    color: var(--color-muted);
-  }
-  .showcase-count b {
-    color: var(--color-text-strong);
-    font-variant-numeric: tabular-nums;
-  }
-  .showcase-next {
-    padding: 4px 12px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-pill);
-    background: transparent;
-    color: var(--color-muted);
-    font-size: 12px;
-    cursor: pointer;
-    transition: color 0.18s ease, border-color 0.18s ease;
-  }
-  .showcase-next:hover {
-    color: var(--color-primary-strong);
-    border-color: var(--color-primary);
   }
 
   /* 点击放大：灯箱 */
@@ -169,7 +91,7 @@ const cardsJson = JSON.stringify(CARDS);
   .showcase-lb-img {
     max-width: min(92vw, 780px);
     max-height: 88vh;
-    border-radius: var(--radius-card);
+    border-radius: 14px;
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
   }
   .showcase-lb-close {
@@ -195,8 +117,7 @@ const cardsJson = JSON.stringify(CARDS);
 </style>
 
 <script>
-  // 具名函数 + astro:page-load：ClientRouter 换页后组件会重新插入，
-  // 必须重新初始化（模块脚本同一 URL 只求值一次）。
+  // 具名函数 + astro:page-load：换页后组件重新插入，需重新初始化。
   function initShowcase() {
     const root = document.querySelector<HTMLElement>('[data-showcase]');
     if (!root || root.dataset.bound === '1') return;
@@ -211,24 +132,19 @@ const cardsJson = JSON.stringify(CARDS);
     const img = root.querySelector<HTMLImageElement>('[data-showcase-img]');
     const inner = root.querySelector<HTMLElement>('[data-showcase-inner]');
     const card = root.querySelector<HTMLElement>('[data-showcase-card]');
-    const idxEl = root.querySelector<HTMLElement>('[data-showcase-index]');
-    const totalEl = root.querySelector<HTMLElement>('[data-showcase-total]');
-    const nextBtn = root.querySelector<HTMLElement>('[data-showcase-next]');
     const lb = document.querySelector<HTMLElement>('[data-showcase-lb]');
     const lbImg = document.querySelector<HTMLImageElement>('[data-showcase-lb-img]');
     const lbClose = document.querySelector<HTMLElement>('[data-showcase-lb-close]');
     if (!img || !inner) return;
 
     // 灯箱「传送」到 body：.home-page 有 transform（入场动画残留），
-    // 会成为 position:fixed 的包含块，把灯箱定位到页面下方。挂到 body 才相对视口定位。
+    // 会成为 position:fixed 的包含块，把灯箱定位到页面下方。
     if (lb && lb.parentElement !== document.body) {
       document.querySelectorAll('body > [data-showcase-lb]').forEach((n) => {
         if (n !== lb) n.remove();
       });
       document.body.appendChild(lb);
     }
-
-    if (totalEl) totalEl.textContent = String(cards.length);
 
     // 预热全部图片，切换不闪
     cards.forEach((u) => {
@@ -238,53 +154,40 @@ const cardsJson = JSON.stringify(CARDS);
 
     let idx = Math.floor(Math.random() * cards.length);
     img.src = cards[idx];
-    if (idxEl) idxEl.textContent = String(idx + 1);
 
     let switching = false;
-    const go = (next: number) => {
-      if (switching || next === idx) return;
+    const randomNext = () => {
+      if (cards.length === 1) return;
+      let n = idx;
+      while (n === idx) n = Math.floor(Math.random() * cards.length);
+      if (switching) return;
       switching = true;
-      idx = next;
+      idx = n;
       inner.classList.add('is-flip');
-      if (idxEl) idxEl.textContent = String(idx + 1);
       window.setTimeout(() => {
         img.src = cards[idx];
         inner.classList.remove('is-flip');
         switching = false;
       }, 180);
     };
-    const randomNext = () => {
-      if (cards.length === 1) return;
-      let n = idx;
-      while (n === idx) n = Math.floor(Math.random() * cards.length);
-      go(n);
-    };
 
-    // 每 20 秒随机切换（换页重入时先清掉上一个计时器，避免累积）
+    // 每 20 秒随机切换（换页重入先清旧计时器）
     const w = window as any;
     if (w.__showcaseTimer) window.clearInterval(w.__showcaseTimer);
-    const arm = () => {
-      w.__showcaseTimer = window.setInterval(randomNext, 20000);
-    };
-    arm();
-    nextBtn?.addEventListener('click', () => {
-      randomNext();
-      window.clearInterval(w.__showcaseTimer);
-      arm();
-    });
+    w.__showcaseTimer = window.setInterval(randomNext, 20000);
 
-    // 悬停 3D 倾斜
+    // 悬停 3D 偏转
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reduced && card) {
-      const MAX = 12;
+      const MAX = 14;
       card.addEventListener('pointermove', (e) => {
         const r = card.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width;
         const py = (e.clientY - r.top) / r.height;
-        inner.style.setProperty('--ry', `${(px - 0.5) * 2 * MAX}deg`);
-        inner.style.setProperty('--rx', `${(0.5 - py) * 2 * MAX}deg`);
-        inner.style.setProperty('--mx', `${px * 100}%`);
-        inner.style.setProperty('--my', `${py * 100}%`);
+        inner.style.setProperty('--ry', `${((px - 0.5) * 2 * MAX).toFixed(2)}deg`);
+        inner.style.setProperty('--rx', `${((0.5 - py) * 2 * MAX).toFixed(2)}deg`);
+        inner.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
+        inner.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
       });
       card.addEventListener('pointerleave', () => {
         inner.style.setProperty('--rx', '0deg');
@@ -294,7 +197,7 @@ const cardsJson = JSON.stringify(CARDS);
       });
     }
 
-    // 点击放大（灯箱）
+    // 点击放大
     const openLb = () => {
       if (!lb || !lbImg) return;
       lbImg.src = cards[idx];
