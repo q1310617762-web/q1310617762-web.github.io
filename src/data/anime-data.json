@@ -1,70 +1,12 @@
 {
-  "fetchedAt": "2026-10-07T08:04:01.235Z",
+  "fetchedAt": "2026-10-07T17:10:20.312Z",
   "total": 37,
   "days": [
-    {
-      "date": "10-7",
-      "dateTs": 1791302400,
-      "weekday": "三",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "4809964",
-          "title": "李熊猫",
-          "index": "第13话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4da2f5633d308fd56c218e43ed31b22099191bf9.png",
-          "seasonId": 262397,
-          "url": "https://www.bilibili.com/bangumi/play/ep4809964",
-          "delay": ""
-        },
-        {
-          "id": "4407944",
-          "title": "有兽焉",
-          "index": "第71话",
-          "time": "10:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/bfabba81d51d516da105187495212504a266aa3d.png",
-          "seasonId": 39947,
-          "url": "https://www.bilibili.com/bangumi/play/ep4407944",
-          "delay": ""
-        },
-        {
-          "id": "6400575",
-          "title": "苏东坡与杭州的故事",
-          "index": "第34话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
-          "seasonId": 247422,
-          "url": "https://www.bilibili.com/bangumi/play/ep6400575",
-          "delay": ""
-        },
-        {
-          "id": "6291973",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第16话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291973",
-          "delay": ""
-        },
-        {
-          "id": "6394467",
-          "title": "小车队大救援：安全先锋队",
-          "index": "第11话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
-          "seasonId": 298877,
-          "url": "https://www.bilibili.com/bangumi/play/ep6394467",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-8",
       "dateTs": 1791388800,
       "weekday": "四",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "6291974",
@@ -424,6 +366,64 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
           "seasonId": 298877,
           "url": "https://www.bilibili.com/bangumi/play/ep6394478",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-14",
+      "dateTs": 1791907200,
+      "weekday": "三",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "4809965",
+          "title": "李熊猫",
+          "index": "第14话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4da2f5633d308fd56c218e43ed31b22099191bf9.png",
+          "seasonId": 262397,
+          "url": "https://www.bilibili.com/bangumi/play/ep4809965",
+          "delay": ""
+        },
+        {
+          "id": "4407945",
+          "title": "有兽焉",
+          "index": "第72话",
+          "time": "10:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/bfabba81d51d516da105187495212504a266aa3d.png",
+          "seasonId": 39947,
+          "url": "https://www.bilibili.com/bangumi/play/ep4407945",
+          "delay": ""
+        },
+        {
+          "id": "6528481",
+          "title": "苏东坡与杭州的故事",
+          "index": "第36话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6528481",
+          "delay": ""
+        },
+        {
+          "id": "6291980",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第23话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291980",
+          "delay": ""
+        },
+        {
+          "id": "6394480",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第18话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394480",
           "delay": ""
         }
       ]
