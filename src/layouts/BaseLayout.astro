@@ -105,6 +105,11 @@ const ogImage = new URL(basePath.replace(/\/$/, '') + image, origin).href;
     </script>
   </head>
   <body>
+    <!-- 壁纸层：每页随机一张，跨页保留（transition:persist）以便交叉淡入淡出 -->
+    <div class="bg-wallpaper" data-bgwall aria-hidden="true" transition:persist="bgwall">
+      <span class="bg-wallpaper-layer" data-bglayer></span>
+      <span class="bg-wallpaper-layer" data-bglayer></span>
+    </div>
     <div class="app">
       <SiteSidebar active={activeNav} />
       <div class="app-body">
@@ -118,6 +123,60 @@ const ogImage = new URL(basePath.replace(/\/$/, '') + image, origin).href;
     <!-- 曲单浮层：必须放在 .app 之外，否则会被侧栏的 overflow 裁剪 -->
     <MusicPlaylistPopup />
   </body>
+
+  <script>
+    // 每页随机壁纸 + 平滑交叉淡入淡出
+    (function () {
+      const BASE = ((window as any).__BASE__ || '/').replace(/\/$/, '');
+      const WALLS = Array.from(
+        { length: 5 },
+        (_, i) => `${BASE}/wallpapers/wallpaper-${i + 1}.webp`,
+      );
+      const box = document.querySelector('[data-bgwall]');
+      if (!box) return;
+      const layers = Array.from(box.querySelectorAll('[data-bglayer]')) as HTMLElement[];
+      if (layers.length < 2) return;
+
+      let active = 0;
+      let cur = -1;
+      let last = 0;
+
+      const randomIndex = () => {
+        if (WALLS.length <= 1) return 0;
+        let i = cur;
+        while (i === cur) i = Math.floor(Math.random() * WALLS.length);
+        return i;
+      };
+
+      const apply = (i: number) => {
+        const url = WALLS[i];
+        const next = layers[1 - active];
+        const img = new Image();
+        const commit = () => {
+          next.style.backgroundImage = `url("${url}")`;
+          requestAnimationFrame(() => {
+            next.classList.add('is-active');
+            layers[active].classList.remove('is-active');
+            active = 1 - active;
+            cur = i;
+          });
+        };
+        img.onload = commit;
+        img.onerror = commit;
+        img.src = url;
+      };
+
+      const randomize = () => {
+        const now = Date.now();
+        if (now - last < 600) return; // 合并初次加载时 astro:page-load 与直接调用的双触发
+        last = now;
+        apply(randomIndex());
+      };
+
+      randomize();
+      document.addEventListener('astro:page-load', randomize);
+    })();
+  </script>
 
   <script>
     // 为所有代码块添加复制按钮

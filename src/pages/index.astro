@@ -6,9 +6,9 @@ import { getAllPosts, getAllTags, getAllCategories, postUrl, formatDate } from '
 import PostList from '@components/blog/PostList.astro';
 import TagCloud from '@components/blog/TagCloud.astro';
 import ImageStrip from '@components/blog/ImageStrip.astro';
-import AnimeUpdates from '@components/blog/AnimeUpdates.astro';
 import WeChat from '@components/ui/WeChat.astro';
 import HomeIntro from '@components/home/HomeIntro.astro';
+import HomeShowcase from '@components/home/HomeShowcase.astro';
 // Live2D 悬浮助手（右下角常驻，可换角色/隐藏）。组件自定位为 fixed，不占正文版面。
 import HomeLive2D from '@components/home/HomeLive2D.astro';
 
@@ -53,9 +53,9 @@ const greeting =
         </div>
       </div>
 
-      <!-- 新番更新列表 -->
+      <!-- 竖屏图集卡片（每 20 秒随机切换，悬停 3D，点击放大） -->
       <div class="mt-10 lg:mt-0">
-        <AnimeUpdates />
+        <HomeShowcase />
       </div>
     </header>
 

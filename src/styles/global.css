@@ -142,23 +142,34 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* 壁纸层（柔化淡出，保证可读性） */
-body::before {
-  content: "";
+/* 壁纸层（每页随机一张 + 交叉淡入淡出，保证可读性）
+ * 结构：.bg-wallpaper 内两层 .bg-wallpaper-layer 叠放，切换时旧层淡出、新层淡入。
+ * 背景图由 BaseLayout 的脚本按路由随机选取并写入 backgroundImage。 */
+.bg-wallpaper {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: url('/wallpaper.webp') center / cover no-repeat;
-  opacity: var(--wallpaper-opacity);
+  overflow: hidden;
   pointer-events: none;
-  transition: opacity 0.4s ease;
+}
+.bg-wallpaper-layer {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0;
   /* 循环壁纸：缓慢呼吸式缩放 + 轻微漂移。
      缩放基准取 1.04（不是 1），避免位移/缩放时露出边缘；
      0% 与 100% 完全一致，所以循环处不会有跳变。
      只动 transform，交给合成器，不触发重排。 */
   transform-origin: center;
   animation: wallpaper-drift 54s ease-in-out infinite;
-  will-change: transform;
+  transition: opacity 1.1s ease;
+  will-change: transform, opacity;
+}
+.bg-wallpaper-layer.is-active {
+  opacity: var(--wallpaper-opacity);
 }
 
 @keyframes wallpaper-drift {
@@ -179,9 +190,9 @@ body::before {
   }
 }
 
-/* 尊重系统的减弱动效设置：壁纸静止 */
+/* 尊重系统的减弱动效设置：壁纸静止（但切换仍做淡入淡出） */
 @media (prefers-reduced-motion: reduce) {
-  body::before {
+  .bg-wallpaper-layer {
     animation: none;
     transform: scale(1.04);
   }
