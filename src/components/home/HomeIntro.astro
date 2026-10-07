@@ -163,46 +163,32 @@ const RIPPLES = [0, 90, 180, 270, 360];
     };
     const RUN_END = T.enter + T.travel;
 
-    // ---- 播放判定：开屏只在「本次会话第一次进入首页」时播放 ----
-    // 开屏是「进入站点」的欢迎动画，不该在站内点「首页」时又放一遍。
-    // 坑在于：点首页可能走两条完全不同的路径，必须都挡住 ——
-    //   1) 客户端换页（ClientRouter 接管，同一文档内替换内容）
-    //   2) 整页加载（点得太快、路由还没接管；移动端慢网络下很容易发生）
-    // 实测线上就是这样：同一操作第 1 次整页加载会播、第 2~6 次换页不播。
-    // 所以主判定用 sessionStorage（跨整页加载依然有效），
-    // 再补两条堵住「首次进入就是子页」的情况。
-    const SEEN_KEY = 'intro-shown';
+    // ---- 播放判定：一天只播一次；站内点「首页」永不重播 ----
+    // 规则：
+    //   ?intro=1 强制播放；
+    //   站内客户端换页（点导航进入首页）→ 一律不播；
+    //   其余情况：localStorage 记录「上次播放的日期」，当天已播过就不播、否则播并记录。
+    // 这样「从别的页面点首页」不会再放，且一天之内最多一次（跨会话/刷新都有效）。
+    const DAY_KEY = 'intro-last-day';
+    const today = new Date().toDateString();
     const force = new URLSearchParams(location.search).get('intro') === '1';
-    const navEntry = performance.getEntriesByType('navigation')[0];
-    const navType = navEntry ? navEntry.type : 'navigate';
 
-    let shownThisSession = false;
+    // 站内导航判定：__initialPath = 本文档最初加载的路径（BaseLayout 在 <head> 写好），
+    // 客户端换页不会更新它 → 与当前路径不同，即「站内导航进入首页」。
+    const initialPath = (window as any).__initialPath;
+    const internalNav = typeof initialPath === 'string' && initialPath !== location.pathname;
+
+    let playedToday = false;
     try {
-      // 刷新视作「重新进入」：清掉标记，照常播
-      if (navType === 'reload') sessionStorage.removeItem(SEEN_KEY);
-      shownThisSession = sessionStorage.getItem(SEEN_KEY) === '1';
+      playedToday = localStorage.getItem(DAY_KEY) === today;
     } catch {}
 
-    // a) 同一文档内的客户端换页：文档初始路径 ≠ 当前路径
-    const cameFromClientNav =
-      typeof window.__initialPath === 'string' && window.__initialPath !== location.pathname;
-    // b) 整页加载，但来源是站内其它页（点首页太快、路由还没接管）
-    const cameFromInternalLink = (() => {
-      try {
-        if (!document.referrer) return false;
-        const ref = new URL(document.referrer);
-        return ref.origin === location.origin && ref.pathname !== location.pathname;
-      } catch {
-        return false;
-      }
-    })();
-
-    if (!force && (shownThisSession || cameFromClientNav || cameFromInternalLink)) {
+    if (!force && (internalNav || playedToday)) {
       root.remove();
       return;
     }
     try {
-      sessionStorage.setItem(SEEN_KEY, '1');
+      localStorage.setItem(DAY_KEY, today);
     } catch {}
 
     const pac = root.querySelector('[data-intro-pac]');
