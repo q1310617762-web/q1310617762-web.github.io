@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-08T22:46:26.330Z",
-  "total": 38,
+  "fetchedAt": "2026-10-09T08:22:42.497Z",
+  "total": 40,
   "days": [
     {
       "date": "10-9",
@@ -11,7 +11,7 @@
         {
           "id": "5096205",
           "title": "掌门低调点",
-          "index": "即将更新 第35话",
+          "index": "第35话",
           "time": "09:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
           "seasonId": 272443,
@@ -21,7 +21,7 @@
         {
           "id": "6400578",
           "title": "苏东坡与杭州的故事",
-          "index": "即将更新 第35话",
+          "index": "第35话",
           "time": "10:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
           "seasonId": 247422,
@@ -31,7 +31,7 @@
         {
           "id": "5091042",
           "title": "缔灵爱水心缠",
-          "index": "即将更新 第11话",
+          "index": "第11话",
           "time": "10:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/d8329405b37b06eb365ccdcc4abed7981cf45c5a.jpg",
           "seasonId": 263198,
@@ -41,7 +41,7 @@
         {
           "id": "6291975",
           "title": "小车队大救援：自然护卫队",
-          "index": "即将更新 第18话",
+          "index": "第18话",
           "time": "10:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
           "seasonId": 298872,
@@ -51,7 +51,7 @@
         {
           "id": "6394470",
           "title": "小车队大救援：安全先锋队",
-          "index": "即将更新 第13话",
+          "index": "第13话",
           "time": "10:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
           "seasonId": 298877,
@@ -71,7 +71,7 @@
         {
           "id": "5723182",
           "title": "请吃红小豆吧！第五季",
-          "index": "第6话",
+          "index": "即将更新 第6话",
           "time": "17:30",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
           "seasonId": 291215,
@@ -81,7 +81,7 @@
         {
           "id": "6465926",
           "title": "开心锤锤世界",
-          "index": "第75话",
+          "index": "即将更新 第75话",
           "time": "18:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
           "seasonId": 96881,
@@ -195,6 +195,16 @@
           "delay": ""
         },
         {
+          "id": "6686332",
+          "title": "肥志百科",
+          "index": "原来你是这样的河豚",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/30c124c6f85df11a8a830df5810c2196c95880c7.jpg",
+          "seasonId": 34569,
+          "url": "https://www.bilibili.com/bangumi/play/ep6686332",
+          "delay": ""
+        },
+        {
           "id": "6639770",
           "title": "千金归来：我清算了枕边人",
           "index": "第15话",
@@ -262,6 +272,16 @@
       "weekday": "一",
       "isToday": false,
       "episodes": [
+        {
+          "id": "6687253",
+          "title": "万古至尊：李云霄传",
+          "index": "第27话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
+          "seasonId": 119017,
+          "url": "https://www.bilibili.com/bangumi/play/ep6687253",
+          "delay": ""
+        },
         {
           "id": "4875821",
           "title": "成也萧河",
