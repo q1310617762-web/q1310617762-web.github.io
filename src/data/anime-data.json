@@ -1,60 +1,12 @@
 {
-  "fetchedAt": "2026-10-13T08:51:36.651Z",
-  "total": 38,
+  "fetchedAt": "2026-10-13T17:18:33.520Z",
+  "total": 39,
   "days": [
-    {
-      "date": "10-13",
-      "dateTs": 1791820800,
-      "weekday": "二",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "5096206",
-          "title": "掌门低调点",
-          "index": "第36话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
-          "seasonId": 272443,
-          "url": "https://www.bilibili.com/bangumi/play/ep5096206",
-          "delay": ""
-        },
-        {
-          "id": "6291979",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第22话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291979",
-          "delay": ""
-        },
-        {
-          "id": "6394478",
-          "title": "小车队大救援：安全先锋队",
-          "index": "第17话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
-          "seasonId": 298877,
-          "url": "https://www.bilibili.com/bangumi/play/ep6394478",
-          "delay": ""
-        },
-        {
-          "id": "6771542",
-          "title": "我是不白吃",
-          "index": "即将更新 第1091话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep6771542",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-14",
       "dateTs": 1791907200,
       "weekday": "三",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "4809965",
@@ -261,6 +213,16 @@
           "seasonId": 96881,
           "url": "https://www.bilibili.com/bangumi/play/ep6773692",
           "delay": ""
+        },
+        {
+          "id": "6801155",
+          "title": "公主驾到，天才厨子已超神！",
+          "index": "第14话",
+          "time": "23:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4766bd4a732abb2d2408eb0187a9c648f76d4176.jpg",
+          "seasonId": 284272,
+          "url": "https://www.bilibili.com/bangumi/play/ep6801155",
+          "delay": ""
         }
       ]
     },
@@ -308,6 +270,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
           "seasonId": 28747,
           "url": "https://www.bilibili.com/bangumi/play/ep3854820",
+          "delay": ""
+        },
+        {
+          "id": "6800875",
+          "title": "无良系统变向导，我被四个哨兵拿捏了",
+          "index": "第15话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/748726fd8faf7c11a6898a4b37c129c526e09e61.jpg",
+          "seasonId": 285345,
+          "url": "https://www.bilibili.com/bangumi/play/ep6800875",
           "delay": ""
         },
         {
@@ -434,6 +406,44 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
           "seasonId": 298877,
           "url": "https://www.bilibili.com/bangumi/play/ep6394490",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-20",
+      "dateTs": 1792425600,
+      "weekday": "二",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "5096208",
+          "title": "掌门低调点",
+          "index": "第38话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
+          "seasonId": 272443,
+          "url": "https://www.bilibili.com/bangumi/play/ep5096208",
+          "delay": ""
+        },
+        {
+          "id": "6291986",
+          "title": "小车队大救援：自然护卫队",
+          "index": "第29话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
+          "seasonId": 298872,
+          "url": "https://www.bilibili.com/bangumi/play/ep6291986",
+          "delay": ""
+        },
+        {
+          "id": "6394492",
+          "title": "小车队大救援：安全先锋队",
+          "index": "第24话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
+          "seasonId": 298877,
+          "url": "https://www.bilibili.com/bangumi/play/ep6394492",
           "delay": ""
         }
       ]
