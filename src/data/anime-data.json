@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-12T19:34:38.262Z",
-  "total": 34,
+  "fetchedAt": "2026-10-13T08:51:36.651Z",
+  "total": 38,
   "days": [
     {
       "date": "10-13",
@@ -36,6 +36,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
           "seasonId": 298877,
           "url": "https://www.bilibili.com/bangumi/play/ep6394478",
+          "delay": ""
+        },
+        {
+          "id": "6771542",
+          "title": "我是不白吃",
+          "index": "即将更新 第1091话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep6771542",
           "delay": ""
         }
       ]
@@ -143,6 +153,16 @@
           "seasonId": 105212,
           "url": "https://www.bilibili.com/bangumi/play/ep5137681",
           "delay": ""
+        },
+        {
+          "id": "6771543",
+          "title": "我是不白吃",
+          "index": "第1092话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep6771543",
+          "delay": ""
         }
       ]
     },
@@ -231,6 +251,16 @@
           "seasonId": 291215,
           "url": "https://www.bilibili.com/bangumi/play/ep5723183",
           "delay": ""
+        },
+        {
+          "id": "6773692",
+          "title": "开心锤锤世界",
+          "index": "第76话",
+          "time": "18:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
+          "seasonId": 96881,
+          "url": "https://www.bilibili.com/bangumi/play/ep6773692",
+          "delay": ""
         }
       ]
     },
@@ -278,6 +308,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
           "seasonId": 28747,
           "url": "https://www.bilibili.com/bangumi/play/ep3854820",
+          "delay": ""
+        },
+        {
+          "id": "6771544",
+          "title": "我是不白吃",
+          "index": "第1093话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep6771544",
           "delay": ""
         }
       ]
