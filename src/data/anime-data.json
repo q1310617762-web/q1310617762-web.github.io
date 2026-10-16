@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-16T06:40:11.618Z",
-  "total": 35,
+  "fetchedAt": "2026-10-16T14:28:38.909Z",
+  "total": 38,
   "days": [
     {
       "date": "10-16",
@@ -71,7 +71,7 @@
         {
           "id": "5723183",
           "title": "请吃红小豆吧！第五季",
-          "index": "即将更新 第7话",
+          "index": "第7话",
           "time": "17:30",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
           "seasonId": 291215,
@@ -81,7 +81,7 @@
         {
           "id": "6773692",
           "title": "开心锤锤世界",
-          "index": "即将更新 第76话",
+          "index": "第76话",
           "time": "18:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
           "seasonId": 96881,
@@ -91,7 +91,7 @@
         {
           "id": "6801155",
           "title": "公主驾到，天才厨子已超神！",
-          "index": "第14话",
+          "index": "即将更新 第14话",
           "time": "23:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/4766bd4a732abb2d2408eb0187a9c648f76d4176.jpg",
           "seasonId": 284272,
@@ -164,6 +164,26 @@
           "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
           "seasonId": 34149,
           "url": "https://www.bilibili.com/bangumi/play/ep6771544",
+          "delay": ""
+        },
+        {
+          "id": "6913562",
+          "title": "名侦探柯南",
+          "index": "第1277话",
+          "time": "19:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8d4dad96d5eef87c1ef985c29f42d4189992f84.png",
+          "seasonId": 33378,
+          "url": "https://www.bilibili.com/bangumi/play/ep6913562",
+          "delay": ""
+        },
+        {
+          "id": "6913461",
+          "title": "名侦探柯南（中配）",
+          "index": "第1276话~第1277话",
+          "time": "19:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d106f458bb63f0dc78c49886ec27b1a137b14e96.png",
+          "seasonId": 33415,
+          "url": "https://www.bilibili.com/bangumi/play/ep6913461",
           "delay": ""
         }
       ]
@@ -262,6 +282,16 @@
       "weekday": "一",
       "isToday": false,
       "episodes": [
+        {
+          "id": "6912307",
+          "title": "万古至尊：李云霄传",
+          "index": "第29话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
+          "seasonId": 119017,
+          "url": "https://www.bilibili.com/bangumi/play/ep6912307",
+          "delay": ""
+        },
         {
           "id": "4875822",
           "title": "成也萧河",
