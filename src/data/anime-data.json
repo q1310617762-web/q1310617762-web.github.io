@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-15T20:51:32.825Z",
-  "total": 34,
+  "fetchedAt": "2026-10-16T06:40:11.618Z",
+  "total": 35,
   "days": [
     {
       "date": "10-16",
@@ -71,7 +71,7 @@
         {
           "id": "5723183",
           "title": "请吃红小豆吧！第五季",
-          "index": "第7话",
+          "index": "即将更新 第7话",
           "time": "17:30",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
           "seasonId": 291215,
@@ -81,7 +81,7 @@
         {
           "id": "6773692",
           "title": "开心锤锤世界",
-          "index": "第76话",
+          "index": "即将更新 第76话",
           "time": "18:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
           "seasonId": 96881,
@@ -182,6 +182,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
           "seasonId": 264970,
           "url": "https://www.bilibili.com/bangumi/play/ep4883713",
+          "delay": ""
+        },
+        {
+          "id": "6897025",
+          "title": "肥志百科",
+          "index": "第173话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/30c124c6f85df11a8a830df5810c2196c95880c7.jpg",
+          "seasonId": 34569,
+          "url": "https://www.bilibili.com/bangumi/play/ep6897025",
           "delay": ""
         },
         {
