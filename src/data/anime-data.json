@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-18T06:54:11.720Z",
-  "total": 33,
+  "fetchedAt": "2026-10-18T13:43:59.211Z",
+  "total": 34,
   "days": [
     {
       "date": "10-18",
@@ -356,6 +356,16 @@
       "weekday": "六",
       "isToday": false,
       "episodes": [
+        {
+          "id": "6953177",
+          "title": "万古至尊：李云霄传",
+          "index": "第30话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
+          "seasonId": 119017,
+          "url": "https://www.bilibili.com/bangumi/play/ep6953177",
+          "delay": ""
+        },
         {
           "id": "6394499",
           "title": "小车队大救援：安全先锋队",
