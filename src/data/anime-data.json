@@ -1,71 +1,13 @@
 {
-  "fetchedAt": "2026-10-19T07:13:45.207Z",
-  "total": 28,
+  "fetchedAt": "2026-10-19T16:45:20.513Z",
+  "total": 23,
   "days": [
-    {
-      "date": "10-19",
-      "dateTs": 1792339200,
-      "weekday": "一",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6912307",
-          "title": "万古至尊：李云霄传",
-          "index": "第29话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
-          "seasonId": 119017,
-          "url": "https://www.bilibili.com/bangumi/play/ep6912307",
-          "delay": ""
-        },
-        {
-          "id": "4875822",
-          "title": "成也萧河",
-          "index": "第14话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/26bdc9418905c503ff58197c353da702bf211c36.png",
-          "seasonId": 264634,
-          "url": "https://www.bilibili.com/bangumi/play/ep4875822",
-          "delay": ""
-        },
-        {
-          "id": "6291985",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第28话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291985",
-          "delay": ""
-        },
-        {
-          "id": "6394490",
-          "title": "小车队大救援：安全先锋队",
-          "index": "第23话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
-          "seasonId": 298877,
-          "url": "https://www.bilibili.com/bangumi/play/ep6394490",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-20",
       "dateTs": 1792425600,
       "weekday": "二",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
-        {
-          "id": "5096208",
-          "title": "掌门低调点",
-          "index": "第38话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
-          "seasonId": 272443,
-          "url": "https://www.bilibili.com/bangumi/play/ep5096208",
-          "delay": ""
-        },
         {
           "id": "6291986",
           "title": "小车队大救援：自然护卫队",
@@ -170,16 +112,6 @@
       "weekday": "五",
       "isToday": false,
       "episodes": [
-        {
-          "id": "5096209",
-          "title": "掌门低调点",
-          "index": "第39话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
-          "seasonId": 272443,
-          "url": "https://www.bilibili.com/bangumi/play/ep5096209",
-          "delay": ""
-        },
         {
           "id": "6528564",
           "title": "苏东坡与杭州的故事",
@@ -334,6 +266,24 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
           "seasonId": 45969,
           "url": "https://www.bilibili.com/bangumi/play/ep6613852",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-26",
+      "dateTs": 1792944000,
+      "weekday": "一",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "4875823",
+          "title": "成也萧河",
+          "index": "第15话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/26bdc9418905c503ff58197c353da702bf211c36.png",
+          "seasonId": 264634,
+          "url": "https://www.bilibili.com/bangumi/play/ep4875823",
           "delay": ""
         }
       ]
