@@ -1,55 +1,17 @@
 {
-  "fetchedAt": "2026-10-20T14:37:43.091Z",
-  "total": 29,
+  "fetchedAt": "2026-10-20T21:09:41.072Z",
+  "total": 26,
   "days": [
-    {
-      "date": "10-20",
-      "dateTs": 1792425600,
-      "weekday": "二",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6291986",
-          "title": "小车队大救援：自然护卫队",
-          "index": "第29话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/6ec5c7800cf7eeb8b9ddd7fcc7d00a64fd4d16a0.png",
-          "seasonId": 298872,
-          "url": "https://www.bilibili.com/bangumi/play/ep6291986",
-          "delay": ""
-        },
-        {
-          "id": "6394492",
-          "title": "小车队大救援：安全先锋队",
-          "index": "第24话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
-          "seasonId": 298877,
-          "url": "https://www.bilibili.com/bangumi/play/ep6394492",
-          "delay": ""
-        },
-        {
-          "id": "7008315",
-          "title": "我是不白吃",
-          "index": "第1094话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep7008315",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-21",
       "dateTs": 1792512000,
       "weekday": "三",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "4809966",
           "title": "李熊猫",
-          "index": "第15话",
+          "index": "即将更新 第15话",
           "time": "09:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/4da2f5633d308fd56c218e43ed31b22099191bf9.png",
           "seasonId": 262397,
@@ -347,6 +309,13 @@
           "delay": ""
         }
       ]
+    },
+    {
+      "date": "10-27",
+      "dateTs": 1793030400,
+      "weekday": "二",
+      "isToday": false,
+      "episodes": []
     }
   ]
 }
