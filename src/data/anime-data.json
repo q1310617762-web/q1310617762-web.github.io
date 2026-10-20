@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-19T21:56:20.725Z",
-  "total": 23,
+  "fetchedAt": "2026-10-20T07:02:50.644Z",
+  "total": 29,
   "days": [
     {
       "date": "10-20",
@@ -26,6 +26,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
           "seasonId": 298877,
           "url": "https://www.bilibili.com/bangumi/play/ep6394492",
+          "delay": ""
+        },
+        {
+          "id": "7008315",
+          "title": "我是不白吃",
+          "index": "即将更新 第1094话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep7008315",
           "delay": ""
         }
       ]
@@ -102,6 +112,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/2cfa7e1dd6dc7d0eeefcd6bdfc137bbff4cc55c4.png",
           "seasonId": 105212,
           "url": "https://www.bilibili.com/bangumi/play/ep5137682",
+          "delay": ""
+        },
+        {
+          "id": "7008316",
+          "title": "我是不白吃",
+          "index": "第1095话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep7008316",
           "delay": ""
         }
       ]
@@ -239,6 +259,16 @@
           "seasonId": 285345,
           "url": "https://www.bilibili.com/bangumi/play/ep6800876",
           "delay": ""
+        },
+        {
+          "id": "7008317",
+          "title": "我是不白吃",
+          "index": "第1096话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep7008317",
+          "delay": ""
         }
       ]
     },
@@ -256,6 +286,36 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
           "seasonId": 264970,
           "url": "https://www.bilibili.com/bangumi/play/ep4883714",
+          "delay": ""
+        },
+        {
+          "id": "7008931",
+          "title": "千金归来：我清算了枕边人",
+          "index": "第17话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/bea37a11f5fa2f3f8e33cd7ad666104b9234f5a9.jpg",
+          "seasonId": 269798,
+          "url": "https://www.bilibili.com/bangumi/play/ep7008931",
+          "delay": ""
+        },
+        {
+          "id": "7009135",
+          "title": "当上神明后，我带着信徒干翻了废土",
+          "index": "第18话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e54803cb8bfb45c8dc968a16d05110dfcd07cc40.jpg",
+          "seasonId": 269837,
+          "url": "https://www.bilibili.com/bangumi/play/ep7009135",
+          "delay": ""
+        },
+        {
+          "id": "7008712",
+          "title": "孟婆辞职，阎王哭着求我回来上班",
+          "index": "第15话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/ea0368a93a78ba6f88b94aa50bacb3224ad1a927.jpg",
+          "seasonId": 283583,
+          "url": "https://www.bilibili.com/bangumi/play/ep7008712",
           "delay": ""
         },
         {
