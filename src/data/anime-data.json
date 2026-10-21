@@ -1,50 +1,12 @@
 {
-  "fetchedAt": "2026-10-21T14:49:00.853Z",
-  "total": 26,
+  "fetchedAt": "2026-10-21T21:09:14.088Z",
+  "total": 25,
   "days": [
-    {
-      "date": "10-21",
-      "dateTs": 1792512000,
-      "weekday": "三",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "4809966",
-          "title": "李熊猫",
-          "index": "第15话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4da2f5633d308fd56c218e43ed31b22099191bf9.png",
-          "seasonId": 262397,
-          "url": "https://www.bilibili.com/bangumi/play/ep4809966",
-          "delay": ""
-        },
-        {
-          "id": "6528562",
-          "title": "苏东坡与杭州的故事",
-          "index": "第38话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
-          "seasonId": 247422,
-          "url": "https://www.bilibili.com/bangumi/play/ep6528562",
-          "delay": ""
-        },
-        {
-          "id": "6394494",
-          "title": "小车队大救援：安全先锋队",
-          "index": "第25话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
-          "seasonId": 298877,
-          "url": "https://www.bilibili.com/bangumi/play/ep6394494",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-22",
       "dateTs": 1792598400,
       "weekday": "四",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "6394495",
@@ -316,6 +278,34 @@
       "weekday": "二",
       "isToday": false,
       "episodes": []
+    },
+    {
+      "date": "10-28",
+      "dateTs": 1793116800,
+      "weekday": "三",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "4809967",
+          "title": "李熊猫",
+          "index": "第16话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4da2f5633d308fd56c218e43ed31b22099191bf9.png",
+          "seasonId": 262397,
+          "url": "https://www.bilibili.com/bangumi/play/ep4809967",
+          "delay": ""
+        },
+        {
+          "id": "6528588",
+          "title": "苏东坡与杭州的故事",
+          "index": "第40话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6528588",
+          "delay": ""
+        }
+      ]
     }
   ]
 }
