@@ -1,60 +1,12 @@
 {
-  "fetchedAt": "2026-10-22T14:50:01.508Z",
-  "total": 26,
+  "fetchedAt": "2026-10-22T21:07:30.471Z",
+  "total": 22,
   "days": [
-    {
-      "date": "10-22",
-      "dateTs": 1792598400,
-      "weekday": "四",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6394495",
-          "title": "小车队大救援：安全先锋队",
-          "index": "第26话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
-          "seasonId": 298877,
-          "url": "https://www.bilibili.com/bangumi/play/ep6394495",
-          "delay": ""
-        },
-        {
-          "id": "7064457",
-          "title": "雪王来了！",
-          "index": "第22话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
-          "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep7064457",
-          "delay": ""
-        },
-        {
-          "id": "5137682",
-          "title": "时光代理人 第三季",
-          "index": "第12话（超大抢先）",
-          "time": "18:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/2cfa7e1dd6dc7d0eeefcd6bdfc137bbff4cc55c4.png",
-          "seasonId": 105212,
-          "url": "https://www.bilibili.com/bangumi/play/ep5137682",
-          "delay": ""
-        },
-        {
-          "id": "7008316",
-          "title": "我是不白吃",
-          "index": "第1095话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep7008316",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-23",
       "dateTs": 1792684800,
       "weekday": "五",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "6528564",
@@ -84,16 +36,6 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
           "seasonId": 298877,
           "url": "https://www.bilibili.com/bangumi/play/ep6394497",
-          "delay": ""
-        },
-        {
-          "id": "5137682",
-          "title": "时光代理人 第三季",
-          "index": "第12话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/2cfa7e1dd6dc7d0eeefcd6bdfc137bbff4cc55c4.png",
-          "seasonId": 105212,
-          "url": "https://www.bilibili.com/bangumi/play/ep5137682",
           "delay": ""
         },
         {
@@ -313,6 +255,24 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
           "seasonId": 247422,
           "url": "https://www.bilibili.com/bangumi/play/ep6528588",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-29",
+      "dateTs": 1793203200,
+      "weekday": "四",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "5450387",
+          "title": "雪王来了！",
+          "index": "第24话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep5450387",
           "delay": ""
         }
       ]
