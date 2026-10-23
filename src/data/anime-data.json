@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-22T21:07:30.471Z",
-  "total": 22,
+  "fetchedAt": "2026-10-23T06:52:27.601Z",
+  "total": 29,
   "days": [
     {
       "date": "10-23",
@@ -39,6 +39,16 @@
           "delay": ""
         },
         {
+          "id": "7065882",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第1话~第3话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065882",
+          "delay": ""
+        },
+        {
           "id": "7099040",
           "title": "雪王来了！",
           "index": "第23话",
@@ -51,7 +61,7 @@
         {
           "id": "5723184",
           "title": "请吃红小豆吧！第五季",
-          "index": "第8话",
+          "index": "即将更新 第8话",
           "time": "17:30",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
           "seasonId": 291215,
@@ -61,7 +71,7 @@
         {
           "id": "6773693",
           "title": "开心锤锤世界",
-          "index": "第77话",
+          "index": "即将更新 第77话",
           "time": "18:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
           "seasonId": 96881,
@@ -104,6 +114,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
           "seasonId": 298877,
           "url": "https://www.bilibili.com/bangumi/play/ep6394499",
+          "delay": ""
+        },
+        {
+          "id": "7065884",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第4话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065884",
           "delay": ""
         },
         {
@@ -185,6 +205,16 @@
           "delay": ""
         },
         {
+          "id": "7065885",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第5话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065885",
+          "delay": ""
+        },
+        {
           "id": "6613852",
           "title": "牧神记",
           "index": "第106话",
@@ -221,6 +251,16 @@
           "seasonId": 264634,
           "url": "https://www.bilibili.com/bangumi/play/ep4875823",
           "delay": ""
+        },
+        {
+          "id": "7065886",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第6话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065886",
+          "delay": ""
         }
       ]
     },
@@ -229,7 +269,18 @@
       "dateTs": 1793030400,
       "weekday": "二",
       "isToday": false,
-      "episodes": []
+      "episodes": [
+        {
+          "id": "7065887",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第7话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065887",
+          "delay": ""
+        }
+      ]
     },
     {
       "date": "10-28",
@@ -256,6 +307,16 @@
           "seasonId": 247422,
           "url": "https://www.bilibili.com/bangumi/play/ep6528588",
           "delay": ""
+        },
+        {
+          "id": "7065888",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第8话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065888",
+          "delay": ""
         }
       ]
     },
@@ -265,6 +326,16 @@
       "weekday": "四",
       "isToday": false,
       "episodes": [
+        {
+          "id": "7065889",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第9话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065889",
+          "delay": ""
+        },
         {
           "id": "5450387",
           "title": "雪王来了！",
