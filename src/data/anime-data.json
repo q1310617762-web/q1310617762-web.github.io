@@ -1,100 +1,12 @@
 {
-  "fetchedAt": "2026-10-24T13:48:01.951Z",
-  "total": 31,
+  "fetchedAt": "2026-10-24T20:05:44.066Z",
+  "total": 25,
   "days": [
-    {
-      "date": "10-24",
-      "dateTs": 1792771200,
-      "weekday": "六",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6953177",
-          "title": "万古至尊：李云霄传",
-          "index": "第30话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
-          "seasonId": 119017,
-          "url": "https://www.bilibili.com/bangumi/play/ep6953177",
-          "delay": ""
-        },
-        {
-          "id": "6394499",
-          "title": "小车队大救援：安全先锋队",
-          "index": "第28话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/85eb1d3e2381519e2a8e80c1c495b4783d1ca99d.png",
-          "seasonId": 298877,
-          "url": "https://www.bilibili.com/bangumi/play/ep6394499",
-          "delay": ""
-        },
-        {
-          "id": "7065884",
-          "title": "功夫熊猫：神龙骑士 第二季",
-          "index": "第4话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
-          "seasonId": 332584,
-          "url": "https://www.bilibili.com/bangumi/play/ep7065884",
-          "delay": ""
-        },
-        {
-          "id": "3854821",
-          "title": "凡人修仙传",
-          "index": "第197话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
-          "seasonId": 28747,
-          "url": "https://www.bilibili.com/bangumi/play/ep3854821",
-          "delay": ""
-        },
-        {
-          "id": "6800876",
-          "title": "无良系统变向导，我被四个哨兵拿捏了",
-          "index": "第16话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/748726fd8faf7c11a6898a4b37c129c526e09e61.jpg",
-          "seasonId": 285345,
-          "url": "https://www.bilibili.com/bangumi/play/ep6800876",
-          "delay": ""
-        },
-        {
-          "id": "7008317",
-          "title": "我是不白吃",
-          "index": "第1096话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep7008317",
-          "delay": ""
-        },
-        {
-          "id": "0",
-          "title": "名侦探柯南",
-          "index": "",
-          "time": "19:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8d4dad96d5eef87c1ef985c29f42d4189992f84.png",
-          "seasonId": 33378,
-          "url": "https://www.bilibili.com/bangumi/play/ep0",
-          "delay": "数码修复，本周停更"
-        },
-        {
-          "id": "0",
-          "title": "名侦探柯南（中配）",
-          "index": "",
-          "time": "19:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d106f458bb63f0dc78c49886ec27b1a137b14e96.png",
-          "seasonId": 33415,
-          "url": "https://www.bilibili.com/bangumi/play/ep0",
-          "delay": "数码修复，本周停更"
-        }
-      ]
-    },
     {
       "date": "10-25",
       "dateTs": 1792857600,
       "weekday": "日",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "4883714",
@@ -364,6 +276,34 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
           "seasonId": 96881,
           "url": "https://www.bilibili.com/bangumi/play/ep7145708",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "10-31",
+      "dateTs": 1793376000,
+      "weekday": "六",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "7065891",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第11话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065891",
+          "delay": ""
+        },
+        {
+          "id": "3854822",
+          "title": "凡人修仙传",
+          "index": "第198话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
+          "seasonId": 28747,
+          "url": "https://www.bilibili.com/bangumi/play/ep3854822",
           "delay": ""
         }
       ]
