@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-23T20:54:26.329Z",
-  "total": 29,
+  "fetchedAt": "2026-10-24T06:48:30.736Z",
+  "total": 31,
   "days": [
     {
       "date": "10-24",
@@ -67,6 +67,26 @@
           "seasonId": 34149,
           "url": "https://www.bilibili.com/bangumi/play/ep7008317",
           "delay": ""
+        },
+        {
+          "id": "0",
+          "title": "名侦探柯南",
+          "index": "",
+          "time": "19:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8d4dad96d5eef87c1ef985c29f42d4189992f84.png",
+          "seasonId": 33378,
+          "url": "https://www.bilibili.com/bangumi/play/ep0",
+          "delay": "数码修复，本周停更"
+        },
+        {
+          "id": "0",
+          "title": "名侦探柯南（中配）",
+          "index": "",
+          "time": "19:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d106f458bb63f0dc78c49886ec27b1a137b14e96.png",
+          "seasonId": 33415,
+          "url": "https://www.bilibili.com/bangumi/play/ep0",
+          "delay": "数码修复，本周停更"
         }
       ]
     },
