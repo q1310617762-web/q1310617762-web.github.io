@@ -1,50 +1,12 @@
 {
-  "fetchedAt": "2026-10-26T07:20:42.193Z",
-  "total": 24,
+  "fetchedAt": "2026-10-26T16:25:39.478Z",
+  "total": 23,
   "days": [
-    {
-      "date": "10-26",
-      "dateTs": 1792944000,
-      "weekday": "一",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "7116121",
-          "title": "万古至尊：李云霄传",
-          "index": "第31话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
-          "seasonId": 119017,
-          "url": "https://www.bilibili.com/bangumi/play/ep7116121",
-          "delay": ""
-        },
-        {
-          "id": "4875823",
-          "title": "成也萧河",
-          "index": "第15话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/26bdc9418905c503ff58197c353da702bf211c36.png",
-          "seasonId": 264634,
-          "url": "https://www.bilibili.com/bangumi/play/ep4875823",
-          "delay": ""
-        },
-        {
-          "id": "7065886",
-          "title": "功夫熊猫：神龙骑士 第二季",
-          "index": "第6话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
-          "seasonId": 332584,
-          "url": "https://www.bilibili.com/bangumi/play/ep7065886",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-27",
       "dateTs": 1793030400,
       "weekday": "二",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "7065887",
@@ -294,6 +256,34 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
           "seasonId": 45969,
           "url": "https://www.bilibili.com/bangumi/play/ep6613853",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-2",
+      "dateTs": 1793548800,
+      "weekday": "一",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "4875824",
+          "title": "成也萧河",
+          "index": "第16话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/26bdc9418905c503ff58197c353da702bf211c36.png",
+          "seasonId": 264634,
+          "url": "https://www.bilibili.com/bangumi/play/ep4875824",
+          "delay": ""
+        },
+        {
+          "id": "7065893",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第13话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065893",
           "delay": ""
         }
       ]
