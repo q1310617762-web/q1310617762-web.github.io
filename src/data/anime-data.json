@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-26T22:12:29.756Z",
-  "total": 23,
+  "fetchedAt": "2026-10-27T07:12:18.496Z",
+  "total": 28,
   "days": [
     {
       "date": "10-27",
@@ -11,11 +11,21 @@
         {
           "id": "7065887",
           "title": "功夫熊猫：神龙骑士 第二季",
-          "index": "即将更新 第7话",
+          "index": "第7话",
           "time": "10:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
           "seasonId": 332584,
           "url": "https://www.bilibili.com/bangumi/play/ep7065887",
+          "delay": ""
+        },
+        {
+          "id": "7254233",
+          "title": "我是不白吃",
+          "index": "即将更新 第1097话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep7254233",
           "delay": ""
         }
       ]
@@ -82,6 +92,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
           "url": "https://www.bilibili.com/bangumi/play/ep5450387",
+          "delay": ""
+        },
+        {
+          "id": "7254234",
+          "title": "我是不白吃",
+          "index": "第1098话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep7254234",
           "delay": ""
         }
       ]
@@ -161,6 +181,16 @@
           "seasonId": 96881,
           "url": "https://www.bilibili.com/bangumi/play/ep7145708",
           "delay": ""
+        },
+        {
+          "id": "7263905",
+          "title": "公主驾到，天才厨子已超神！",
+          "index": "第16话",
+          "time": "23:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4766bd4a732abb2d2408eb0187a9c648f76d4176.jpg",
+          "seasonId": 284272,
+          "url": "https://www.bilibili.com/bangumi/play/ep7263905",
+          "delay": ""
         }
       ]
     },
@@ -198,6 +228,26 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
           "seasonId": 28747,
           "url": "https://www.bilibili.com/bangumi/play/ep3854822",
+          "delay": ""
+        },
+        {
+          "id": "7263991",
+          "title": "无良系统变向导，我被四个哨兵拿捏了",
+          "index": "第17话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/748726fd8faf7c11a6898a4b37c129c526e09e61.jpg",
+          "seasonId": 285345,
+          "url": "https://www.bilibili.com/bangumi/play/ep7263991",
+          "delay": ""
+        },
+        {
+          "id": "7254235",
+          "title": "我是不白吃",
+          "index": "第1099话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep7254235",
           "delay": ""
         }
       ]
