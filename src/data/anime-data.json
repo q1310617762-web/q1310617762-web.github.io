@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-27T07:12:18.496Z",
-  "total": 28,
+  "fetchedAt": "2026-10-27T15:40:56.112Z",
+  "total": 24,
   "days": [
     {
       "date": "10-27",
@@ -21,7 +21,7 @@
         {
           "id": "7254233",
           "title": "我是不白吃",
-          "index": "即将更新 第1097话",
+          "index": "第1097话",
           "time": "19:00",
           "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
           "seasonId": 34149,
@@ -181,16 +181,6 @@
           "seasonId": 96881,
           "url": "https://www.bilibili.com/bangumi/play/ep7145708",
           "delay": ""
-        },
-        {
-          "id": "7263905",
-          "title": "公主驾到，天才厨子已超神！",
-          "index": "第16话",
-          "time": "23:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4766bd4a732abb2d2408eb0187a9c648f76d4176.jpg",
-          "seasonId": 284272,
-          "url": "https://www.bilibili.com/bangumi/play/ep7263905",
-          "delay": ""
         }
       ]
     },
@@ -231,16 +221,6 @@
           "delay": ""
         },
         {
-          "id": "7263991",
-          "title": "无良系统变向导，我被四个哨兵拿捏了",
-          "index": "第17话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/748726fd8faf7c11a6898a4b37c129c526e09e61.jpg",
-          "seasonId": 285345,
-          "url": "https://www.bilibili.com/bangumi/play/ep7263991",
-          "delay": ""
-        },
-        {
           "id": "7254235",
           "title": "我是不白吃",
           "index": "第1099话",
@@ -266,26 +246,6 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
           "seasonId": 264970,
           "url": "https://www.bilibili.com/bangumi/play/ep4883715",
-          "delay": ""
-        },
-        {
-          "id": "7008932",
-          "title": "千金归来：我清算了枕边人",
-          "index": "第18话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/bea37a11f5fa2f3f8e33cd7ad666104b9234f5a9.jpg",
-          "seasonId": 269798,
-          "url": "https://www.bilibili.com/bangumi/play/ep7008932",
-          "delay": ""
-        },
-        {
-          "id": "7008713",
-          "title": "孟婆辞职，阎王哭着求我回来上班",
-          "index": "第16话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/ea0368a93a78ba6f88b94aa50bacb3224ad1a927.jpg",
-          "seasonId": 283583,
-          "url": "https://www.bilibili.com/bangumi/play/ep7008713",
           "delay": ""
         },
         {
