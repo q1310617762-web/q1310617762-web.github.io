@@ -1,50 +1,12 @@
 {
-  "fetchedAt": "2026-10-29T07:56:07.944Z",
-  "total": 23,
+  "fetchedAt": "2026-10-29T16:33:35.133Z",
+  "total": 26,
   "days": [
-    {
-      "date": "10-29",
-      "dateTs": 1793203200,
-      "weekday": "四",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "7065889",
-          "title": "功夫熊猫：神龙骑士 第二季",
-          "index": "第9话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
-          "seasonId": 332584,
-          "url": "https://www.bilibili.com/bangumi/play/ep7065889",
-          "delay": ""
-        },
-        {
-          "id": "7304257",
-          "title": "雪王来了！",
-          "index": "第24话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
-          "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep7304257",
-          "delay": ""
-        },
-        {
-          "id": "7254234",
-          "title": "我是不白吃",
-          "index": "即将更新 第1098话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep7254234",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-30",
       "dateTs": 1793289600,
       "weekday": "五",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "6528589",
@@ -77,6 +39,16 @@
           "delay": ""
         },
         {
+          "id": "7329277",
+          "title": "雪王来了！",
+          "index": "第25话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep7329277",
+          "delay": ""
+        },
+        {
           "id": "6762150",
           "title": "罗小黑战记",
           "index": "第41话",
@@ -84,6 +56,16 @@
           "cover": "http://i0.hdslb.com/bfs/bangumi/image/c25750b639ddb810c8eaebfbd1766cf19a44236c.jpg",
           "seasonId": 1733,
           "url": "https://www.bilibili.com/bangumi/play/ep6762150",
+          "delay": ""
+        },
+        {
+          "id": "7332815",
+          "title": "好奇心俱乐部",
+          "index": "第1话~第10话",
+          "time": "17:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
+          "seasonId": 324706,
+          "url": "https://www.bilibili.com/bangumi/play/ep7332815",
           "delay": ""
         },
         {
@@ -145,6 +127,16 @@
           "delay": ""
         },
         {
+          "id": "7332909",
+          "title": "好奇心俱乐部",
+          "index": "第11话",
+          "time": "17:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
+          "seasonId": 324706,
+          "url": "https://www.bilibili.com/bangumi/play/ep7332909",
+          "delay": ""
+        },
+        {
           "id": "7254235",
           "title": "我是不白吃",
           "index": "第1099话",
@@ -190,6 +182,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
           "seasonId": 45969,
           "url": "https://www.bilibili.com/bangumi/play/ep6613853",
+          "delay": ""
+        },
+        {
+          "id": "7332910",
+          "title": "好奇心俱乐部",
+          "index": "第12话",
+          "time": "17:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
+          "seasonId": 324706,
+          "url": "https://www.bilibili.com/bangumi/play/ep7332910",
           "delay": ""
         }
       ]
@@ -284,6 +286,34 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
           "seasonId": 332584,
           "url": "https://www.bilibili.com/bangumi/play/ep7065895",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-5",
+      "dateTs": 1793808000,
+      "weekday": "四",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "7065896",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第16话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065896",
+          "delay": ""
+        },
+        {
+          "id": "5450389",
+          "title": "雪王来了！",
+          "index": "第26话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep5450389",
           "delay": ""
         }
       ]
