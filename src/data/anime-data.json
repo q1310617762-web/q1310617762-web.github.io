@@ -1,100 +1,12 @@
 {
-  "fetchedAt": "2026-10-30T07:58:49.251Z",
-  "total": 27,
+  "fetchedAt": "2026-10-30T16:28:40.649Z",
+  "total": 32,
   "days": [
-    {
-      "date": "10-30",
-      "dateTs": 1793289600,
-      "weekday": "五",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6528589",
-          "title": "苏东坡与杭州的故事",
-          "index": "第41话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
-          "seasonId": 247422,
-          "url": "https://www.bilibili.com/bangumi/play/ep6528589",
-          "delay": ""
-        },
-        {
-          "id": "5091045",
-          "title": "缔灵爱水心缠",
-          "index": "第14话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d8329405b37b06eb365ccdcc4abed7981cf45c5a.jpg",
-          "seasonId": 263198,
-          "url": "https://www.bilibili.com/bangumi/play/ep5091045",
-          "delay": ""
-        },
-        {
-          "id": "7065890",
-          "title": "功夫熊猫：神龙骑士 第二季",
-          "index": "第10话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
-          "seasonId": 332584,
-          "url": "https://www.bilibili.com/bangumi/play/ep7065890",
-          "delay": ""
-        },
-        {
-          "id": "7329277",
-          "title": "雪王来了！",
-          "index": "第25话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
-          "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep7329277",
-          "delay": ""
-        },
-        {
-          "id": "6762150",
-          "title": "罗小黑战记",
-          "index": "第41话",
-          "time": "12:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/c25750b639ddb810c8eaebfbd1766cf19a44236c.jpg",
-          "seasonId": 1733,
-          "url": "https://www.bilibili.com/bangumi/play/ep6762150",
-          "delay": ""
-        },
-        {
-          "id": "7332815",
-          "title": "好奇心俱乐部",
-          "index": "即将更新 第1话~第10话",
-          "time": "17:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
-          "seasonId": 324706,
-          "url": "https://www.bilibili.com/bangumi/play/ep7332815",
-          "delay": ""
-        },
-        {
-          "id": "5723185",
-          "title": "请吃红小豆吧！第五季",
-          "index": "即将更新 第9话",
-          "time": "17:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
-          "seasonId": 291215,
-          "url": "https://www.bilibili.com/bangumi/play/ep5723185",
-          "delay": ""
-        },
-        {
-          "id": "7145708",
-          "title": "开心锤锤世界",
-          "index": "即将更新 第78话",
-          "time": "18:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
-          "seasonId": 96881,
-          "url": "https://www.bilibili.com/bangumi/play/ep7145708",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "10-31",
       "dateTs": 1793376000,
       "weekday": "六",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "7189092",
@@ -145,6 +57,26 @@
           "seasonId": 34149,
           "url": "https://www.bilibili.com/bangumi/play/ep7254235",
           "delay": ""
+        },
+        {
+          "id": "7371587",
+          "title": "名侦探柯南",
+          "index": "第1278话",
+          "time": "19:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8d4dad96d5eef87c1ef985c29f42d4189992f84.png",
+          "seasonId": 33378,
+          "url": "https://www.bilibili.com/bangumi/play/ep7371587",
+          "delay": ""
+        },
+        {
+          "id": "7371553",
+          "title": "名侦探柯南（中配）",
+          "index": "第1278话",
+          "time": "19:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d106f458bb63f0dc78c49886ec27b1a137b14e96.png",
+          "seasonId": 33415,
+          "url": "https://www.bilibili.com/bangumi/play/ep7371553",
+          "delay": ""
         }
       ]
     },
@@ -162,6 +94,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
           "seasonId": 264970,
           "url": "https://www.bilibili.com/bangumi/play/ep4883715",
+          "delay": ""
+        },
+        {
+          "id": "7373723",
+          "title": "肥志百科",
+          "index": "第175话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/30c124c6f85df11a8a830df5810c2196c95880c7.jpg",
+          "seasonId": 34569,
+          "url": "https://www.bilibili.com/bangumi/play/ep7373723",
           "delay": ""
         },
         {
@@ -324,6 +266,114 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
           "url": "https://www.bilibili.com/bangumi/play/ep5450389",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-6",
+      "dateTs": 1793894400,
+      "weekday": "五",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "5096209",
+          "title": "掌门低调点",
+          "index": "第39话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
+          "seasonId": 272443,
+          "url": "https://www.bilibili.com/bangumi/play/ep5096209",
+          "delay": ""
+        },
+        {
+          "id": "3725640",
+          "title": "凹凸世界·新生",
+          "index": "第7话~第15话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/10bde2c638efff837ee2fe03a1557a733d3eec65.png",
+          "seasonId": 84438,
+          "url": "https://www.bilibili.com/bangumi/play/ep3725640",
+          "delay": ""
+        },
+        {
+          "id": "6528623",
+          "title": "苏东坡与杭州的故事",
+          "index": "第43话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6528623",
+          "delay": ""
+        },
+        {
+          "id": "5091046",
+          "title": "缔灵爱水心缠",
+          "index": "第15话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d8329405b37b06eb365ccdcc4abed7981cf45c5a.jpg",
+          "seasonId": 263198,
+          "url": "https://www.bilibili.com/bangumi/play/ep5091046",
+          "delay": ""
+        },
+        {
+          "id": "7065897",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第17话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065897",
+          "delay": ""
+        },
+        {
+          "id": "5450390",
+          "title": "雪王来了！",
+          "index": "第27话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep5450390",
+          "delay": ""
+        },
+        {
+          "id": "6762151",
+          "title": "罗小黑战记",
+          "index": "第42话",
+          "time": "12:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/c25750b639ddb810c8eaebfbd1766cf19a44236c.jpg",
+          "seasonId": 1733,
+          "url": "https://www.bilibili.com/bangumi/play/ep6762151",
+          "delay": ""
+        },
+        {
+          "id": "7332911",
+          "title": "好奇心俱乐部",
+          "index": "第13话",
+          "time": "17:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
+          "seasonId": 324706,
+          "url": "https://www.bilibili.com/bangumi/play/ep7332911",
+          "delay": ""
+        },
+        {
+          "id": "5723186",
+          "title": "请吃红小豆吧！第五季",
+          "index": "第10话",
+          "time": "17:30",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
+          "seasonId": 291215,
+          "url": "https://www.bilibili.com/bangumi/play/ep5723186",
+          "delay": ""
+        },
+        {
+          "id": "7145709",
+          "title": "开心锤锤世界",
+          "index": "第79话",
+          "time": "18:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
+          "seasonId": 96881,
+          "url": "https://www.bilibili.com/bangumi/play/ep7145709",
           "delay": ""
         }
       ]
