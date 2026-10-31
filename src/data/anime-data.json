@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-10-30T21:53:05.669Z",
-  "total": 32,
+  "fetchedAt": "2026-10-31T07:54:56.634Z",
+  "total": 31,
   "days": [
     {
       "date": "10-31",
@@ -11,7 +11,7 @@
         {
           "id": "7189092",
           "title": "万古至尊：李云霄传",
-          "index": "即将更新 第32话",
+          "index": "第32话",
           "time": "09:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
           "seasonId": 119017,
@@ -41,7 +41,7 @@
         {
           "id": "7332909",
           "title": "好奇心俱乐部",
-          "index": "第11话",
+          "index": "即将更新 第11话",
           "time": "17:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
           "seasonId": 324706,
@@ -51,7 +51,7 @@
         {
           "id": "7254235",
           "title": "我是不白吃",
-          "index": "第1099话",
+          "index": "即将更新 第1099话",
           "time": "19:00",
           "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
           "seasonId": 34149,
@@ -61,7 +61,7 @@
         {
           "id": "7371587",
           "title": "名侦探柯南",
-          "index": "第1278话",
+          "index": "即将更新 第1278话",
           "time": "19:30",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8d4dad96d5eef87c1ef985c29f42d4189992f84.png",
           "seasonId": 33378,
@@ -71,7 +71,7 @@
         {
           "id": "7371553",
           "title": "名侦探柯南（中配）",
-          "index": "第1278话",
+          "index": "即将更新 第1278话",
           "time": "19:30",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/d106f458bb63f0dc78c49886ec27b1a137b14e96.png",
           "seasonId": 33415,
@@ -284,16 +284,6 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
           "seasonId": 272443,
           "url": "https://www.bilibili.com/bangumi/play/ep5096209",
-          "delay": ""
-        },
-        {
-          "id": "3725640",
-          "title": "凹凸世界·新生",
-          "index": "第7话~第15话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/10bde2c638efff837ee2fe03a1557a733d3eec65.png",
-          "seasonId": 84438,
-          "url": "https://www.bilibili.com/bangumi/play/ep3725640",
           "delay": ""
         },
         {
