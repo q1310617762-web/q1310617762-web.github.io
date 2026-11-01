@@ -1,70 +1,12 @@
 {
-  "fetchedAt": "2026-11-01T08:36:40.414Z",
-  "total": 28,
+  "fetchedAt": "2026-11-01T16:33:00.852Z",
+  "total": 27,
   "days": [
-    {
-      "date": "11-1",
-      "dateTs": 1793462400,
-      "weekday": "日",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "4883715",
-          "title": "财神窦占龙",
-          "index": "第14话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
-          "seasonId": 264970,
-          "url": "https://www.bilibili.com/bangumi/play/ep4883715",
-          "delay": ""
-        },
-        {
-          "id": "7373723",
-          "title": "肥志百科",
-          "index": "第175话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/30c124c6f85df11a8a830df5810c2196c95880c7.jpg",
-          "seasonId": 34569,
-          "url": "https://www.bilibili.com/bangumi/play/ep7373723",
-          "delay": ""
-        },
-        {
-          "id": "7065892",
-          "title": "功夫熊猫：神龙骑士 第二季",
-          "index": "第12话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
-          "seasonId": 332584,
-          "url": "https://www.bilibili.com/bangumi/play/ep7065892",
-          "delay": ""
-        },
-        {
-          "id": "6613853",
-          "title": "牧神记",
-          "index": "第107话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
-          "seasonId": 45969,
-          "url": "https://www.bilibili.com/bangumi/play/ep6613853",
-          "delay": ""
-        },
-        {
-          "id": "7332910",
-          "title": "好奇心俱乐部",
-          "index": "即将更新 第12话",
-          "time": "17:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
-          "seasonId": 324706,
-          "url": "https://www.bilibili.com/bangumi/play/ep7332910",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-2",
       "dateTs": 1793548800,
       "weekday": "一",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "7364288",
@@ -334,6 +276,54 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
           "seasonId": 324706,
           "url": "https://www.bilibili.com/bangumi/play/ep7332912",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-8",
+      "dateTs": 1794067200,
+      "weekday": "日",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "4883716",
+          "title": "财神窦占龙",
+          "index": "第15话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
+          "seasonId": 264970,
+          "url": "https://www.bilibili.com/bangumi/play/ep4883716",
+          "delay": ""
+        },
+        {
+          "id": "7065899",
+          "title": "功夫熊猫：神龙骑士 第二季",
+          "index": "第19话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
+          "seasonId": 332584,
+          "url": "https://www.bilibili.com/bangumi/play/ep7065899",
+          "delay": ""
+        },
+        {
+          "id": "6613854",
+          "title": "牧神记",
+          "index": "第108话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
+          "seasonId": 45969,
+          "url": "https://www.bilibili.com/bangumi/play/ep6613854",
+          "delay": ""
+        },
+        {
+          "id": "7332913",
+          "title": "好奇心俱乐部",
+          "index": "第15话",
+          "time": "17:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
+          "seasonId": 324706,
+          "url": "https://www.bilibili.com/bangumi/play/ep7332913",
           "delay": ""
         }
       ]
