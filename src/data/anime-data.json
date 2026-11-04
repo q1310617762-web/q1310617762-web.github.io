@@ -1,50 +1,12 @@
 {
-  "fetchedAt": "2026-11-04T08:29:53.140Z",
-  "total": 25,
+  "fetchedAt": "2026-11-04T17:41:58.167Z",
+  "total": 27,
   "days": [
-    {
-      "date": "11-4",
-      "dateTs": 1793721600,
-      "weekday": "三",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "4809968",
-          "title": "李熊猫",
-          "index": "第17话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4da2f5633d308fd56c218e43ed31b22099191bf9.png",
-          "seasonId": 262397,
-          "url": "https://www.bilibili.com/bangumi/play/ep4809968",
-          "delay": ""
-        },
-        {
-          "id": "6528613",
-          "title": "苏东坡与杭州的故事",
-          "index": "第42话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
-          "seasonId": 247422,
-          "url": "https://www.bilibili.com/bangumi/play/ep6528613",
-          "delay": ""
-        },
-        {
-          "id": "7065895",
-          "title": "功夫熊猫：神龙骑士 第二季",
-          "index": "第15话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
-          "seasonId": 332584,
-          "url": "https://www.bilibili.com/bangumi/play/ep7065895",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-5",
       "dateTs": 1793808000,
       "weekday": "四",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "7065896",
@@ -57,13 +19,13 @@
           "delay": ""
         },
         {
-          "id": "5450389",
+          "id": "7513239",
           "title": "雪王来了！",
           "index": "第26话",
           "time": "11:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep5450389",
+          "url": "https://www.bilibili.com/bangumi/play/ep7513239",
           "delay": ""
         },
         {
@@ -287,7 +249,18 @@
       "dateTs": 1794153600,
       "weekday": "一",
       "isToday": false,
-      "episodes": []
+      "episodes": [
+        {
+          "id": "7515410",
+          "title": "海绵宝宝 第十二季",
+          "index": "第1话~第10话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
+          "seasonId": 348189,
+          "url": "https://www.bilibili.com/bangumi/play/ep7515410",
+          "delay": ""
+        }
+      ]
     },
     {
       "date": "11-10",
@@ -303,6 +276,54 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
           "seasonId": 272443,
           "url": "https://www.bilibili.com/bangumi/play/ep5096210",
+          "delay": ""
+        },
+        {
+          "id": "7515447",
+          "title": "海绵宝宝 第十二季",
+          "index": "第11话~第12话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
+          "seasonId": 348189,
+          "url": "https://www.bilibili.com/bangumi/play/ep7515447",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-11",
+      "dateTs": 1794326400,
+      "weekday": "三",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "4809969",
+          "title": "李熊猫",
+          "index": "第18话",
+          "time": "09:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4da2f5633d308fd56c218e43ed31b22099191bf9.png",
+          "seasonId": 262397,
+          "url": "https://www.bilibili.com/bangumi/play/ep4809969",
+          "delay": ""
+        },
+        {
+          "id": "6528709",
+          "title": "苏东坡与杭州的故事",
+          "index": "第44话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6528709",
+          "delay": ""
+        },
+        {
+          "id": "7515450",
+          "title": "海绵宝宝 第十二季",
+          "index": "第13话~第14话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
+          "seasonId": 348189,
+          "url": "https://www.bilibili.com/bangumi/play/ep7515450",
           "delay": ""
         }
       ]
