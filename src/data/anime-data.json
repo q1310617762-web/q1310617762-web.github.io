@@ -1,50 +1,12 @@
 {
-  "fetchedAt": "2026-11-05T08:52:58.998Z",
-  "total": 27,
+  "fetchedAt": "2026-11-05T17:48:52.344Z",
+  "total": 26,
   "days": [
-    {
-      "date": "11-5",
-      "dateTs": 1793808000,
-      "weekday": "四",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "7065896",
-          "title": "功夫熊猫：神龙骑士 第二季",
-          "index": "第16话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
-          "seasonId": 332584,
-          "url": "https://www.bilibili.com/bangumi/play/ep7065896",
-          "delay": ""
-        },
-        {
-          "id": "7513239",
-          "title": "雪王来了！",
-          "index": "第26话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
-          "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep7513239",
-          "delay": ""
-        },
-        {
-          "id": "7482005",
-          "title": "我是不白吃",
-          "index": "即将更新 第1101话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep7482005",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-6",
       "dateTs": 1793894400,
       "weekday": "五",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "5096209",
@@ -87,13 +49,13 @@
           "delay": ""
         },
         {
-          "id": "5450390",
+          "id": "7540368",
           "title": "雪王来了！",
           "index": "第27话",
           "time": "11:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep5450390",
+          "url": "https://www.bilibili.com/bangumi/play/ep7540368",
           "delay": ""
         },
         {
@@ -324,6 +286,34 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
           "seasonId": 348189,
           "url": "https://www.bilibili.com/bangumi/play/ep7515450",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-12",
+      "dateTs": 1794412800,
+      "weekday": "四",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "5450391",
+          "title": "雪王来了！",
+          "index": "第28话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep5450391",
+          "delay": ""
+        },
+        {
+          "id": "7515451",
+          "title": "海绵宝宝 第十二季",
+          "index": "第15话~第16话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
+          "seasonId": 348189,
+          "url": "https://www.bilibili.com/bangumi/play/ep7515451",
           "delay": ""
         }
       ]
