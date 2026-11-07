@@ -1,90 +1,12 @@
 {
-  "fetchedAt": "2026-11-07T08:12:36.040Z",
-  "total": 27,
+  "fetchedAt": "2026-11-07T16:03:09.233Z",
+  "total": 23,
   "days": [
-    {
-      "date": "11-7",
-      "dateTs": 1793980800,
-      "weekday": "六",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "7364291",
-          "title": "万古至尊：李云霄传",
-          "index": "第34话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/aec125c678942fced0fab240a27b4cff73f6b6d7.png",
-          "seasonId": 119017,
-          "url": "https://www.bilibili.com/bangumi/play/ep7364291",
-          "delay": ""
-        },
-        {
-          "id": "7065898",
-          "title": "功夫熊猫：神龙骑士 第二季",
-          "index": "第18话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/9ef414a2b5e1c8926661631a92ebf064f3fb7299.jpg",
-          "seasonId": 332584,
-          "url": "https://www.bilibili.com/bangumi/play/ep7065898",
-          "delay": ""
-        },
-        {
-          "id": "3854823",
-          "title": "凡人修仙传",
-          "index": "第199话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
-          "seasonId": 28747,
-          "url": "https://www.bilibili.com/bangumi/play/ep3854823",
-          "delay": ""
-        },
-        {
-          "id": "7332912",
-          "title": "好奇心俱乐部（ Question Club）",
-          "index": "即将更新 第14话",
-          "time": "17:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
-          "seasonId": 324706,
-          "url": "https://www.bilibili.com/bangumi/play/ep7332912",
-          "delay": ""
-        },
-        {
-          "id": "7482006",
-          "title": "我是不白吃",
-          "index": "即将更新 第1102话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep7482006",
-          "delay": ""
-        },
-        {
-          "id": "7581982",
-          "title": "名侦探柯南",
-          "index": "即将更新 第1279话",
-          "time": "19:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8d4dad96d5eef87c1ef985c29f42d4189992f84.png",
-          "seasonId": 33378,
-          "url": "https://www.bilibili.com/bangumi/play/ep7581982",
-          "delay": ""
-        },
-        {
-          "id": "7581917",
-          "title": "名侦探柯南（中配）",
-          "index": "即将更新 第1279话",
-          "time": "19:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d106f458bb63f0dc78c49886ec27b1a137b14e96.png",
-          "seasonId": 33415,
-          "url": "https://www.bilibili.com/bangumi/play/ep7581917",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-8",
       "dateTs": 1794067200,
       "weekday": "日",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "4883716",
@@ -324,6 +246,44 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
           "seasonId": 291215,
           "url": "https://www.bilibili.com/bangumi/play/ep5723187",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-14",
+      "dateTs": 1794585600,
+      "weekday": "六",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "3854824",
+          "title": "凡人修仙传",
+          "index": "第200话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
+          "seasonId": 28747,
+          "url": "https://www.bilibili.com/bangumi/play/ep3854824",
+          "delay": ""
+        },
+        {
+          "id": "7515456",
+          "title": "海绵宝宝 第十二季",
+          "index": "第19话~第20话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
+          "seasonId": 348189,
+          "url": "https://www.bilibili.com/bangumi/play/ep7515456",
+          "delay": ""
+        },
+        {
+          "id": "7332915",
+          "title": "好奇心俱乐部（ Question Club）",
+          "index": "第17话",
+          "time": "17:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
+          "seasonId": 324706,
+          "url": "https://www.bilibili.com/bangumi/play/ep7332915",
           "delay": ""
         }
       ]
