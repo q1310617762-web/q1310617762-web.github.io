@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-11-08T21:35:53.960Z",
-  "total": 22,
+  "fetchedAt": "2026-11-09T08:58:57.702Z",
+  "total": 23,
   "days": [
     {
       "date": "11-9",
@@ -188,6 +188,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/b5bdc048b30a36e34878c96bc053d5838dedf94f.jpg",
           "seasonId": 291215,
           "url": "https://www.bilibili.com/bangumi/play/ep5723187",
+          "delay": ""
+        },
+        {
+          "id": "7631670",
+          "title": "开心锤锤世界",
+          "index": "第80话",
+          "time": "18:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
+          "seasonId": 96881,
+          "url": "https://www.bilibili.com/bangumi/play/ep7631670",
           "delay": ""
         }
       ]
