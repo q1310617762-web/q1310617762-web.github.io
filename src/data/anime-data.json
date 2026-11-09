@@ -1,30 +1,12 @@
 {
-  "fetchedAt": "2026-11-09T08:58:57.702Z",
-  "total": 23,
+  "fetchedAt": "2026-11-09T20:21:45.812Z",
+  "total": 24,
   "days": [
-    {
-      "date": "11-9",
-      "dateTs": 1794153600,
-      "weekday": "一",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "7515410",
-          "title": "海绵宝宝 第十二季",
-          "index": "第1话~第10话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
-          "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515410",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-10",
       "dateTs": 1794240000,
       "weekday": "二",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "5096210",
@@ -34,6 +16,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
           "seasonId": 272443,
           "url": "https://www.bilibili.com/bangumi/play/ep5096210",
+          "delay": ""
+        },
+        {
+          "id": "7664905",
+          "title": "王者？别闹！",
+          "index": "第89话",
+          "time": "11:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/8b05f173c5036150fac299f4f48233100a8b81d5.jpg",
+          "seasonId": 26015,
+          "url": "https://www.bilibili.com/bangumi/play/ep7664905",
           "delay": ""
         },
         {
@@ -219,13 +211,13 @@
           "delay": ""
         },
         {
-          "id": "7515456",
+          "id": "7515455",
           "title": "海绵宝宝 第十二季",
           "index": "第19话~第20话",
           "time": "12:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
           "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515456",
+          "url": "https://www.bilibili.com/bangumi/play/ep7515455",
           "delay": ""
         },
         {
@@ -284,6 +276,24 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
           "seasonId": 324706,
           "url": "https://www.bilibili.com/bangumi/play/ep7332916",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-16",
+      "dateTs": 1794758400,
+      "weekday": "一",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "7515459",
+          "title": "海绵宝宝 第十二季",
+          "index": "第23话~第24话",
+          "time": "12:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
+          "seasonId": 348189,
+          "url": "https://www.bilibili.com/bangumi/play/ep7515459",
           "delay": ""
         }
       ]
