@@ -1,60 +1,12 @@
 {
-  "fetchedAt": "2026-11-10T09:07:21.792Z",
-  "total": 27,
+  "fetchedAt": "2026-11-10T17:25:50.669Z",
+  "total": 23,
   "days": [
-    {
-      "date": "11-10",
-      "dateTs": 1794240000,
-      "weekday": "二",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "5096210",
-          "title": "掌门低调点",
-          "index": "第40话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/35210eb3cc93cbfb7f2d3d6641ee971542164976.jpg",
-          "seasonId": 272443,
-          "url": "https://www.bilibili.com/bangumi/play/ep5096210",
-          "delay": ""
-        },
-        {
-          "id": "7664905",
-          "title": "王者？别闹！",
-          "index": "第89话",
-          "time": "11:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/8b05f173c5036150fac299f4f48233100a8b81d5.jpg",
-          "seasonId": 26015,
-          "url": "https://www.bilibili.com/bangumi/play/ep7664905",
-          "delay": ""
-        },
-        {
-          "id": "7515447",
-          "title": "海绵宝宝 第十二季",
-          "index": "第11话~第12话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
-          "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515447",
-          "delay": ""
-        },
-        {
-          "id": "7685255",
-          "title": "我是不白吃",
-          "index": "即将更新 第1103话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep7685255",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-11",
       "dateTs": 1794326400,
       "weekday": "三",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "4809969",
@@ -231,13 +183,13 @@
           "delay": ""
         },
         {
-          "id": "7515456",
+          "id": "7515455",
           "title": "海绵宝宝 第十二季",
           "index": "第19话~第20话",
           "time": "12:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
           "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515456",
+          "url": "https://www.bilibili.com/bangumi/play/ep7515455",
           "delay": ""
         },
         {
@@ -327,6 +279,13 @@
           "delay": ""
         }
       ]
+    },
+    {
+      "date": "11-17",
+      "dateTs": 1794844800,
+      "weekday": "二",
+      "isToday": false,
+      "episodes": []
     }
   ]
 }
