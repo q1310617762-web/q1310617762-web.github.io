@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-11-09T20:21:45.812Z",
-  "total": 24,
+  "fetchedAt": "2026-11-10T09:07:21.792Z",
+  "total": 27,
   "days": [
     {
       "date": "11-10",
@@ -36,6 +36,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
           "seasonId": 348189,
           "url": "https://www.bilibili.com/bangumi/play/ep7515447",
+          "delay": ""
+        },
+        {
+          "id": "7685255",
+          "title": "我是不白吃",
+          "index": "即将更新 第1103话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep7685255",
           "delay": ""
         }
       ]
@@ -102,6 +112,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
           "seasonId": 348189,
           "url": "https://www.bilibili.com/bangumi/play/ep7515451",
+          "delay": ""
+        },
+        {
+          "id": "7685256",
+          "title": "我是不白吃",
+          "index": "第1104话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep7685256",
           "delay": ""
         }
       ]
@@ -211,13 +231,13 @@
           "delay": ""
         },
         {
-          "id": "7515455",
+          "id": "7515456",
           "title": "海绵宝宝 第十二季",
           "index": "第19话~第20话",
           "time": "12:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
           "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515455",
+          "url": "https://www.bilibili.com/bangumi/play/ep7515456",
           "delay": ""
         },
         {
@@ -228,6 +248,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
           "seasonId": 324706,
           "url": "https://www.bilibili.com/bangumi/play/ep7332915",
+          "delay": ""
+        },
+        {
+          "id": "7685257",
+          "title": "我是不白吃",
+          "index": "第1105话",
+          "time": "19:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
+          "seasonId": 34149,
+          "url": "https://www.bilibili.com/bangumi/play/ep7685257",
           "delay": ""
         }
       ]
