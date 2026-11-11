@@ -1,59 +1,21 @@
 {
-  "fetchedAt": "2026-11-11T08:45:44.715Z",
-  "total": 23,
+  "fetchedAt": "2026-11-11T17:38:55.943Z",
+  "total": 21,
   "days": [
-    {
-      "date": "11-11",
-      "dateTs": 1794326400,
-      "weekday": "三",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "4809969",
-          "title": "李熊猫",
-          "index": "第18话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/4da2f5633d308fd56c218e43ed31b22099191bf9.png",
-          "seasonId": 262397,
-          "url": "https://www.bilibili.com/bangumi/play/ep4809969",
-          "delay": ""
-        },
-        {
-          "id": "6528709",
-          "title": "苏东坡与杭州的故事",
-          "index": "第44话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
-          "seasonId": 247422,
-          "url": "https://www.bilibili.com/bangumi/play/ep6528709",
-          "delay": ""
-        },
-        {
-          "id": "7515450",
-          "title": "海绵宝宝 第十二季",
-          "index": "第13话~第14话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
-          "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515450",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-12",
       "dateTs": 1794412800,
       "weekday": "四",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
-          "id": "5450391",
+          "id": "7744266",
           "title": "雪王来了！",
           "index": "第28话",
           "time": "11:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep5450391",
+          "url": "https://www.bilibili.com/bangumi/play/ep7744266",
           "delay": ""
         },
         {
@@ -286,6 +248,24 @@
       "weekday": "二",
       "isToday": false,
       "episodes": []
+    },
+    {
+      "date": "11-18",
+      "dateTs": 1794931200,
+      "weekday": "三",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6528758",
+          "title": "苏东坡与杭州的故事",
+          "index": "第46话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6528758",
+          "delay": ""
+        }
+      ]
     }
   ]
 }
