@@ -1,60 +1,12 @@
 {
-  "fetchedAt": "2026-11-12T09:08:41.175Z",
-  "total": 28,
+  "fetchedAt": "2026-11-12T17:51:43.901Z",
+  "total": 26,
   "days": [
-    {
-      "date": "11-12",
-      "dateTs": 1794412800,
-      "weekday": "四",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "7702133",
-          "title": "小羊肖恩 第七季",
-          "index": "第1话~第6话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
-          "seasonId": 355139,
-          "url": "https://www.bilibili.com/bangumi/play/ep7702133",
-          "delay": ""
-        },
-        {
-          "id": "7744266",
-          "title": "雪王来了！",
-          "index": "第28话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
-          "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep7744266",
-          "delay": ""
-        },
-        {
-          "id": "7515451",
-          "title": "海绵宝宝 第十二季",
-          "index": "第15话~第16话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
-          "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515451",
-          "delay": ""
-        },
-        {
-          "id": "7685256",
-          "title": "我是不白吃",
-          "index": "即将更新 第1104话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep7685256",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-13",
       "dateTs": 1794499200,
       "weekday": "五",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "6528757",
@@ -87,13 +39,13 @@
           "delay": ""
         },
         {
-          "id": "5450392",
+          "id": "7795162",
           "title": "雪王来了！",
           "index": "第29话",
           "time": "11:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep5450392",
+          "url": "https://www.bilibili.com/bangumi/play/ep7795162",
           "delay": ""
         },
         {
@@ -175,13 +127,13 @@
           "delay": ""
         },
         {
-          "id": "7515456",
+          "id": "7515455",
           "title": "海绵宝宝 第十二季",
           "index": "第19话~第20话",
           "time": "12:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
           "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515456",
+          "url": "https://www.bilibili.com/bangumi/play/ep7515455",
           "delay": ""
         },
         {
@@ -334,6 +286,34 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
           "seasonId": 355139,
           "url": "https://www.bilibili.com/bangumi/play/ep7702239",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-19",
+      "dateTs": 1795017600,
+      "weekday": "四",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "7702241",
+          "title": "小羊肖恩 第七季",
+          "index": "第19话~第20话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
+          "seasonId": 355139,
+          "url": "https://www.bilibili.com/bangumi/play/ep7702241",
+          "delay": ""
+        },
+        {
+          "id": "5450393",
+          "title": "雪王来了！",
+          "index": "第30话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep5450393",
           "delay": ""
         }
       ]
