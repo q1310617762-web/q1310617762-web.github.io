@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-11-11T23:57:41.823Z",
-  "total": 21,
+  "fetchedAt": "2026-11-12T09:08:41.175Z",
+  "total": 28,
   "days": [
     {
       "date": "11-12",
@@ -9,9 +9,19 @@
       "isToday": true,
       "episodes": [
         {
+          "id": "7702133",
+          "title": "小羊肖恩 第七季",
+          "index": "第1话~第6话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
+          "seasonId": 355139,
+          "url": "https://www.bilibili.com/bangumi/play/ep7702133",
+          "delay": ""
+        },
+        {
           "id": "7744266",
           "title": "雪王来了！",
-          "index": "即将更新 第28话",
+          "index": "第28话",
           "time": "11:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
@@ -31,7 +41,7 @@
         {
           "id": "7685256",
           "title": "我是不白吃",
-          "index": "第1104话",
+          "index": "即将更新 第1104话",
           "time": "19:00",
           "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
           "seasonId": 34149,
@@ -64,6 +74,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/d8329405b37b06eb365ccdcc4abed7981cf45c5a.jpg",
           "seasonId": 263198,
           "url": "https://www.bilibili.com/bangumi/play/ep5091047",
+          "delay": ""
+        },
+        {
+          "id": "7702228",
+          "title": "小羊肖恩 第七季",
+          "index": "第7话~第8话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
+          "seasonId": 355139,
+          "url": "https://www.bilibili.com/bangumi/play/ep7702228",
           "delay": ""
         },
         {
@@ -135,6 +155,16 @@
       "isToday": false,
       "episodes": [
         {
+          "id": "7702231",
+          "title": "小羊肖恩 第七季",
+          "index": "第9话~第10话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
+          "seasonId": 355139,
+          "url": "https://www.bilibili.com/bangumi/play/ep7702231",
+          "delay": ""
+        },
+        {
           "id": "3854824",
           "title": "凡人修仙传",
           "index": "第200话",
@@ -145,13 +175,13 @@
           "delay": ""
         },
         {
-          "id": "7515455",
+          "id": "7515456",
           "title": "海绵宝宝 第十二季",
           "index": "第19话~第20话",
           "time": "12:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
           "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515455",
+          "url": "https://www.bilibili.com/bangumi/play/ep7515456",
           "delay": ""
         },
         {
@@ -193,6 +223,16 @@
           "delay": ""
         },
         {
+          "id": "7702233",
+          "title": "小羊肖恩 第七季",
+          "index": "第11话~第12话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
+          "seasonId": 355139,
+          "url": "https://www.bilibili.com/bangumi/play/ep7702233",
+          "delay": ""
+        },
+        {
           "id": "6613855",
           "title": "牧神记",
           "index": "第109话",
@@ -231,6 +271,16 @@
       "isToday": false,
       "episodes": [
         {
+          "id": "7702235",
+          "title": "小羊肖恩 第七季",
+          "index": "第13话~第14话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
+          "seasonId": 355139,
+          "url": "https://www.bilibili.com/bangumi/play/ep7702235",
+          "delay": ""
+        },
+        {
           "id": "7515459",
           "title": "海绵宝宝 第十二季",
           "index": "第23话~第24话",
@@ -247,7 +297,18 @@
       "dateTs": 1794844800,
       "weekday": "二",
       "isToday": false,
-      "episodes": []
+      "episodes": [
+        {
+          "id": "7702237",
+          "title": "小羊肖恩 第七季",
+          "index": "第15话~第16话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
+          "seasonId": 355139,
+          "url": "https://www.bilibili.com/bangumi/play/ep7702237",
+          "delay": ""
+        }
+      ]
     },
     {
       "date": "11-18",
@@ -263,6 +324,16 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
           "seasonId": 247422,
           "url": "https://www.bilibili.com/bangumi/play/ep6528758",
+          "delay": ""
+        },
+        {
+          "id": "7702239",
+          "title": "小羊肖恩 第七季",
+          "index": "第17话~第18话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
+          "seasonId": 355139,
+          "url": "https://www.bilibili.com/bangumi/play/ep7702239",
           "delay": ""
         }
       ]
