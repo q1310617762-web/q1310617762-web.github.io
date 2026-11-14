@@ -1,90 +1,12 @@
 {
-  "fetchedAt": "2026-11-14T08:28:45.042Z",
-  "total": 27,
+  "fetchedAt": "2026-11-14T16:19:38.767Z",
+  "total": 22,
   "days": [
-    {
-      "date": "11-14",
-      "dateTs": 1794585600,
-      "weekday": "六",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "7702231",
-          "title": "小羊肖恩 第七季",
-          "index": "第9话~第10话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
-          "seasonId": 355139,
-          "url": "https://www.bilibili.com/bangumi/play/ep7702231",
-          "delay": ""
-        },
-        {
-          "id": "3854824",
-          "title": "凡人修仙传",
-          "index": "第200话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
-          "seasonId": 28747,
-          "url": "https://www.bilibili.com/bangumi/play/ep3854824",
-          "delay": ""
-        },
-        {
-          "id": "7515455",
-          "title": "海绵宝宝 第十二季",
-          "index": "第19话~第20话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
-          "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515455",
-          "delay": ""
-        },
-        {
-          "id": "7332915",
-          "title": "好奇心俱乐部（ Question Club）",
-          "index": "即将更新 第17话",
-          "time": "17:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
-          "seasonId": 324706,
-          "url": "https://www.bilibili.com/bangumi/play/ep7332915",
-          "delay": ""
-        },
-        {
-          "id": "7685257",
-          "title": "我是不白吃",
-          "index": "即将更新 第1105话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep7685257",
-          "delay": ""
-        },
-        {
-          "id": "7835645",
-          "title": "名侦探柯南",
-          "index": "即将更新 第1280话",
-          "time": "19:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8d4dad96d5eef87c1ef985c29f42d4189992f84.png",
-          "seasonId": 33378,
-          "url": "https://www.bilibili.com/bangumi/play/ep7835645",
-          "delay": ""
-        },
-        {
-          "id": "7835631",
-          "title": "名侦探柯南（中配）",
-          "index": "即将更新 第1280话",
-          "time": "19:30",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d106f458bb63f0dc78c49886ec27b1a137b14e96.png",
-          "seasonId": 33415,
-          "url": "https://www.bilibili.com/bangumi/play/ep7835631",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-15",
       "dateTs": 1794672000,
       "weekday": "日",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "4883717",
@@ -324,6 +246,34 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
           "seasonId": 96881,
           "url": "https://www.bilibili.com/bangumi/play/ep7631671",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-21",
+      "dateTs": 1795190400,
+      "weekday": "六",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "3854825",
+          "title": "凡人修仙传",
+          "index": "第201话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
+          "seasonId": 28747,
+          "url": "https://www.bilibili.com/bangumi/play/ep3854825",
+          "delay": ""
+        },
+        {
+          "id": "7332918",
+          "title": "好奇心俱乐部（ Question Club）",
+          "index": "第20话",
+          "time": "17:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
+          "seasonId": 324706,
+          "url": "https://www.bilibili.com/bangumi/play/ep7332918",
           "delay": ""
         }
       ]
