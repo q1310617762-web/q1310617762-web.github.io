@@ -1,80 +1,12 @@
 {
-  "fetchedAt": "2026-11-15T08:45:02.046Z",
-  "total": 22,
+  "fetchedAt": "2026-11-15T16:45:23.142Z",
+  "total": 18,
   "days": [
-    {
-      "date": "11-15",
-      "dateTs": 1794672000,
-      "weekday": "日",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "4883717",
-          "title": "财神窦占龙",
-          "index": "第16话",
-          "time": "09:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/a8fec1f24be7da5d80c599a1dcf5dd3747e8ec82.jpg",
-          "seasonId": 264970,
-          "url": "https://www.bilibili.com/bangumi/play/ep4883717",
-          "delay": ""
-        },
-        {
-          "id": "7823094",
-          "title": "肥志百科",
-          "index": "第177话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/30c124c6f85df11a8a830df5810c2196c95880c7.jpg",
-          "seasonId": 34569,
-          "url": "https://www.bilibili.com/bangumi/play/ep7823094",
-          "delay": ""
-        },
-        {
-          "id": "7702233",
-          "title": "小羊肖恩 第七季",
-          "index": "第11话~第12话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
-          "seasonId": 355139,
-          "url": "https://www.bilibili.com/bangumi/play/ep7702233",
-          "delay": ""
-        },
-        {
-          "id": "6613855",
-          "title": "牧神记",
-          "index": "第109话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
-          "seasonId": 45969,
-          "url": "https://www.bilibili.com/bangumi/play/ep6613855",
-          "delay": ""
-        },
-        {
-          "id": "7515458",
-          "title": "海绵宝宝 第十二季",
-          "index": "第21话~第22话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
-          "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515458",
-          "delay": ""
-        },
-        {
-          "id": "7332916",
-          "title": "好奇心俱乐部（ Question Club）",
-          "index": "即将更新 第18话",
-          "time": "17:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
-          "seasonId": 324706,
-          "url": "https://www.bilibili.com/bangumi/play/ep7332916",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-16",
       "dateTs": 1794758400,
       "weekday": "一",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "7702235",
@@ -274,6 +206,34 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
           "seasonId": 324706,
           "url": "https://www.bilibili.com/bangumi/play/ep7332918",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-22",
+      "dateTs": 1795276800,
+      "weekday": "日",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6613856",
+          "title": "牧神记",
+          "index": "第110话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
+          "seasonId": 45969,
+          "url": "https://www.bilibili.com/bangumi/play/ep6613856",
+          "delay": ""
+        },
+        {
+          "id": "7332919",
+          "title": "好奇心俱乐部（ Question Club）",
+          "index": "第21话",
+          "time": "17:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
+          "seasonId": 324706,
+          "url": "https://www.bilibili.com/bangumi/play/ep7332919",
           "delay": ""
         }
       ]
