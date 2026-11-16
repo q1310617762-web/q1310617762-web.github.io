@@ -1,40 +1,12 @@
 {
-  "fetchedAt": "2026-11-16T08:55:44.209Z",
-  "total": 18,
+  "fetchedAt": "2026-11-16T19:58:07.566Z",
+  "total": 16,
   "days": [
-    {
-      "date": "11-16",
-      "dateTs": 1794758400,
-      "weekday": "一",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "7702235",
-          "title": "小羊肖恩 第七季",
-          "index": "第13话~第14话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
-          "seasonId": 355139,
-          "url": "https://www.bilibili.com/bangumi/play/ep7702235",
-          "delay": ""
-        },
-        {
-          "id": "7515459",
-          "title": "海绵宝宝 第十二季",
-          "index": "第23话~第24话",
-          "time": "12:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/65ff90efa955a31270610714fc1dfa4c43cd4b3e.png",
-          "seasonId": 348189,
-          "url": "https://www.bilibili.com/bangumi/play/ep7515459",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-17",
       "dateTs": 1794844800,
       "weekday": "二",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "7702237",
@@ -237,6 +209,13 @@
           "delay": ""
         }
       ]
+    },
+    {
+      "date": "11-23",
+      "dateTs": 1795363200,
+      "weekday": "一",
+      "isToday": false,
+      "episodes": []
     }
   ]
 }
