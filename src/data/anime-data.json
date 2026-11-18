@@ -1,40 +1,12 @@
 {
-  "fetchedAt": "2026-11-18T09:39:11.588Z",
-  "total": 17,
+  "fetchedAt": "2026-11-18T18:35:58.830Z",
+  "total": 16,
   "days": [
-    {
-      "date": "11-18",
-      "dateTs": 1794931200,
-      "weekday": "三",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6528758",
-          "title": "苏东坡与杭州的故事",
-          "index": "第46话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
-          "seasonId": 247422,
-          "url": "https://www.bilibili.com/bangumi/play/ep6528758",
-          "delay": ""
-        },
-        {
-          "id": "7702239",
-          "title": "小羊肖恩 第七季",
-          "index": "第17话~第18话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f89c680bc54e3709ebda37b2c856dee02490d8cf.png",
-          "seasonId": 355139,
-          "url": "https://www.bilibili.com/bangumi/play/ep7702239",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-19",
       "dateTs": 1795017600,
       "weekday": "四",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "7702241",
@@ -47,13 +19,13 @@
           "delay": ""
         },
         {
-          "id": "5450393",
+          "id": "8009003",
           "title": "雪王来了！",
           "index": "第30话",
           "time": "11:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep5450393",
+          "url": "https://www.bilibili.com/bangumi/play/ep8009003",
           "delay": ""
         },
         {
@@ -225,6 +197,24 @@
       "weekday": "二",
       "isToday": false,
       "episodes": []
+    },
+    {
+      "date": "11-25",
+      "dateTs": 1795536000,
+      "weekday": "三",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6645443",
+          "title": "苏东坡与杭州的故事",
+          "index": "第48话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6645443",
+          "delay": ""
+        }
+      ]
     }
   ]
 }
