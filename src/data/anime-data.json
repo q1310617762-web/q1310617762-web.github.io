@@ -1,50 +1,12 @@
 {
-  "fetchedAt": "2026-11-22T09:14:54.909Z",
-  "total": 13,
+  "fetchedAt": "2026-11-22T17:34:09.490Z",
+  "total": 12,
   "days": [
-    {
-      "date": "11-22",
-      "dateTs": 1795276800,
-      "weekday": "日",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "8015630",
-          "title": "肥志百科",
-          "index": "第178话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/30c124c6f85df11a8a830df5810c2196c95880c7.jpg",
-          "seasonId": 34569,
-          "url": "https://www.bilibili.com/bangumi/play/ep8015630",
-          "delay": ""
-        },
-        {
-          "id": "6613856",
-          "title": "牧神记",
-          "index": "第110话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/eb6054ae7d37283a484019152197c69b2950da2e.png",
-          "seasonId": 45969,
-          "url": "https://www.bilibili.com/bangumi/play/ep6613856",
-          "delay": ""
-        },
-        {
-          "id": "7332919",
-          "title": "好奇心俱乐部（ Question Club）",
-          "index": "第21话",
-          "time": "17:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
-          "seasonId": 324706,
-          "url": "https://www.bilibili.com/bangumi/play/ep7332919",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-23",
       "dateTs": 1795363200,
       "weekday": "一",
-      "isToday": false,
+      "isToday": true,
       "episodes": []
     },
     {
@@ -182,6 +144,34 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
           "seasonId": 324706,
           "url": "https://www.bilibili.com/bangumi/play/ep7332921",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "11-29",
+      "dateTs": 1795881600,
+      "weekday": "日",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6613857",
+          "title": "牧神记",
+          "index": "第111话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/f0eb30d18f76a542220d093be739e814b29c3f61.jpg",
+          "seasonId": 45969,
+          "url": "https://www.bilibili.com/bangumi/play/ep6613857",
+          "delay": ""
+        },
+        {
+          "id": "7332922",
+          "title": "好奇心俱乐部（ Question Club）",
+          "index": "第24话",
+          "time": "17:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
+          "seasonId": 324706,
+          "url": "https://www.bilibili.com/bangumi/play/ep7332922",
           "delay": ""
         }
       ]
