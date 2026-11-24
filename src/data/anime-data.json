@@ -1,19 +1,12 @@
 {
-  "fetchedAt": "2026-11-24T03:43:57.192Z",
+  "fetchedAt": "2026-11-24T20:28:04.822Z",
   "total": 12,
   "days": [
-    {
-      "date": "11-24",
-      "dateTs": 1795449600,
-      "weekday": "二",
-      "isToday": true,
-      "episodes": []
-    },
     {
       "date": "11-25",
       "dateTs": 1795536000,
       "weekday": "三",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "6645443",
@@ -173,6 +166,13 @@
       "date": "11-30",
       "dateTs": 1795968000,
       "weekday": "一",
+      "isToday": false,
+      "episodes": []
+    },
+    {
+      "date": "12-1",
+      "dateTs": 1796054400,
+      "weekday": "二",
       "isToday": false,
       "episodes": []
     }
