@@ -1,45 +1,17 @@
 {
-  "fetchedAt": "2026-11-25T10:48:02.911Z",
-  "total": 14,
+  "fetchedAt": "2026-11-26T01:27:55.877Z",
+  "total": 13,
   "days": [
-    {
-      "date": "11-25",
-      "dateTs": 1795536000,
-      "weekday": "三",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6645443",
-          "title": "苏东坡与杭州的故事",
-          "index": "第48话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
-          "seasonId": 247422,
-          "url": "https://www.bilibili.com/bangumi/play/ep6645443",
-          "delay": ""
-        },
-        {
-          "id": "8067161",
-          "title": "我是不白吃",
-          "index": "即将更新 第1109话",
-          "time": "19:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/8ac62df8d1d0c5db8e844f34ca6d3d00548633c2.jpg",
-          "seasonId": 34149,
-          "url": "https://www.bilibili.com/bangumi/play/ep8067161",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-26",
       "dateTs": 1795622400,
       "weekday": "四",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "8094861",
           "title": "雪王来了！",
-          "index": "第32话",
+          "index": "即将更新 第32话",
           "time": "11:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
@@ -195,6 +167,24 @@
       "weekday": "二",
       "isToday": false,
       "episodes": []
+    },
+    {
+      "date": "12-2",
+      "dateTs": 1796140800,
+      "weekday": "三",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6645858",
+          "title": "苏东坡与杭州的故事",
+          "index": "第50话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6645858",
+          "delay": ""
+        }
+      ]
     }
   ]
 }
