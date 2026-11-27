@@ -1,35 +1,17 @@
 {
-  "fetchedAt": "2026-11-26T10:21:37.319Z",
+  "fetchedAt": "2026-11-27T01:25:13.792Z",
   "total": 13,
   "days": [
-    {
-      "date": "11-26",
-      "dateTs": 1795622400,
-      "weekday": "四",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "8094861",
-          "title": "雪王来了！",
-          "index": "第32话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
-          "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep8094861",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-27",
       "dateTs": 1795708800,
       "weekday": "五",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "6645588",
           "title": "苏东坡与杭州的故事",
-          "index": "第49话",
+          "index": "即将更新 第49话",
           "time": "10:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
           "seasonId": 247422,
@@ -39,7 +21,7 @@
         {
           "id": "5091049",
           "title": "缔灵爱水心缠",
-          "index": "第18话",
+          "index": "即将更新 第18话",
           "time": "10:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/d8329405b37b06eb365ccdcc4abed7981cf45c5a.jpg",
           "seasonId": 263198,
@@ -49,7 +31,7 @@
         {
           "id": "8103108",
           "title": "雪王来了！",
-          "index": "第33话",
+          "index": "即将更新 第33话",
           "time": "11:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
@@ -59,7 +41,7 @@
         {
           "id": "6762154",
           "title": "罗小黑战记",
-          "index": "第45话",
+          "index": "即将更新 第45话",
           "time": "12:00",
           "cover": "http://i0.hdslb.com/bfs/bangumi/image/c25750b639ddb810c8eaebfbd1766cf19a44236c.jpg",
           "seasonId": 1733,
@@ -182,6 +164,24 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
           "seasonId": 247422,
           "url": "https://www.bilibili.com/bangumi/play/ep6645858",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "12-3",
+      "dateTs": 1796227200,
+      "weekday": "四",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "5450397",
+          "title": "雪王来了！",
+          "index": "第34话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep5450397",
           "delay": ""
         }
       ]
