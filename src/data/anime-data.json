@@ -1,85 +1,17 @@
 {
-  "fetchedAt": "2026-11-27T10:27:09.287Z",
-  "total": 16,
+  "fetchedAt": "2026-11-28T00:58:32.599Z",
+  "total": 15,
   "days": [
-    {
-      "date": "11-27",
-      "dateTs": 1795708800,
-      "weekday": "五",
-      "isToday": true,
-      "episodes": [
-        {
-          "id": "6645588",
-          "title": "苏东坡与杭州的故事",
-          "index": "第49话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
-          "seasonId": 247422,
-          "url": "https://www.bilibili.com/bangumi/play/ep6645588",
-          "delay": ""
-        },
-        {
-          "id": "5091049",
-          "title": "缔灵爱水心缠",
-          "index": "第18话",
-          "time": "10:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d8329405b37b06eb365ccdcc4abed7981cf45c5a.jpg",
-          "seasonId": 263198,
-          "url": "https://www.bilibili.com/bangumi/play/ep5091049",
-          "delay": ""
-        },
-        {
-          "id": "8103108",
-          "title": "雪王来了！",
-          "index": "第33话",
-          "time": "11:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
-          "seasonId": 283870,
-          "url": "https://www.bilibili.com/bangumi/play/ep8103108",
-          "delay": ""
-        },
-        {
-          "id": "6762154",
-          "title": "罗小黑战记",
-          "index": "第45话",
-          "time": "12:00",
-          "cover": "http://i0.hdslb.com/bfs/bangumi/image/c25750b639ddb810c8eaebfbd1766cf19a44236c.jpg",
-          "seasonId": 1733,
-          "url": "https://www.bilibili.com/bangumi/play/ep6762154",
-          "delay": ""
-        },
-        {
-          "id": "7332920",
-          "title": "好奇心俱乐部（ Question Club）",
-          "index": "第22话",
-          "time": "17:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
-          "seasonId": 324706,
-          "url": "https://www.bilibili.com/bangumi/play/ep7332920",
-          "delay": ""
-        },
-        {
-          "id": "7846983",
-          "title": "开心锤锤世界",
-          "index": "第82话",
-          "time": "18:00",
-          "cover": "https://i0.hdslb.com/bfs/bangumi/image/09adce8333dbde03f546e701548ba757871abe53.jpg",
-          "seasonId": 96881,
-          "url": "https://www.bilibili.com/bangumi/play/ep7846983",
-          "delay": ""
-        }
-      ]
-    },
     {
       "date": "11-28",
       "dateTs": 1795795200,
       "weekday": "六",
-      "isToday": false,
+      "isToday": true,
       "episodes": [
         {
           "id": "3854826",
           "title": "凡人修仙传",
-          "index": "第202话",
+          "index": "即将更新 第202话",
           "time": "11:00",
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/e498647cae38ac05efb4f1119b36e8e911b22b34.png",
           "seasonId": 28747,
@@ -212,6 +144,64 @@
           "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
           "seasonId": 283870,
           "url": "https://www.bilibili.com/bangumi/play/ep5450397",
+          "delay": ""
+        }
+      ]
+    },
+    {
+      "date": "12-4",
+      "dateTs": 1796313600,
+      "weekday": "五",
+      "isToday": false,
+      "episodes": [
+        {
+          "id": "6645877",
+          "title": "苏东坡与杭州的故事",
+          "index": "第51话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/7d69ad543f02cdda4f457faddc9f656739bf10ad.jpg",
+          "seasonId": 247422,
+          "url": "https://www.bilibili.com/bangumi/play/ep6645877",
+          "delay": ""
+        },
+        {
+          "id": "5091050",
+          "title": "缔灵爱水心缠",
+          "index": "第19话",
+          "time": "10:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/d8329405b37b06eb365ccdcc4abed7981cf45c5a.jpg",
+          "seasonId": 263198,
+          "url": "https://www.bilibili.com/bangumi/play/ep5091050",
+          "delay": ""
+        },
+        {
+          "id": "5450398",
+          "title": "雪王来了！",
+          "index": "第35话",
+          "time": "11:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/c8ed5b61b9ede38e9117dda62cfd9acf6e16ed28.jpg",
+          "seasonId": 283870,
+          "url": "https://www.bilibili.com/bangumi/play/ep5450398",
+          "delay": ""
+        },
+        {
+          "id": "6762155",
+          "title": "罗小黑战记",
+          "index": "第46话",
+          "time": "12:00",
+          "cover": "http://i0.hdslb.com/bfs/bangumi/image/c25750b639ddb810c8eaebfbd1766cf19a44236c.jpg",
+          "seasonId": 1733,
+          "url": "https://www.bilibili.com/bangumi/play/ep6762155",
+          "delay": ""
+        },
+        {
+          "id": "7332923",
+          "title": "好奇心俱乐部（ Question Club）",
+          "index": "第25话",
+          "time": "17:00",
+          "cover": "https://i0.hdslb.com/bfs/bangumi/image/face3326abe6461c3bef38ef3e86d72a3c3776d0.png",
+          "seasonId": 324706,
+          "url": "https://www.bilibili.com/bangumi/play/ep7332923",
           "delay": ""
         }
       ]
